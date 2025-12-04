@@ -53,10 +53,42 @@ public static class DifyMigrationCommand
         Console.WriteLine($"data count: {allApps.Count}");
         var csvPath = Path.Combine(ExportDir, "apps.csv");
 
+        var csvRows = new List<AppCsvRow>(allApps.Count);
+        foreach (var app in allApps)
+        {
+            csvRows.Add(new AppCsvRow
+            {
+                Id = app.Id,
+                Name = app.Name,
+                Description = app.Description,
+                Mode = app.Mode,
+                IconType = app.IconType,
+                Icon = app.Icon,
+                IconBackground = app.IconBackground,
+                IconUrl = app.IconUrl,
+                Tags = FormatTags(app.Tags),
+                MaxActiveRequests = app.MaxActiveRequests,
+                ModelConfig = app.ModelConfig.HasValue ? app.ModelConfig.Value.GetRawText() : null,
+                WorkflowId = app.Workflow?.Id,
+                WorkflowCreatedBy = app.Workflow?.CreatedBy,
+                WorkflowCreatedAt = app.Workflow?.CreatedAt,
+                WorkflowUpdatedBy = app.Workflow?.UpdatedBy,
+                WorkflowUpdatedAt = app.Workflow?.UpdatedAt,
+                UseIconAsAnswerIcon = app.UseIconAsAnswerIcon,
+                CreatedBy = app.CreatedBy,
+                CreatedAt = app.CreatedAt,
+                UpdatedBy = app.UpdatedBy,
+                UpdatedAt = app.UpdatedAt,
+                AccessMode = app.AccessMode,
+                CreateUserName = app.CreateUserName,
+                AuthorName = app.AuthorName
+            });
+        }
+
         using (var writer = new StreamWriter(csvPath))
         using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
         {
-            csv.WriteRecords(allApps);
+            csv.WriteRecords(csvRows);
         }
         Console.WriteLine($"Saved app list CSV: {csvPath}");
 
@@ -359,6 +391,82 @@ public static class DifyMigrationCommand
         }
 
         Console.WriteLine($"工作流工具发布完成，共获取 {workflowNameToToolId.Count} 个工具 ID。");
+    }
+
+    private static string? FormatTags(JsonElement[]? tags)
+    {
+        if (tags is not { Length: > 0 })
+        {
+            return null;
+        }
+
+        var list = new List<string>(tags.Length);
+        foreach (var tag in tags)
+        {
+            switch (tag.ValueKind)
+            {
+                case JsonValueKind.String:
+                    var strValue = tag.GetString();
+                    if (!string.IsNullOrWhiteSpace(strValue))
+                    {
+                        list.Add(strValue);
+                    }
+                    break;
+                case JsonValueKind.Object:
+                    if (tag.TryGetProperty("name", out var nameElement))
+                    {
+                        var nameValue = nameElement.GetString();
+                        if (!string.IsNullOrWhiteSpace(nameValue))
+                        {
+                            list.Add(nameValue);
+                            break;
+                        }
+                    }
+                    var rawObject = tag.GetRawText();
+                    if (!string.IsNullOrWhiteSpace(rawObject))
+                    {
+                        list.Add(rawObject);
+                    }
+                    break;
+                default:
+                    var raw = tag.GetRawText();
+                    if (!string.IsNullOrWhiteSpace(raw))
+                    {
+                        list.Add(raw);
+                    }
+                    break;
+            }
+        }
+
+        return list.Count == 0 ? null : string.Join('|', list);
+    }
+
+    private sealed class AppCsvRow
+    {
+        public string Id { get; init; } = string.Empty;
+        public string? Name { get; init; }
+        public string? Description { get; init; }
+        public string? Mode { get; init; }
+        public string? IconType { get; init; }
+        public string? Icon { get; init; }
+        public string? IconBackground { get; init; }
+        public string? IconUrl { get; init; }
+        public string? Tags { get; init; }
+        public int? MaxActiveRequests { get; init; }
+        public string? ModelConfig { get; init; }
+        public string? WorkflowId { get; init; }
+        public string? WorkflowCreatedBy { get; init; }
+        public long? WorkflowCreatedAt { get; init; }
+        public string? WorkflowUpdatedBy { get; init; }
+        public long? WorkflowUpdatedAt { get; init; }
+        public bool? UseIconAsAnswerIcon { get; init; }
+        public string? CreatedBy { get; init; }
+        public long? CreatedAt { get; init; }
+        public string? UpdatedBy { get; init; }
+        public long? UpdatedAt { get; init; }
+        public string? AccessMode { get; init; }
+        public string? CreateUserName { get; init; }
+        public string? AuthorName { get; init; }
     }
 
     /// <summary>
