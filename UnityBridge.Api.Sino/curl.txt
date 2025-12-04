@@ -1,0 +1,648 @@
+// 新建一个测试知识库
+curl 'http://192.168.113.67:30019/langwell-api/langwell-doc-server/knowledge/lib/individual/add' \
+  -H 'Accept: application/json, text/plain, */*' \
+  -H 'Accept-Language: zh-CN,zh;q=0.9' \
+  -H 'Connection: keep-alive' \
+  -H 'Content-Type: application/json' \
+  -b 'Hm_lvt_b7fd400b2e66412997802961d8148bce=1762918649; HMACCOUNT=6DFF27950CC6A59D; Hm_lpvt_b7fd400b2e66412997802961d8148bce=1763426209; Token=3327f9e2-4617-4357-b0a5-3202ff2ed4a2' \
+  -H 'OVERTOKEN: 170375c3-4886-4e86-a0e3-0b55636922cb' \
+  -H 'Origin: http://192.168.113.67:30019' \
+  -H 'Referer: http://192.168.113.67:30019/copilot-web-app/knowledge' \
+  -H 'TenantId: 1' \
+  -H 'Token: 170375c3-4886-4e86-a0e3-0b55636922cb' \
+  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36' \
+  --data-raw '{"libName":"测试知识库","dataType":"text","libDesc":"测试知识库描述"}' \
+  --insecure
+
+
+{
+    "code": 200,
+    "msg": "成功",
+    "traceld": "29051148299841297870848",
+    "data": "1996140752921403393"
+}
+
+
+
+// 查看只知识库页面有几个知识库
+curl 'http://192.168.113.67:30019/langwell-api/langwell-doc-server/knowledge/lib/individual/page' \
+  -H 'Accept: application/json, text/plain, */*' \
+  -H 'Accept-Language: zh-CN,zh;q=0.9' \
+  -H 'Connection: keep-alive' \
+  -H 'Content-Type: application/json' \
+  -b 'Hm_lvt_b7fd400b2e66412997802961d8148bce=1762918649; HMACCOUNT=6DFF27950CC6A59D; Hm_lpvt_b7fd400b2e66412997802961d8148bce=1763426209; Token=3327f9e2-4617-4357-b0a5-3202ff2ed4a2' \
+  -H 'OVERTOKEN: 170375c3-4886-4e86-a0e3-0b55636922cb' \
+  -H 'Origin: http://192.168.113.67:30019' \
+  -H 'Referer: http://192.168.113.67:30019/copilot-web-app/knowledge' \
+  -H 'TenantId: 1' \
+  -H 'Token: 170375c3-4886-4e86-a0e3-0b55636922cb' \
+  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36' \
+  --data-raw '{"pageNum":1,"pageSize":300000,"entity":{"libName":""}}' \
+  --insecure
+
+
+{
+    "code": 200,
+    "msg": "成功",
+    "traceld": "29051148299848939892736",
+    "data": {
+        "records": [
+            {
+                "id": "1996140752921403393",
+                "dirId": null,
+                "libName": "测试知识库2",
+                "libStatus": 1,
+                "libDesc": "测试知识库2",
+                "entityType": "individual",
+                "dataType": "text",
+                "retrievalType": "vector",
+                "ancestorsName": null,
+                "allFileSize": 0,
+                "knCount": "0",
+                "fileNum": null,
+                "participateType": null,
+                "tags": null,
+                "entryType": null,
+                "splitType": null,
+                "embeddingModel": null,
+                "searchTopK": null,
+                "searchScore": null,
+                "collection": null,
+                "visibleRange": null,
+                "databaseId": null,
+                "isCollect": null,
+                "createBy": "648067228748181019",
+                "lastSyncTime": null,
+                "setIdAndPath": null,
+                "libBindLocalDetailList": null,
+                "bindPath": null,
+                "createBy_text": "管理员"
+            },
+            {
+                "id": "1996137484044443649",
+                "dirId": null,
+                "libName": "测试知识库",
+                "libStatus": 1,
+                "libDesc": "测试知识库描述",
+                "entityType": "individual",
+                "dataType": "text",
+                "retrievalType": "vector",
+                "ancestorsName": null,
+                "allFileSize": 0.3858,
+                "knCount": "2",
+                "fileNum": null,
+                "participateType": null,
+                "tags": null,
+                "entryType": null,
+                "splitType": null,
+                "embeddingModel": null,
+                "searchTopK": null,
+                "searchScore": null,
+                "collection": null,
+                "visibleRange": null,
+                "databaseId": null,
+                "isCollect": null,
+                "createBy": "648067228748181019",
+                "lastSyncTime": null,
+                "setIdAndPath": null,
+                "libBindLocalDetailList": null,
+                "bindPath": null,
+                "createBy_text": "管理员"
+            },
+            {
+                "id": "1988540352994217985",
+                "dirId": null,
+                "libName": "测试",
+                "libStatus": 1,
+                "libDesc": "",
+                "entityType": "individual",
+                "dataType": "text",
+                "retrievalType": "vector",
+                "ancestorsName": null,
+                "allFileSize": 3.5308,
+                "knCount": "3",
+                "fileNum": null,
+                "participateType": null,
+                "tags": null,
+                "entryType": null,
+                "splitType": null,
+                "embeddingModel": null,
+                "searchTopK": null,
+                "searchScore": null,
+                "collection": null,
+                "visibleRange": null,
+                "databaseId": null,
+                "isCollect": null,
+                "createBy": "648067228748181019",
+                "lastSyncTime": null,
+                "setIdAndPath": null,
+                "libBindLocalDetailList": null,
+                "bindPath": null,
+                "createBy_text": "管理员"
+            },
+            {
+                "id": "1983470556082606082",
+                "dirId": null,
+                "libName": "网页抓取测试",
+                "libStatus": 1,
+                "libDesc": "",
+                "entityType": "individual",
+                "dataType": "text",
+                "retrievalType": "vector",
+                "ancestorsName": null,
+                "allFileSize": 0,
+                "knCount": "0",
+                "fileNum": null,
+                "participateType": null,
+                "tags": null,
+                "entryType": null,
+                "splitType": null,
+                "embeddingModel": null,
+                "searchTopK": null,
+                "searchScore": null,
+                "collection": null,
+                "visibleRange": null,
+                "databaseId": null,
+                "isCollect": null,
+                "createBy": "648067228748181019",
+                "lastSyncTime": null,
+                "setIdAndPath": null,
+                "libBindLocalDetailList": null,
+                "bindPath": null,
+                "createBy_text": "管理员"
+            },
+            {
+                "id": "1983460905635024897",
+                "dirId": null,
+                "libName": "邮件采集测试",
+                "libStatus": 1,
+                "libDesc": "",
+                "entityType": "individual",
+                "dataType": "text",
+                "retrievalType": "vector",
+                "ancestorsName": null,
+                "allFileSize": 0,
+                "knCount": "0",
+                "fileNum": null,
+                "participateType": null,
+                "tags": null,
+                "entryType": null,
+                "splitType": null,
+                "embeddingModel": null,
+                "searchTopK": null,
+                "searchScore": null,
+                "collection": null,
+                "visibleRange": null,
+                "databaseId": null,
+                "isCollect": null,
+                "createBy": "648067228748181019",
+                "lastSyncTime": null,
+                "setIdAndPath": null,
+                "libBindLocalDetailList": null,
+                "bindPath": null,
+                "createBy_text": "管理员"
+            },
+            {
+                "id": "1978739532843806721",
+                "dirId": null,
+                "libName": "敏感词库",
+                "libStatus": 1,
+                "libDesc": "",
+                "entityType": "individual",
+                "dataType": "text",
+                "retrievalType": "vector",
+                "ancestorsName": null,
+                "allFileSize": 0,
+                "knCount": "1",
+                "fileNum": null,
+                "participateType": null,
+                "tags": null,
+                "entryType": null,
+                "splitType": null,
+                "embeddingModel": null,
+                "searchTopK": null,
+                "searchScore": null,
+                "collection": null,
+                "visibleRange": null,
+                "databaseId": null,
+                "isCollect": null,
+                "createBy": "648067228748181019",
+                "lastSyncTime": null,
+                "setIdAndPath": null,
+                "libBindLocalDetailList": null,
+                "bindPath": null,
+                "createBy_text": "管理员"
+            },
+            {
+                "id": "1978739236553977858",
+                "dirId": null,
+                "libName": "合同规则库",
+                "libStatus": 1,
+                "libDesc": "",
+                "entityType": "individual",
+                "dataType": "text",
+                "retrievalType": "vector",
+                "ancestorsName": null,
+                "allFileSize": 0,
+                "knCount": "1",
+                "fileNum": null,
+                "participateType": null,
+                "tags": null,
+                "entryType": null,
+                "splitType": null,
+                "embeddingModel": null,
+                "searchTopK": null,
+                "searchScore": null,
+                "collection": null,
+                "visibleRange": null,
+                "databaseId": null,
+                "isCollect": null,
+                "createBy": "648067228748181019",
+                "lastSyncTime": null,
+                "setIdAndPath": null,
+                "libBindLocalDetailList": null,
+                "bindPath": null,
+                "createBy_text": "管理员"
+            }
+        ],
+        "total": "7",
+        "size": "300000",
+        "current": "1",
+        "orders": [],
+        "optimizeCountSql": true,
+        "searchCount": true,
+        "maxLimit": null,
+        "countId": null,
+        "pages": "1"
+    }
+}
+
+
+
+  // 上传一个文件到新建的知识库
+  curl 'http://192.168.113.67:30019/langwell-api/langwell-doc-server/knowledge/file/individual/upload' \
+  -H 'Accept: application/json, text/plain, */*' \
+  -H 'Accept-Language: zh-CN,zh;q=0.9' \
+  -H 'Connection: keep-alive' \
+  -H 'Content-Type: multipart/form-data; boundary=----WebKitFormBoundary5xSroK0ARnFdLJjg' \
+  -b 'Hm_lvt_b7fd400b2e66412997802961d8148bce=1762918649; HMACCOUNT=6DFF27950CC6A59D; Hm_lpvt_b7fd400b2e66412997802961d8148bce=1763426209; Token=3327f9e2-4617-4357-b0a5-3202ff2ed4a2' \
+  -H 'OVERTOKEN: 170375c3-4886-4e86-a0e3-0b55636922cb' \
+  -H 'Origin: http://192.168.113.67:30019' \
+  -H 'Referer: http://192.168.113.67:30019/copilot-web-app/knowledge' \
+  -H 'TenantId: 1' \
+  -H 'Token: 170375c3-4886-4e86-a0e3-0b55636922cb' \
+  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36' \
+  --data-raw $'------WebKitFormBoundary5xSroK0ARnFdLJjg\r\nContent-Disposition: form-data; name="file"; filename="测试合同1（脱敏）.pdf"\r\nContent-Type: application/pdf\r\n\r\n\r\n------WebKitFormBoundary5xSroK0ARnFdLJjg\r\nContent-Disposition: form-data; name="fileName"\r\n\r\n测试合同1（脱敏）.pdf\r\n------WebKitFormBoundary5xSroK0ARnFdLJjg\r\nContent-Disposition: form-data; name="libId"\r\n\r\n1996137484044443649\r\n------WebKitFormBoundary5xSroK0ARnFdLJjg--\r\n' \
+  --insecure
+
+
+{"code":200,"msg":"成功","traceld":"29051148300059900801024","data":null}
+
+
+// 发送你好 看看 对话效果
+curl 'http://192.168.113.67:30019/langwell-api/langwell-ins-server/dify/broker/agent/stream' \
+  -H 'Accept-Language: zh-CN,zh;q=0.9' \
+  -H 'Connection: keep-alive' \
+  -H 'Content-Type: application/json' \
+  -b 'Hm_lvt_b7fd400b2e66412997802961d8148bce=1762918649; HMACCOUNT=6DFF27950CC6A59D; Hm_lpvt_b7fd400b2e66412997802961d8148bce=1763426209; Token=3327f9e2-4617-4357-b0a5-3202ff2ed4a2' \
+  -H 'Origin: http://192.168.113.67:30019' \
+  -H 'Referer: http://192.168.113.67:30019/copilot-web-app/chat' \
+  -H 'TenantId: 1' \
+  -H 'Token: 170375c3-4886-4e86-a0e3-0b55636922cb' \
+  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36' \
+  -H 'accept: text/event-stream' \
+  --data-raw '{"insId":"1","bizType":"app:agent","bizId":"dfd7976e-f130-407a-8357-1ead8d48d31d","agentId":"dfd7976e-f130-407a-8357-1ead8d48d31d","path":"/chat-messages","difyJson":{"inputs":{"query":"你好","personalLibs":"","knIds":"","Token":"170375c3-4886-4e86-a0e3-0b55636922cb","tenantid":"1","isWebSearch":false},"files":[],"response_mode":"streaming","user":"648067228748181019","auto_generate_name":"true","query":"你好","conversation_id":""},"query":"你好","conversation_id":""}' \
+  --insecure
+
+
+返回一大堆 dify llm返回的东西
+
+
+// 上传一个文件到对话 
+curl 'http://192.168.113.67:30019/langwell-api/langwell-ins-server/dify/broker/formData' \
+  -H 'Accept: application/json, text/plain, */*' \
+  -H 'Accept-Language: zh-CN,zh;q=0.9' \
+  -H 'Connection: keep-alive' \
+  -H 'Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryl4TbR5O9fwdKFFAl' \
+  -b 'Hm_lvt_b7fd400b2e66412997802961d8148bce=1762918649; HMACCOUNT=6DFF27950CC6A59D; Hm_lpvt_b7fd400b2e66412997802961d8148bce=1763426209; Token=3327f9e2-4617-4357-b0a5-3202ff2ed4a2' \
+  -H 'OVERTOKEN: 170375c3-4886-4e86-a0e3-0b55636922cb' \
+  -H 'Origin: http://192.168.113.67:30019' \
+  -H 'Referer: http://192.168.113.67:30019/copilot-web-app/chat' \
+  -H 'TenantId: 1' \
+  -H 'Token: 170375c3-4886-4e86-a0e3-0b55636922cb' \
+  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36' \
+  --data-raw $'------WebKitFormBoundaryl4TbR5O9fwdKFFAl\r\nContent-Disposition: form-data; name="file"; filename="买卖合同规则.docx"\r\nContent-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document\r\n\r\nPK\u0003\u0004\n\u0000\u0000\u0000\u0000\u0000\u0087Nâ@\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0009\u0000\u0000\u0000docProps/PK\u0003\u0004\u0014\u0000\u0000\u0000\u0008\u0000\u0087Nâ@\u0011\u001a°e]\u0001\u0000\u0000o\u0002\u0000\u0000\u0010\u0000\u0000\u0000docProps/app.xml\u009d\u0091ÍnÂ0\u0010\u0084ï\u0095ú\u000eQîÁI üÉ\u0018ÑPNU\u008bDZ\u008eÈr\u0016bÕ±-Û xû:¤\néµÊegV\u0019\u007fÚÁËk-\u0082\u000b\u0018Ë\u0095\\\u0084É \u000e\u0003\u0090L\u0095\\\u009e\u0016ág±\u0089¦a`\u001d\u0095%\u0015JÂ"¼\u0081\r\u0097äù\u0009o\u008dÒ`\u001c\u0007\u001bø\u0008i\u0017aå\u009c\u009e#dY\u00055µ\u0003¿\u0096~sT¦¦ÎKsBêxä\u000cÖ\u008a\u009dk\u0090\u000e¥q<Fpu K(#Ý\u0005\u0086mâüâþ\u001bZ*ÖðÙ¯â¦=0Á\u0005ÔZP\u0007ä½Á\u0011\u0083R¹\u001a£ÎÅ[z\u0002KF\u0018µ\u0003Þ+SZ\u0012cÔ\u000e8¯¨¡Ìù;5fOá7.ý\u009fÞl\u0007\u009fdèÉP]ÝÍ\u009eÂ\u0085rT\u0014¼\u0006\u0092ø§;\u0081w\u008c\nÈ=.9Ra\u0001£\u0087Ñ¤\u007fÛO]¨u\u0003ÿ»ÿköØöÜU;MY\u000bô ìùx¥µà\u008c:ß7ÙowÁÇ½\u0093Ãd\u0090úo:Ë²Ã&y\u001d¦\u0093\u0097<JÇ³<\u001a\r³2Z%Y\u001aÅY\u009e\u008dâi\u001c§ù\n£~\u000eö\u0095î\u0080\u009d\rw·æ\u0014}éOÚ\u0015K~\u0000PK\u0003\u0004\u0014\u0000\u0000\u0000\u0008\u0000\u0087Nâ@þ%O¿H\u0001\u0000\u0000s\u0002\u0000\u0000\u0011\u0000\u0000\u0000docProps/core.xml\u008d\u0092KNÃ0\u0010\u0086÷HÜ\u0021ò>±\u0093¦\u0080¢$\u0095\u0000uE%$\u008a@ì,{ÚZÄ\u008ee\u009b¦Ýr\u0008ÎÈ1p\u001e\rA°`9\u009eÏßü~ä\u008b\u0083¬\u0082=\u0018+jU 8"(\u0000Åj.Ô¶@\u008fëex\u0085\u0002ë¨â´ª\u0015\u0014è\u0008\u0016-Êó³\u009cé\u008cÕ\u0006îM­Á8\u00016ð&e3¦\u000b´sNg\u0018[¶\u0003Imä\u0009å\u009b\u009bÚHê|i¶XSöJ·\u0080\u0013B.°\u0004G9u\u0014·ÂP\u008fF4(9\u001b\u0095úÍT\u009d\u00803\u000c\u0015HPÎâ8\u008añ7ëÀHûç\u0086®3\u0021¥pGíÏ4Ä\u009dº9ë\u009b#}°b\u0004\u009b¦\u0089\u009aY\u0017Ãç\u008fñóêî¡;j(T{W\u000cP\u0099sÖ\u008dË\u0098\u0001ê\u0080\u0007^\u0090õãN\u009d§ÙÍíz\u0089Ê\u0084$ó\u0090ÌÃ8]Ç\u0097\u0019I3B^r|¢\u0086ý­°wÕ¦ü|ÿh\u0081±n\u001f£¢Ö­ü»m\u0004ðëc\u008fü^\u001ecÉ\u0001ýw®4Éæé$×IP¶Ã\rìEû\u0083Ê8ÇÓ²«~~\u0093ò\u000bPK\u0003\u0004\u0014\u0000\u0000\u0000\u0008\u0000\u0087Nâ@uÕfh(\u0001\u0000\u0000\u000f\u0002\u0000\u0000\u0013\u0000\u0000\u0000docProps/custom.xml¥\u0091ÏKÃ0\u0014Çï\u0082ÿCÈ½K\u009a.]:Ú\u008eõ\u0017\u0088\u0007\u0007Î]¥´éVh\u0092\u0092¤Ó\u0021þïfÌ)\u001e¼(ïôø\u0086Ïû¼\u0097xõ*\u0006päÚôJ&Ð\u009fa\u0008¸lTÛË}\u0002\u009f¶\u0095Ç 0¶\u0096m=(É\u0013xâ\u0006®ÒÛ\u009bx£ÕÈµí¹\u0001\u000e\u0021M\u0002\u000fÖ\u008eK\u0084Lsà¢63\u0017K\u0097tJ\u008bÚºVï\u0091êº¾á\u0085j&Á¥E\u0004ã\u00105\u0093±Jxã\u0017\u000e^xË£ý+²UÍÙÎì¶§Ñé¦ñ\'ü\u0004:aû6\u0081o\u0005Í\u008b\u0082bê\u00912Ê=\u001fû\u0099\u0017\u0005ÑÂÃ\u000cc\u0092\u0091¼\u008aÖå;\u0004ãù1\u0081@ÖÂ­~ÿøà°íÔØlê\u0087vÇµC\u001fír\u0018_\u008cÕ)Á\u0094x\u008b\u0019qÅ"Jcô\u001dÅèjðO\u0097àêr\u0097ï~\u000eÏË\u0082UU@i\u0018­\u0009fY@s2\u000f\u0019+³"\u008cèâyîÿ&\u0084Î·ºüdú\u0001PK\u0003\u0004\n\u0000\u0000\u0000\u0000\u0000\u0087Nâ@\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0005\u0000\u0000\u0000word/PK\u0003\u0004\u0014\u0000\u0000\u0000\u0008\u0000\u0087Nâ@ç\u000cÄ\u009cª\r\u0000\u0000ß\u0084\u0000\u0000\u000f\u0000\u0000\u0000word/styles.xmlí]ÍrÛÈ\u0011¾§*ï\u0080Â)9È\u0012%Y²U¦·dÉ\u008e]++ÊRÎ\u009eAp(b\u0005`\u0018\u0000\u0014-¿@\u000e9¥rÉ1\u0095\u0007È\u000b¤ò6Iªö-ÒÓ\u0018\u0080 ~Æ\u009c\u0006:Y\u0097s\u0092\u0008\u0012ýÍô|ýÍL\u00033óâ\u009b\u008fQè<\u0088$\rd<vGO\u000e\\GÄ¾\u009c\u0005ñÝØýpûfï\u0099ë¤\u0099\u0017Ï¼PÆbì>\u008aÔýæåÏ\u007föb}\u0096f\u008f¡H\u001d0\u0010§g\u0091?v\u0017Y¶<ÛßOý\u0085\u0088¼ô\u0089\\\u008a\u0018¾\u009cË$ò2ø\u0098ÜíG^r¿Zîù2ZzY0\rÂ {Ü?<88qµ\u00199vWI|¦MìE\u0081\u009fÈTÎ3uË\u0099\u009cÏ\u0003_è?Å\u001dÉ.¸ù\u009d\u0097Ò_E"Î\u0010q?\u0011\u0021\u0094AÆé"X¦\u0085µ\u0088j\rª¸(\u008c<\u0098*ñ\u0010\u0085ÅïÖ»\u0080­e2[&Ò\u0017i\nm\u0012\u0085yá#/\u0088K3£ã\u0086¡ÒqOÀqûyõ÷\u0095)¸}t\u0080ÿUÊ1:0\u0095X»]Ý]@¦a\u0003±¥µóV¼\n¦\u0089\u0097äÍ\u000c\u0004¨\u0094{\u0099^¬ÒLF\u0097^æ\u0095öÖëõ\u0093õ2}âÇºØ\u0095V\u001b\u001díÃW\u009b\u009b\\\'òÏÞÝÅ2ñ¦\u0021\u0090s=:v_\u00023gÒ¿\u0014so\u0015f©ú\u0098Ü$ú£þ\u0084\u007fÞÈ8K\u009dõ\u0099\u0097úA0vo\u0083\u0008È|-ÖÎw2òÀ¹ë³Åy\u009c¶\u007f#¼4;O\u0003(õ¿þö\u0087\u007fþãOê×~Ú4²ÿòÅ>â\u0017\u007f+åX\u0096¥Ê\u007fU+4\u0090\u0013¨:Éc\u000c¬ËU\u009c\u008dÝÃ\u0013\u0008P¨ \u0098ÿæ\rÆÕØ-.|\u0088\u0017ÁL|¿\u0010ñ\u0087TÌ \u0096õ\u000f\'"\nÞ\u0006³\u0099Pñ­¯}xw\u0093\u00042\u0081è\u001b»Ï\u009fë\u008bWÒ¿\u0017³I\u0006ÀÊªrR\u0098Î^\u007fôÅRÅ\u0009Àþ®ÀD;«\u001a \u0016d\u0015l,ã\u0085´\u0002\u008f\u0017b/\u0002û×ªô¡\u000bUçDY\u0008O)\u00993Ú\u0005¨^ò¼ \u0085\u0089Ãþ&\u008eú\u009b8îoâi\u007f\u0013\'ýM\u009cö7ñ¬¿\u0089ç­&z\u0011;\u0088gâc\u0007á\u00060ÜNÃ\u0001\u000c·\u0093s\u0000Ãí\u0094\u001dÀp;\u0091\u00070ÜNï\u0001\u000c·\u0093~\u0000Ãí¡0\u0080a\u0086\u0000É¤Ï\u0011\u001eÊ,Cp(³\u000c¡¡Ì2\u0004\u00862Ë\u0010\u0016Ê,CP(³\u000c\u0021¡Ì2\u0004\u00842Ë\u0010\u000eù@Èy\u0007ÝF\u009c\rß\u001dÍ¥Ìb\u0099\u0009\'\u0013\u001f\u0019Ì{1\u0018Çi\u0014\u0013\u0080\u001a~\u0089\u0084Ç/\u001cvóî_\u000f\u001a[\u008b]\u001bD·\u008f:}\u000fÇÜ­\u0006zÉz¦fJ\u008e\u009c;óàn\u0095Àd¾m\u0004Þ\u000bAÄ\u000f"\u0084Ù ãÍf\u0000À\u0089\u0090\u0088\u000c²\u0005ÃW¡\u000c\u009aDÌE\u0002ù\u00101<F%r\u0018QÂ \u0016N¼\u008a¦\u001c\\_zw|ÆE<CÝbtN\u0001Á#\u008de¤y«l¡æÚ\u0001G´E\u001edÈ\u0086gg&=Ç$b½\u0014â*H\u0019º"eÕyµ\nCÁeü\u009a)\u008e°ä\u000ccW´Ë0xE»ÇÃ\u0093\u000eí2\u000c_ÑnÎ\u000c\u008e)BÕ<\u0097·ué¹\u009c®Ísù>\u000f\u001c6ßkó\\¾×æ¹|¯Í·û¾6Xì\u0093q½\r²\u0090a\u001cs\u0011Jõ`bx5\u0098\u0004w±\u0007ã»>eÎS¸:éîÜx\u0089w\u0097xË\u0085£rÿÃ\u0097ø\u0095\u009c=:·,ó¬Ò4ÛD\u0011Uì\u0002ü\u0012Ä«>.ïÈ÷o\u0099gS\u0082¢ü\u001c)\u009bí\u001ap©AY\u0083v=è5îz\u000f³15d\u007fÛ=§\u001ePo&«iÆ#9\u0013/\\åI\u0087ác\u0018\u009eE2°\u007f\u0013¾o\u0082\u0004\u0086©\\Ù\u009ev\u001c\u008ep»V9%E$\u0016íßÔ\u0083aX¼1Î0bØ\u0018ÏÛ\u0098Ã÷\r\u000c\u008ez\u0084ð4\u0098©3{û¸\u0014\u0009d&î\u0087\u000fß72\u000cåZÌÌ\u0010Cª\\\u0096È\u008eÑÏ\u0080(¯£åÂK\u0083tx\u0087]êwb\u009c÷Þrxë7\u0021¼ïÁÄ¢×{ð2Iè\u000c1Lì\u0018³èÔü/¾\u0017Ó_\u000eï\u009b··ï¯\u009csÈÞÄ\u008f\u0011\u0097u®\u000c,\u0096ý"àè*sÓrÆÐ\u000b£i\u0098\u000c\u00041$ã$CÞ\u0018\u0001¾\u0015\u008fSéÁ»R\u0083gÖÑü\r$DñÍ\u009fLpAL¼hÉ1UÄòß\u0082ø¯\u0021\u001bÊ\u0091\u0090F\u0080ßzI \u001erôð\u007fõ\u0015%ç¶§±\u000eq©äÿÓÕô\u0007á3LH±è \u0090ª99\u009e¹oÙg\u0018©mÙg\u0018ääö/B\u000fÞ­dy)a\u001b\u0080ÍCE\rØ]Ä0ëÕ.\u0092¡Læ«\u0090\u008f¥\u0017\u0005\u0002_+\u0014\u0008|Í ÃU\u0014§¬NB\u0000N\u001f\u0021\u0000»\u008b8\u0099\u008a5`ÈÏä¡ð«$\u0098ñµ0Zgk^´ÎÖ¶h\u009d­aÑ:o«2¼CUá\u000cÃ«T\u0015ë\u000coTåÖ1¯Úþ\u0082v¯lgÅ:\u001bß±ìl|Gël|Gël|Gël|Gël|Gël|?ºtÄ|\u000eã}Æ~¼\u0082ÁÆý\n\u0006[\u0004¨§\u0021"ZÂú\u009eä±Ç|®c\n\u0096+ÄëPÜy\u001c\u008f\u0003só7\u0089\u009c«µ[2îXî2\u0080È©G-¬3¼Ü>\u001b\u0095 ÁÆ7âQÆYKÎÀþW\u001e¤±aÉ\u0015ÏÃä\u009c\u0098j¼Ã\u0015S·°\u0002\u0094\u0098\u0080É\u0017¸uDìUp·È\u009cÉ¢Çc§\u0013\\»f´¯ô\u009fæ\u0099\u0093Cµ\u0096Îh\u009cîö\u0093#\u0083ñ÷b\u0016¬¢Â5Ôh:9Þ\u001d\u0082\u0018S\'O?\u000f\u0081\u001d0qHx\u0002k\u0089;\u009b@{\u0009íSË\u007fúyû8\u0095 \u0096\u001f\u0016\\\u007f®üh\u009fZ~\\îÙAQí\u001f´O\u0094µSÓªÏKXÿíÐÃëÔ\u0014»e\u0082§\u0097<\u009c\u009a"¸\u0084èQ\u0005S\u0010\u0097ö{\u0088\u0084Éý[ò\u0009Ï\u009e|XrB\u0096\nS[ä@\u0018f=QLÍ\u0091£ Y{¢\u0098\u001a¥®¬}ýf#±}±vÖÚ¾@;\u008bn_ \u009dÕ·/ÐÎ2Ü\u0017hg=î\u0009´\u009b0÷\u00051©B)oZ¡ûb\u0099´¡Ä\u001a@\u0084NMòP\u0002\r¡CÖâM\u001d\u0004\u0098\u009a©)ÞT\u0014S\u00035Å\u009b\u008abj\u009d.ñ¦bQÄ\u009b\u008ae-ÞT kñ¦\u0002Y\u008b7\u0015ÈZ¼©@ÖâM\u0004²\u0013o*\u0088I\u0015J\u009d«\u00897\u0015Ë¤\r%VU¼©@&y(\u0081ªâM\u0004Ú=qQô{Ä\u0019Ö\u008e\u0019\u008c¾(¦\u0006j\u008a7µ.¦Öé\u0012o*\u0016E¼©XÖâM\u0005²\u0016o*\u0090µxS\u0081¬Å\u009b\nd-ÞD ;ñ¦\u0082PÄ\u009b\u008aeÒ\u0086RS«âM\u00052ÉC\u0009T\u0015o"\u0090½x\u0013\u009fËZ\u008a7\u0015ÅÔ@Mñ¦¢\u0098Z§K¼©X\u0014ñ¦bY\u008b7\u0015ÈZ¼©@ÖâM\u0005²\u0016o*\u0090µx\u0013\u0081ìÄ\u009b\nB\u0011o*\u0096I\u001bJM­\u008a7\u0015È$\u000f%PU¼\u0089@öâM|íÅR¼©(¦\u0006j\u008a7\u0015ÅÔ:]âMÅ¢\u00887\u0015ËZ¼©@ÖâM\u0005²\u0016o*\u0090µxS\u0081¬Å\u009b\u0008d\'ÞT\u0010\u008axS±LÚPjjU¼©@&y(\u0081ªâM\u0004²\u0017oâ[\u0085\u0096âME15PS¼©(¦Öé\u0012o*\u0016E¼©XÖâM\u0005²\u0016o*\u0090µxS\u0081¬Å\u009b\nd-ÞD ;ñ¦\u0082PÄ\u009b\u008aeÒ\u0086RS«âM\u00052ÉC\u0009T\u0015o\u0004\u0082­ê«»Î«­Ùñ\u008c\u0007x\u001f)\u0083U\u009bcwYl £^Q\u0082=èÕ\u000eûzSyüá;Üv^Ý§VPÂo\u001e<8( ºÕ»^\u0013\u008fKc7[Å\u0017¿<Èßº\u0083\u009dñ\u0095\u008du0\u0093kõ\u0006p"ÃÚ/Ò¥ç«}Ý×gSµ\u001a\u0016\u008a6:Äg§Þ\u001c\u0016\u0096\u0096\u009fÔî\u0087c÷(ïbÔ\u0087ïVê\u0098\u0000Ø\u0090Oo\u0099÷\u0083_\u0018\u000eÅ<Sèà\u0003\r\u000f§\u0006¨R$[ç\u0004à\u008b\u008dc7\nb\u0099\u009c«\u0083\u0003\u0094\'ð\u009c\u0080Öo\u008as\u0002ª_¾Ög\u0007¨;ý4SoJj\u0083¯\u0082Y\u0090{à^$j¿}t\u009f~\u001c\u0091~*/è7ËÒO\u0017êü\u0082üGÅÔÉC¯à5\u0011ï}\u0098(\u0094¢\u0014c÷ÓbïâZ]\u009a\u0002\u00148"Ù\u009b\u009cëZcu¡öØ\u0090\u009fiú²±\u000fñ\u0094\u0080jcëM\u0003\u008b·\u008a¦\u001e\u009cEðë².ºä1ì\u0091T\u0094\\_²\u0021Æ½\u0010Ëk0\u0081,R\u001f® iSü\u0014¯¢¼Ù\u0082ð¡N\u001aøîÝl\u000b\u0016ª[ÞÐ¤ÔÑ1R*g\u0018BèÃ\u0016ò+çÀ"}\u0093¾®Éwt´¡bõ6üºy\u0097âåØ}z\u008a=\u0092úP\'©\\eêòU­BÝL-Ú»`\u009d÷\u0083LJÖ¡\u009b¦Úu\u001b\u0096\u001dk\u0002mhv\u0084Ä\u0003\u0014\u00123\u008e:\u0099¡ù¼33 î÷e«éAææõE¬Èö+ôx\u0089\u0093O\u0005\u008b-ù¤Ïî°æ\u0093¾\u000fés¥\u0098^¥[\u0017\u009f\u008eGØ\u0007ìÆ\'¬P7\u009fô\u0009)ç°®\u001eÎ®)ÏEÉ?Wø4\u0014wòC\\ÚTEg÷wæÎÿ\u0096\'\u009aé¶ºóSá\u0009le\r\u008d=W\u001bV)Ú\u008dÝã\u0003ÝA7\u0015©Ð\u008aí¾3\u0097\u0099¡hñ´SR´v}\u0021´Ð$¶¦Å3Zwtø\u009cÐ\u001d\u001dåïA·ÉG\u000b-4Ñ\u009b´Àª\u0012\u0085\u0005¸Wtdc÷Ç¿ÿQ\u001d³Ô*6\u0087¸T\u008fÚQ\u009dt²J÷5_\u0008«t\u000c|\r¬Âª6XU\u0017\u009b~´8í¤\u0085\u009e\u0093}\u0021´Ð$¶¦\u0005qì\u009b/ ²\u001bª\u001c\u008d0GÒWk°¦\rVlOßÆnû fw­)¸G\u001a\u0014?ë$\u0095^Ëü\u0085\u0090J\u0087ÀW@ª"/b\u001e×\u001cöbÅóNVè5è_\u0008+4\u0087¿\u0002V`M\u0087\u0096\u009aÍ0¹\u001f\u009dFùÑ\u008dmÓ\'}|Ñ\u0017Â\'Íþ¯\u0080OÅ\u0000v[ezv]\u0015>\u0015óûÏtZþ\u0002ò»¾Ú\u0099\u000fúÃ®ôn3±cÚ^½>\u0001/O;\u0002\u0004LRâ\u008c\u0012B©#í\u0098áæ{\u0086â43\u0090z×N\\ä\u009eO\u0018v+\u0004$¹§a\u009e<\u0084\u007f.D\u0018¾÷\u0012\u0095\u0008Íä\u0012\n\u0000\u0087õâ<*Ï\u0084Ï>z¹m\u00957Î¿\u001d\u001dà\u0013\u0098Ú÷S\u0099Á\u0009·Ý÷\'¸¢\u001dÍ·\u0019\u0000ÏT\u000b\u0093\u007fT\u0085ìvÙV\u0092¾ÌÔ\u008eF\u008d^¦¹½i»0|.OßÌ\u009cV&ª[ù)|Ö¢³¤\u009bIií\'8ÇË\'\u0099Ê¹Úíè\'õ?~½CÞ¾\u009aB×wU"BÏ\u0096BËt¹B\u0007ÏÛÄÑ¦\u0005\u009ai­Ieóàºïu\u0096`§<&\u0096\u0007\u0092úö¥óñ\u0000æ\u0089:e¸ñ §\u0099où÷_~ÿã_ÿì\u001c:\u0017 \u0014\u009aÿ\u0095ì¬.r\'_t1­u­Èc«\u0087.myìM»\u0092rÖ&\u001f4³\u0003K\u009dý­·Wî\u008eÎºkiß=V6ñaH÷\u000e\u0014+õ\u0016¹\u0081gkoThL.*ùÞÚÕMr¦ö\u0085:\u0008»z\u0009\u000bi\u000eG=¡Øz¢¥¯ý\u0017BÔD\u0080f\u001e ÕÙ®:\u0001\u0088ì_\u0088ðAd\u0081ïU<½umãç­ËÊË\u009b\u000bèãM\u001c\u001cv:ÔR½L®iÎf½%l4»\u0007}ö\u001eð\\ï¯lç¦înmkpb*Vs:\u0095ê¦±+\u008a\u0096ùú\u0013`xV+âPVZ«ü¼i©ò\u0092j¥üC­\u0085Fzt[¥|~m¸\u0016\u0082GâjüR\u009d\u0009¤\u001dêE$ïÛ\u0082¼Îµ\u0080Sc`\u0098\u0083ÏÂÇnó\u008b\u008ds\u009aß)/Õ®ÖÜÕ\u0087Ð[\u0003"\u0003s\u000e\u009bC¤eG¬ÿ_ì\u008b¾á§(ö\u0085\u0088¤/ÿ\u0003PK\u0003\u0004\u0014\u0000\u0000\u0000\u0008\u0000\u0087Nâ@\u0000î=\u0096©\u0004\u0000\u0000\u0099\u000b\u0000\u0000\u0011\u0000\u0000\u0000word/settings.xml¥VYsâ8\u0010~ßªý\u000f\u0094ß\u0009w\u000ejÈ\u0014\u0006<É,É¤âdçY¶\u001bÐF\u0087K\u0092qÈ¯ß\u0096ea²0Ù©\u0099\'Ë}|ÝêS\u009f>¿rÖÚ\u0082ÒT\u008aIÐ;ë\u0006-\u0010©Ì¨XO\u0082ç§¨}\u0019´´\u0021"#L\n\u0098\u0004;ÐÁçë?ÿøT\u008e5\u0018\u0083bº\u0085\u0010B\u008fy:\u00096ÆäãNG§\u001bàD\u009fÉ\u001c\u00042WRqbðW­;\u009c¨\u0097"o§\u0092çÄÐ\u00842jv\u009d~·{\u001eÔ0r\u0012\u0014J\u008ck\u00886§©\u0092Z®\u008cU\u0019ËÕ\u008a¦P\u007f¼\u0086ú\u0019»Ns.Ó\u0082\u00830\u0095Å\u008e\u0002\u0086>H¡74×\u001e\u008dÿ*\u001a^qãA¶\u001f]bË\u0099\u0097+{Ý\u008f$ëë\u0096Re{\u008d\u009fqÏ*äJ¦ 5&\u00883w]N¨ØÃô\u0086G@ûP\u009fa¨;ÎvÇB¡z¯[\u009d\u001aÏ5;Ò?\u0091m\u0097Å%M\u0014Q.ÍX\u0000\u0007^äzVh#ù\u009c\u0018²Ç+Ëò¬ÌõY*j\'\u000e²Ö\u001bt\u0090Õ(\u0005-\u009e\u008eo×B*\u00920,Ï²7\u000c®±6ß¤ä­r\u009c\u0083J1Ý\u0093 ß\u001f\u0006\u001dË\u0000\u009e@\u0016ï´\u0001\u001eIatELð\u0092Ø\u0002sy/M\\(%\u000b\u0091Ý\u0000A\u001abl\u0009^µë´O\u0009FR\u009a#Á¬.´\u0007\u0085ÌÔ\u0016\u0019"\u0081ÀNHÁ\u0016à\u001e1\u0083\u0015)\u0098y"IldîÍ\rûµÁL\u0091\u0012SøEÑìoP\u0086¦\u0084Å9I\u0091äE{£sç[FuÎÈîF*ú\u00867#lÞè.°Ãw{\u008dwò\u001eö\u007f¤\u0085|(Dj\u008aªaþ\u0002%\u000e]p\u0080é\u0086(\u0092b,j\u000fgè\u0085\u0092Ì\u009bµ-¯°"\u000fp\u009cÞ\n\u0003(0L\u000fÊ&Èÿ¡\u001aÍöaú\u000fµg5;\u008d°S\u0005\u009158õÏ{\u0098÷D\u008fòNÏM&ë\u0089Æ@C$ÕóÒ\u0015\u0009aD¤\u0010ãÅ\u0019\u0084;\u0003sY`ÍÙÓw\u009a\u0099M%\u0094Ù\u0012Z\u0002ÙBHÒ\u0017Í\u0088ÞLíà¬\u0098\u0005{R\u0084V\u0009t\u0084Jzñ\u009aãx\u008d7te\u001eÁàì«dIö\u000fvÆ\u0092\n¸\u0001ºÞ\u0098[\u0081%Â\u000eÔ¾+\u0092?Á«ùNÍ¦\nicÿYÃ\u0082h3Õ\u0094\u0088P\u0001yy,\u0018¸J/4D\u008b%ÙÉÂ¼\u0093¿\u0015\u0019VåTß\u0017Ø\u001f\n¯X\u0017d%äB\u0012»q\u008f\u0001\u0015\u0084c«9j=Âïd\u0006\u0001²\nE÷}ì·À\u000fç\u008aU¨º\u000b\u009bö\u0003C\u0012\u008b\u0017ë\u001fª\u0000ÄfÇ0)ÂÄô\r¦"û\u008aQ¢¸\u0014ªºü\r\u000f>r\u0000\u0084\rý7\\fO»\u001c" \u0098%\\\u0083¿~Ý\u008f\u008cU5\u00111\u009aßQ\u001cDÊ%æw\u008da«4u\u008d»>Ó¶Àíá\u0011\u009bÏ§\u0021\u008c¢ðêj\u001a:÷,×súÑ`~\u0011ÍfÇ\u009cQ4\u009fÏgÑ\u0009\u009d\u008bA4\u001f\u000e\u0087U\u00939[\u001eí"\u009aGýîåâ\u0018-\u008cfÑ4¼ªËáÐ\u0083\u001fû\u0016\u008d¢ÅlxqÂ·è"\u000cûÓÑ\u0009ß¢p\u0011F\u0083þ¥õ\u0000cSG\u0084\u008fí\u000e·³Ä\u009dl\u0099µ¸+Ñ\u0019á\u0089¢¤ug·<jñq¢^B*<?\u0001\u009cípÈ\u0089\u008bÄ3ÛmÇÐ\u009c0\u0016á\u0090ô\u008cjÊó±\u001dÝsXU°ì\u008e¨u\u0083[K¨\u0093T\\\u001e_÷XvÑ\u0081ú\u0082Ë+wÖJ\u009c\u0010®|¼¹ÞpXãQ\u0081³\u0085{º.\u0092Øk\u0009ÜÔ\u0007¬Bdß¶Ê\u0002v\u009að\u0094c\u0083\u000f¼ª\r\u0097¤YE ÚÏ±m\u000b¨§Ï$xÛ´g÷V\u001b\u000b\u0090©Ø¾\u000bá\u008eä¹Û\u001eÉº7\u0009\u0098\u001do=«fð/Ã÷aõ\u0093¬û5¯_ñðÏòª\u001f\u0092ÚË¢t}°\u0002î\u0088Rõ¡¡\r<mÐÐðõãä\u0086\rmäi£\u0086vîiø>-Ç\u001bl\u007fÅ¨xÁ\u0019ç\u008f\u0096¾\u0092\u008cÉ\u0012²\u001bO\u009c\u0004G$\u0017\u0084ª»oEÊ\u008a\u000c°@ð\u0099 oElðul#Ü¼©¯ÿ\u0005PK\u0003\u0004\u0014\u0000\u0000\u0000\u0008\u0000\u0087Nâ@ø×¡\u0018û\u0001\u0000\u0000t\u0006\u0000\u0000\u0012\u0000\u0000\u0000word/footnotes.xmlµ\u0094ÉnÛ0\u0010\u0086ï\u0005ò\u000e\u0002ï\u0016¥,F\u0021XÎ\u0021F\u0083Ü\u008a¦}\u0000\u009a¢,""\u0087 )³~û\u008eV;\u0091adA/ÚÈùæÿ\u0087\u009aYÝÿUu´\u0017ÖIÐ9Iã\u0084DBs(¤ÞåäÏï\u001f\u008bï$r\u009eé\u0082Õ EN\u000eÂ\u0091ûõÕ·UÈJ\u0000¯Á\u000b\u0017\u0021C»,\u0018\u009e\u0093Ê{\u0093Qêx%\u0014s±\u0092Ü\u0082\u0083ÒÇ\u001c\u0014\u0085²\u0094\\Ð\u0000¶ ×I\u009atOÆ\u0002\u0017ÎaÂ\u0007¦÷Ì\u0091\u0001§æ40Bc®\u0012¬bÞÅ`wT1ûÒ\u0098\u0005Ò\rór+ké\u000fÈN\u0096#\u0006rÒX\u009d\r\u0082\u0016\u0093 6$ë\u0005\r·1ÂÎ\\\u009cÉÛGn\u00807Jhße¤VÔ¨\u0001´«¤9Úø,\r-V£¤ý%\u0013{U\u008fû\u0082Iogù&Ëï9\u0083\u008de\u0001\u008fâ\u0008\u009cáÎ\u0014£è\u0083TÝ×¡=ßã©¾%¾\u0007ø\u009a0r\u0015\u0093z\u0012ö9£\'¥JïfJ.Vêºû[O\u0001É¥S\u0019~­ÖÉ¤Ù`O}¥A\u001e-4æH\u0093_£=é\u0097\u0089Õ¶ö\u0007\u0094%Ë·Å0îC\u0080Yï?WÌ\u0088I\u008eq\u000f\u008dó 6Ì³\u0089\u001bB\u0088\u0083q1×Ã 9é¾ô\u0086âÒ1\u0088D\u008agO;\r\u0096mkô\u0016ÒÛ(¤wQÛ d}2¼¢\u0090ù\u0083Á\u001dN\u0018f\u0099\u0007Kð\u0093,r\u0092tûL»Ùü´íÍ\u0019Æ±7p}+p\u0006a\u0010NË\u0090±Ò\u000b\u009c\u0019Ýs-ÛJÞ,§\u0097_M\u009b\u009e5\u001e\u0008]¯èÄê\u0081cÎ~\u0009¿µ\u001bºë8\\Ïjå ½ÔM7l\u009eGÆ¨;ýÿºÏæ¿ä\u0001m\u008d\u0086Üú\u001fPK\u0003\u0004\u0014\u0000\u0000\u0000\u0008\u0000\u0087Nâ@®´4`ì\u0001\u0000\u0000<\u0006\u0000\u0000\u0011\u0000\u0000\u0000word/endnotes.xml­\u0094ÛnÛ0\u000c\u0086ï\u0007ì\u001d\u000cÝÇ²³´\u0018\u008c8½h°¡wÃº=\u0080*+\u0089PK$$9ZÞ~\u0092\u008fY\u001d\u0004=ìÆ\'\u0091\u001f\u007f\u0092&×w\u007fT\u009d\u001c\u0085±\u0012tIò4#\u0089Ð\u001c*©÷%ùýëÛâ+I¬cºb5hQ\u0092\u0093°änóùÓÚ\u0017BW\u001a\u009c°I@h[xä%98\u0087\u0005¥\u0096\u001f\u0084b6U\u0092\u001b°°s)\u0007Ea·\u0093\\P\u000f¦¢Ë,ÏÚ\'4À\u0085µ\u0021Þ=ÓGfI\u008fSs\u001a Ð\u0021Ö\u000e\u008cbÎ¦`öT1óÜà"Ð\u00919ù$kéN\u0081\u009dÝ\u000e\u0018(IctÑ\u000bZ\u008c\u0082¢KÑ\u0009êo\u0083\u0087\u0099eq\u0021nç¹\u0005Þ(¡]\u001b\u0091\u001aQ\u0007\r íAâ\u0094Æ{i\u0021ÅÃ éx-\u0089£ª\u0007;\u008fùj\u0016oLù5=Ø\u001aæC+&à\u000cw¡\u0018Uç¤ê®\u000e±¿SW_\u0012_\u0003ü\u00970p\u0015\u0093z\u0014ö¾DÏJ\u0095ßÌ\u0094\\­Ô²ý[Ï\u0001Ùµ®ô¿VÌdÔ\u008ca¤>2 ß\r48ÑäÇh\u000fúydÅÉ~\u0083²ìöe1Ð¾\u00090\u009býÇ\u0003C1ÊA{ßX\u0007jË\u001c\u001b¹ÞûÔ£M¹î\u0017ÉÙôå_h8\u009a\u009cH¢xñ°×`ØS\u001dróù*ñùM\u0012\u0007\u0084l¦Ý\u0095øÂ\u009d0\u0018X\u0081Ì0\u0007\u0086\u0084O²*IÖ\u009aa´Å\u001f&Þ,2\u001eF#\u009c×2Ök¹\n»²{ùÙÄ ¬q@èfMG\u0097Îo@wGá[4h¯ý\u0006½$\u0088\u0083vR7íBy\u001c\u0008\u0083¸ü¿\u0089»\u0018æ\u008aÐ }Xû\u009b¿PK\u0003\u0004\n\u0000\u0000\u0000\u0000\u0000\u0087Nâ@\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u000b\u0000\u0000\u0000word/theme/PK\u0003\u0004\u0014\u0000\u0000\u0000\u0008\u0000\u0087Nâ@Ýµ\u001aò\n\u0006\u0000\u0000»\u0018\u0000\u0000\u0015\u0000\u0000\u0000word/theme/theme1.xmlíYÍ\u008f\u00137\u0014¿Wêÿ0\u009a;ì$äcY\u0091E\u009b\u008fe\u000b»°"\u0001ÄÑÉ83f=ãÈvvÉ­\u0082c¥JUiÕC\u0091zë¡j\u008b\u0004R/ô¯Ù\u0096ª¥\u0012ÿB\u009fíÉÄN\u009c® ¨B\u0088\u009cf<¿÷ü>~ïù#\u0097.ßÏhp\u008c¹ ,o\u0085\u0095óQ\u0018à|Äb\u0092\'­ðÖ`÷Üf\u0018\u0008\u0089ò\u0018Q\u0096ãV8Ã"¼¼ýñG\u0097Ð\u0096Lq\u0086\u0003\u0090ÏÅ\u0016j\u0085©\u0094\u0093­\u008d\r1\u0082a$Î³\u0009ÎáÛ\u0098ñ\u000cIxåÉFÌÑ\u0009èÍèF5\u008a\u001a\u001b\u0019"y\u0018ä(\u0003µw\u000eûáö\\g\u008f\u0082â\\\n50¢¼¯4â%`|TQ\u009fÅLt(\u000f\u008e\u0011m\u0085 ;f\'\u0003|_\u0086\u0001EBÂ\u0087V\u0018é_¸±}i\u0003m\u0015BT®\u0091µävõ¯\u0090+\u0004â£ª\u009e\u0093\'ÃrÒZ­^kì\u0094ú5\u0080ÊU\\¯Ùkô\u001a¥>\r@£\u0011¸ilqtn6k\u009dv\u0081µ@æÑ£»·Y­î:xKÿ\u0085\u0015\u009bw«í\u009d¨êà5Èè¯­à\u009bõv·æâ5Èàë+ø\u000bQ\'j×\u001cý\u001adð\u008d\u0015|¯^ëÔ{\u000e^\u0083RJò£\u0015t\u0014U\u001b½z\u0081.\u0021cF÷¼ðf¯²»Ó-à\u000b\u0014°¡¤\u0096\u009abÌré%Z\u0086î1¾\u000b_\u0015\u008a"Iò@Î&x\u008cF@Û\u000e¢dÈI°O\u0092Tª9Ð\u0016FÖw34\u0012+Cjº@\u008c8\u0099ÈVxu\u0082 \u0010\u0016Z_=ÿñÕó§Áé\u0083g§\u000f~9}øðôÁÏF\u0091#µ\u0087òÄ\u0096zùý\u0017\u007f?þ4øëéw/\u001f}åÇ\u000b\u001bÿûO\u009fýöë\u0097~ TÐÂ\u009c\u0017_?ùãÙ\u0093\u0017ß|þç\u000f\u008f<ð\u001d\u008e\u00866|@2,\u0082ëø$¸É2pLGÅµ\u001c\u000fùëI\u000cRDl\u0089\u009d<\u0011(Gj\u0016\u008fþ\u009eL\u001dôõ\u0019¢È\u0083kc7\u0082·9t\u0010\u001fðÊô\u009ecp?åSI<\u001a¯¥\u0099\u0003<`\u008c¶\u0019÷Fá\u009a\u009aË\nó`\u009a\'þÉùÔÆÝDèØ7w\u0007åN~{Ó\u0009ôMâSÙI±cæ\u0021E¹D\u0009Î±\u000cÔ7v\u0084±Ç»»\u00848q= #Î\u0004\u001bËà.\u0009Ú\u0088xC2 C\u0087M\u000b¡=\u0092A^f>\u0003\u0021ßNl\u000en\u0007mF}^wñ±\u008b\u0084ª@Ôcü\u0000S\'\u008cWÐT¢Ì§r\u00802j\u0007|\u001fÉÔgd\u007fÆG6®\'$d:Á\u0094\u0005½\u0018\u000bá\u0093¹ÁÁ_+é× \u0081øÓ~@g\u0099\u008bä\u0092\u001cùtî#Æld\u0097\u001duR\u0094M|Ø>ÉS\u001bû\u00898\u0002\u008a¢à\u0090I\u001fü\u0080¹\u0015¢Þ\u0021\u000f(_\u009bîÛ\u0004;é>»\u001bÜ\u0082Þi\u009b´ \u0088ú2å\u009e\\^ÁÌáo\u007fFÇ\u0008ëV\u0003}ÝéØ\u0019ÉÏlßf\u0086·×¸¡U¾øö±Çîwµeïpâ­\u0099½¥F½\u000e·Ü\u009e;\u008cÇäÝïÎ]4Í\u000f1\u0014Äê\u0012õ¡9\u007fhÎá{ß\u009c×ÕóÛoÉ\u008b.\u000c\rZm\u0006Í^[ï¼3ÿÆ{L(íË\u0019ÅûBï½\u0005,<ñ.\u000c*\u0021}ÊÄå)l\u0092Â£*cÐîà\u0012\u008eJ\u0099D\u0014\u009a\u0012\u0011L\u0098\u0080³a¸V\u0095ú@§Ù\u008dñØ\u009c-+Íz\u0014Í\'ÐçQ\u0098PO\u0097ècê\\eÅ\u001c7×ê5&*\u0019°´4\u0008ö\u0000\u0001ì\u001cZaµiäáh\u0080(\u008e\u0095\u0089\u0085\u0084í\u0087ýü\u009a>¥S\\út®Z\u0087sø;â\u0096¢ÅRÂin§\u009fæÁ\u0009\\P¨\u0008\u0085Á\u0008MZá\u0018Ncð\u0098M NBíS\u0010Mà\u000ec$¹Éë\u009bðeÂ\u0085ì"\u0091\u009a¬k*\u0099Õ\u0021#\u0012ó\u0080\u0092¬\u0015n\u009a\u001c\u0099ÄÐ\\Så½2î¿\u0014\u008dC°\u009aæ×\u009cÃeÍþ\u000fuSñÔÍ\u001bå\u0016xéò\u0010\u008fÇx$mfZ#\u008a\u000bæµh5l\n´é§ñI0¤S~\u0013\u0001U+Q¥¡8\u001c\u0013\u0001gÿz\u0004tR/pWU¯\u0015Õ¿ rÀ\u0099¼CdÚOÑ\u0004î\u001bÎèX\u0088NRd¨\u000bS¬©ìÒ$\u009d\u0006ËZpÕë\u008aöuÅ3\u008eÇ\u0014\u0002\u0001×\u0086p?¸£\u001cQ\u0013Âåa\u000c/\u0017\u008aÇCÕfµWs\u007f«ÊÉe\u007fÅ¬\u0015\u009e+ZgQÅC8\u0082-ûn*î\u008d-.\u001d_ä¢Þ¬ÔËTT.FæåuRaßÛ©\u0008\u0080s*Tv& \u0018e\u0009\u0018¸\u008e|iÎYypóR\u0010k\u0098¨¥Ð¦¡³î\u0095µfØ°v}<[Hy\u0003\u0097^Ò(º¨Òl:¢@ò\u0080Åf¸¢×­¢æÊ¹µcÎ\u000cóÎ²\u0094Ú\u008a\u008eY¹\u001cÎ\u0017Ó3ØnY5\u000f1¬þ¶U\u0086\u0093@\u001b\u0018OQ\u008c\u000b\u001fT\u00037>À\u0012¿ð\u0021RÝÊë\u0083»Æ\u001b­Zé|\'`Gy)`\u008bÉ\u001cÓ\u0094Åó@Z¦-F]Óæ\u000e\u0002\u0017Üðº¦\u009dµýX\u008aDc®v)nÿ¾-\u0000\u001bÊT\u0095;\u0097²w­ß¹\u0080Ü2kah<ßþi¶èÿ\u0014ìû\u007f6¼\u0007]¦\u000b÷­S*\u0085é\u0000\u001a´ý\u000fPK\u0003\u0004\u0014\u0000\u0000\u0000\u0008\u0000\u0087Nâ@A\u0003\u0005û·\r\u0000\u0000L\u009a\u0000\u0000\u0011\u0000\u0000\u0000word/document.xmlí]kS\u0013É\u001aþ~ªÎ\u007f Rµ\u001f\u0095\u0099É\u009dZÜÊu\u008fUçX[åÙ:\u001fO\rÉ 9&\u0099ÔÌ@V?\u0081+w0¸"¨À\n*¨»n\u0010E\u0084 ðcvz&ù´\u007fá¼Ý=\u0009\u0010¢\u000eÆ@bº\u008a*fzz:}}ûéç½Ì·ßý\u0094Jv\u000cH\u008a\u009a\u0090ÓÝ\u000eþ<çè\u0090Ò19\u009eH_évüøïè9\u009f£CÕÄt\\LÊi©ÛqMR\u001dß]øûß¾ÍvÅåX\u007fJJk\u001dPDZíÊfbÝ\u008e>MËtuvª±>)%ªçS\u0089\u0098"«r¯v>&§:åÞÞDLêÌÊJ¼Sàx\u008e\\e\u00149&©*ü^HL\u000f\u0088ªÃ*.u¼49#¥á·ze%%jêyY¹Ò\u0099\u0012\u0095«ý\u0099sPzFÔ\u0012=\u0089dB»\u0006es\u009er1r·£_IwY\u0015:W©\u0010~¥\u008bVÈúW~C9Ö\u008a\u001a¿Kß\u000c[=@~±S\u0091\u0092P\u00079­ö%2\u0007ÍøÜÒ \u0089}å*\r|¬\u0011\u0003©d9_6Ã»\u008eý^¥ÉvÆ ¬\u0088Y\u0018\u008a\u0083\u0002\u008f\u0015W£3âô¥T\u0092ö\u0003\u001eß\u0083Q­.ÑN\u0081GK(\u0097\u009b\u0012\u0013éJÅ>¯¡\u0087º\u008aç>Ö©ÖÌÀ\u00159øI÷±º\u007f´o\u00052¿\u000fýd\u0006\u0096T=\u000bä{EîÏTª\u0093IÔWÚÅôÕJYxe\u009f f\u009cçXÓÔ\u0013\u0015plí_î\u00133R¥:\u00195Ô¯jr*,jb¥Ül6{>\u009bQÏÇÒ\u0096 9´úxg\'<:xÉÑ\u0091\u008au]¼\u0092\u0096\u0015±\'\u0009mËò®\u008e,ïîÀ\u000bÄq\u0001dW\u008f\u001c¿\u0086ÿg ÙÕ\u0095\u0011\u0015ñb\u001cÄ_0\u0012\u000cp>\u008edÉü \u0090\u001c\u0097µkI©#Û5 &\u0021\u0007ïèÄ©W%)sIúI+§s\u0007ÉÿL¤%µ*=\u009b\u0088ËÙ\u0090\u009cÖ\u00149IÞWû3\u0019\u0005Ä\u001eÎ|©?Õ\u0003\u0002¸ê\u00155#Æ`%Bj\u008f\u0004\u0012\u000f\u001a\u0001¢¹|\u0013è×d+\u0083\u0095.öj\u0012H.\u0092\u0087\\We\u0021¿\u009aHÇ¡\u0088¤Ô«Y9\u0095Ä\u0095>rM\u001eÿ/V®\u0003Î\u0082[Ô\u0009=D»\u0081ô\u0085b]G¡%¸¾}\u00894¼-\u0089ª\u0016P\u0013"®\u009e¨Æ\u00120/ÿ\u0021%\u0007$-\u0011\u0013;.Iý0®\u00905\u0090Vk>(¿]ë¥\u0018Ìªª¢HE¯JJº\\U«çÕëå\u0004ÁCÇB½\u001eªôi9-)\u0092\u001e%C)¥Ïýx\u0019Wí \u0006×ûÎ\u0085.\u0091^NÄ¡²¢bõ\u0081Õní\u0002\u009a\u0019C3SæÆ.úuò¯w\u000búÎK4=G\u0013\u008bOo¢±û¸Ç4Òo¤Ãzdù*Þ¢.k¢\u0082çJ\u0002&\u0019\u0019¢´\u0098\u0082\u0011ýï÷rP\u008c]¥õ-ç\u008d\u0090A¢9IkkvýWÞÑ\u007f½{p¤+ñD<¾^9§+\u001c\u000e8½\u000eò\u0088NÎzWfº?E\u000bJ$\u0007\u0092å9eM2xv\u0011¯ 2\u007f\u0004krT^8û5í\u0015Èäª¬j¨j\u001fÌx\u0082å\u009c\u001e«\u0011µ\u0017q\\ê\u0015û\u0093Úé­a;\u000b\u0016F\u009dÔÖ\u0096\u0018:õ\u0016ô\u0090ÕÙ\u0013RÉÿ\u0093´\u0007Ë\u0008K\u0094ìÞ4Æf\u008eLuh3\u009eÎ-8L°;)0å´k\u0019\u0090m\u001aì\u008eÿQÄL\u0006ÃIè\u0021<\u0096¤]-Û8í\u0002\u0095ñhd\u0018åw@BYC8»A/\u008c¥\u0015ãÅ\u001eÊM\u0018ã\u0083ÆâxéþM}wëÏÁ¡Òèhqó\u000fcn\u0094Þ¢;Ó¨0[¹\u0085á×\u000bOJ\u0083\u000fÌ\u0087«è\u0097©âÊ*\u001a\u001eFÓ¹b>oþ1nü\u008açÇ_ï¦ôÂ/úvAß\u009eF¹u46\u0082Æ_\u0095~~\u0006\u0017\u007f\u000eÞ`³\u0087À\u0090S_ÿ\']ñ¥Ç·J÷\u009fÃ \u009a\u0085§0{J¿ß£)GÆ¯öFç\u008c¸x\'\u001fb\u001b\u009d\u0005^ÙFw\u009a[u}\u001b\u001d\u0015\u008bú»{hx¬´R@\u0085Ü\u0091\u0009_Þ\u0016j\u001e-\u009a|M·Ùv·vãðF§o\u00838Ã[\u001cìuæÃ\u0005sa\u000foS»«Öxo\u0017Ðè\u0008\u009c\u0091ÐÚ\rã×E\u009aSß\u0099,ÍoVç_\u001cGcÏõÂ-sö\u00951·c>¸I7XØî \u0084êý­¶|ô\u0086=N.è÷7ä p\u0004õ\u0013\u0010\r\u0095h\nÔ\u007f\u0018è\u0093ëP\u009f¨À\u0099\u0099\u009c\u0002z\u0013\u008aªa~¡Ûá\u0005J\u0003\u0080Y%ÅÊæäØ\u0091àË\u0012\u0013§\u0008\u0009¼Þ\u00903\u001cõz\u001a2åÙÙ·¡üÕI¦\u0009\u0016xÖÞØD\'§ú \u0081^x\u008aî\u000cá\u0093Òâ4\u009aXax 5\u000e0UÇ_}ç>ì×ø,\u009b\u009bÑ÷\u0016¬Ópa\rå\u001fÀ&^5Æ\u0080\rÐÔ°1ù\u0002åÇ\u008b\u008f\u0087á¤«ï/éûø\u008ck.l£á×Æ\u0004\u001c\u009a×é\u0084À@b{Vß}k,¿Co_Á\u008bhæwzª.nî\u0098³Ïì¡\u0002\u008f+ä\u000c¹¹è\u0099\u0088H\u0006\u0014\u001aÇÿ·¾ü<I\u000b0[X\u0007w\u0000Êð°\u0087\u008f¸\u001b²\n\u009a\u0017\u001bS-\u0017f½\u0001ùâ\u009bÃØøÃÀ\u0099j\\Zï0Z\u0086\u0009µÏG\u009c7ä\u000eGC\u0081\u0086Ì\u0001\u0006\u0016\u0019X$:Þ\u000f©kë\u0004\u008b»÷\u0080VÇHã\u001dc\u008e¨Æ½Éi±c\u008a\u0012Êì\u0018Sã@\u000féÛ\u0093t,u2®@\u0084\u0017ó{èÉhé·)cv\u000b@$Æ|3·\u008cÙuÈàæ¾ÁÀqbÙ\u009c}S3\u0083\u008bd(­ì\u0098\u000bù\u009a\u0019xî\u009bj°Ø¾\u008ccÙÒ¡^-/ÊOêïïàR>´äíà\u001bØ\u0096í\u0098cXºCº%×\u0085\u0084\u0084°\u000fì\u0005ü\u0091\u0086ì\u0082Í\u008b\u0084Ú\rì¸\u009dî\u0010ïq\u0006\u001b2Ì\u000cì0°ÓH°C\u0098±âæ³Òh\u000e\u0008\u0092âú\u0010#ÇZ\u0098\u001c£ÌØ\u0001\u001bV\u00985_¬a¢lá=Êo\u0001\u0001Z\\\u0001¦ë\u0001\u001docy\u0094¨Ì03\u0006\u0003oÌ/Ótóö]sî\r0fÆÒÏ )£·Õ ¦ö¹ÏÃ\u000b\u0081h\u0098o\u008cÝ@óîxM{ö?+àTf\u0007>\n}¿\u0002t\u0088}Gº°a4(=±}µ¤\u000cH\u008e\u000b\u001d\u001d\u001dö¥èWÐ\u000bõ°\u0085\u0082\u009bsE¼\u009e³áÌ\u0099ImÅ^¾<\r\u008f\u0019À×yè\u0002IðÕ\u009aÔR\u0002Àx3d>\u009b´¿à\u009b\u009cLi/\u001b#Ê\u0005¡±\u0097ÅÍ§À\u0002\u0001ùC¹#Ð2¢ÅgX\u0001\u0099\u007f\u0080Þ®êï\u0017\u008dùUb\'4\u0005ö±tà1S´³\u0005Ùª\u0088 âþ\u0002\u001a^¥êFcñ¡Määu\u0087ýa®Ý,\u008a\u0018rÂ\u001e@\u0087(§vGNöåhyÇjSrÑ\u000b \u0089\u000fFÃ\u008cu¢2\u0084\u0099h·\u008e\u0089vq\u007fÉ,¬QÃ]û\u000b\u009e\u0001§/éÓjGcR\u0006ïØ"¤¦1\u0096±ø\u001bhÙª,±\u008cù-°ºÆ¾E\u0084V¤\u009c\u00145Ï\u0002f\nPSiq\u0090ªÛè<(\u008dÞ\u0086Äb~ÅÌÏ[ª:0Å&\u009e¯ð¨ôhIß¹\u0007\u008a<4\rlÔ\u0008\u0098të\u0085Y\u009aRÜ\u007f\u0088v·Ð\u0093çÆÝ\u0097öP\u0016\u001fñ\u0007BN_»id\u0018Êb(ë\u0008?e_è¶9Êr\u0085<~\u009esó\u000ce1\u0094å8u\u0000R\u009f\u0021\u00138ø\u0016×G`ã\u0005=\u000e°\u0011ÆÄ\u0013ûËþÔ\u009bz28Ò^$\u00155|·´tàëMÌß+J>ðÑÖ÷Þ\u0098\u0013`¿´«¿¿k¾x¡o\u008f\u0003\u008e\u0082\u000c\u0087g\u0000f«À¡.wÛ\u009c}hn>*¾\u00995g7hÉÅÍ\u0087ÅÍÇö\u0010\u0094\'ì\u0013Ü\u0081\u0080³\u0021\u0002\u0091iøN\u001cÄ\u0086iø\u0088\u0005µ\u001dññYö_\u001fÒðÙ\u0017¥_\u0021\u0082Ò·ÿ°\u001dJ\u0080\u0017<\u0001_(Ò\u0018\u0093\u0000f\u001dÅ¬£\u001ai\u001dEÂ\u009f\u0018\u0013óhb\u0081±U\u0087B°59<<ÆV¡\u0085e\u001aÊÆ\u001aËùeãõ]´±\næP\u0016yE\u0088)\u0094\u009bGï7 `\u000e¦¡\u0088\u0006ÐåC/s@h\u0081êÏ\n\u0099³¾\u0003\u000f-Õ_n\u001dJ5Æ÷\u008dÉa\u0000P\u0080¿ìa(§\u0010\u00148¡AVR\u009f\u0012\u0089Må\'È\u0088)FLµ/1õ\u0021lYå|y\u0012´%p\u0011¬\u0018<\u0012Qô\u008bE(dÇ³\u0096;\u009eas\u0002\u001cÆ¡*î¬×+8\u009dQ\u0086ÉYx¯îVc5\u0081\u0006CÀjî\u008c³@\u001eå\u0080È-\u0087ÆsS\u0080¡K+»\u0008ÀôÖ8¸%\u0000W\u0089î\u008e\u0080g\u0082±X\u0080Ñ¥Ñ:ð0ï¯\u0018C\u0000²WÁI\u0093\u000e< oP:\u009b»9üîÜ\u008e¾³VZz\u00041\u0092\u008d\u009b9\u008cð÷æ\u008d×7K\u008b¯l\u0002ñ\u0000xnE"g\u0013Ó\u0088\u0001q;±°\u0018¿y6üf\u001d\u0018Ô+\u0084]þhP`*\u0082\u0083àxíæ\u0013Ë\u0007ø@(Ø  0\u009f¢8\u0098[\u0007së\u00803ÏçFJ§Ñ\u001dPî\u009e±°i_ÍÓä ¬½4æ\u0094Ô¥\u0094=\u000e`¾°l\u008e?ÇñÝ^?B\u0013\u0010Ím\u0008Ó¿{\u00930Æpk\u008cÍ¡á-}\u0017\u007fXÃ\u009c\u0019Á\u007f³\u001bàÄ\u0081Éa2\u0009\u0000s\u0082É"\u0085\u009aæJ¾\u0098\u007fb\u000f^z#á`8\u0012lL$¬O\u0009A\u0006/\u0019¼$\u009fÉév\u009c\u0015\u0086\u0006³a»\u0014çû[¶\u0015Ê\u001e¯+Â\u0087ý\u008dYU\u008câ<1ÅYõÁ¤/ì/Z\u009bÀôø<\u0000.\u0021Ö\u001eá6i¨\u009e/Fs\u007fJ²2xÉàe\u001dð\u0092b\u0093âÓÇ¥ûÌ ³5ãË\u0081\u0021¥¾=\u0088éÇíÕÒè4¸± ÜôaÌ\u0089í\u0003rk4\u000f|~\u0000\u000cpéxÓ<à5\\\\\u001b26n\u0080\u0011&\u001aÚ·\u0007&\u0085`\u0084\u008fò\u0091Æ°*\u009f\u0012y\u000cL20Ù¼`Òþ\u0021ý+°Å´\u008b¨O`¢)\u0084¼^g\u0080Å\u001eh\u0096\u0088Ígu^+Ç\u001e¨\u008d¹\u0005^ðû¹\u0008s8gF\u0003-g4@\u001d\u008d©\u008d¦ýÝ\u0082QºMçp\u000eL.¨ÿ\u000f[î\u0096\u0006\u0097\u0021"\u008f\u0015ñyú\u0021z²qàdN,sÑð3øt%\u0085Ú\'±Òõr®@Tð\u009fMd2\u0006¸\u0019àn^À]\u0087q\u0080Ûå\u008c\u0006ý\u0021æ?xèËyíf\u001cà\nF\u0005Þçdì-C\u0092-\u0087$©â¸4x\u0003¾\nÆ\u0090dK\u0086Ê¦$,\u001dBð­@Ó·ôBÁxy\u001b\ro\u0080á)\u0084Ê¦c\u008c9Ü\u008aÃ|aÙ,¼Å\u0096\u00043à?\u008f?\u001b\u000b_\u0087\u0083È\u008fhñ%d.Ý\u007f\u0004>ùÅ7o\u008bëãÅü;{|.ï\u0012"a¡A\u009e\u001a\u008cÏ\u0015ûë\u000f\u0087vÖ<L»FÏ®\u0003^:½|ÈågÆ\u0001ÍBe\u009e\u0085q\u0000çõ\u0008\u001cïö1ã\u0000\u0016³©Õ¼\u009b¨\u0021"\u008b5ÐÊ±\u0006HäJ°\u0016EcKæ³}8\'\u0000È4æFqÊÈ}@\u00954N\u0093\u0015N 7\u0081ö\u0006\u008d%\u0008\u0017¾\u0082Fß£¥Q\u0088;@¾Zw\u0007@iip¨¸·\u0007|&\u0000Nø\u001a\u0021µIµ\u0007/9\u009eóøÂÁ³\u0009\\ÇØKÆ^¶\u000e{y\u0002ÛS\u0021è\u0009\u0087¢¡#\u008eÓäó\u0016\u0000Õ£rº\u0086Ô"Þ[\'ýî`µ"V\u0095b\u001a5rÌ\\¹|\u001d,,³Ý\u000e\u009e÷s\u001e\u001cû¼\u000f®=>§\u000fG\u0091\u0007Gï+ÿ\u0012\u0015HÕä\u000c¤»\\äsÄ\u0016ÁÈû8rÛ#k\u009a\u009c:xLaBùi\u009f$Æ%¥Ûá\u0083¨\u0097PP¯,køÖï\u0017ðí\u0095~\u008dÜ\u0092%\u000eßc\u0094\u0093*¤Z\u009fÀq\u0009n\u009c\u0007\u008ch¡pZ\u009f¸\u001cû^IÄ\u0021U»\u0096\u0081¯ä$\u0013iIÅ\u0099ðÅ\u000f\u0009-\u0006Õwò¤è\u0018P¢\u0097é·tÊ\u0002¤Üpè\u0090\u001e9~í\u0002f\\ Äþ\u0094\u0094Ö.ü\u001fPK\u0003\u0004\u0014\u0000\u0000\u0000\u0008\u0000\u0087Nâ@ER|¨K\u0004\u0000\u0000\u0098\u001a\u0000\u0000\u0012\u0000\u0000\u0000word/numbering.xmlÍYÍnã6\u0010¾\u0017è;\u0018\u0002r\u008cõë_¬³Ø8I\u0091"(\u0016Ýô\u0001\u0018\u0099\u008e\u0085\u0015I\u0081¤¬Í\u009e¶·öÒ\'ÊÛì\u0003ä\u0015:$%ÙZ\u001bªíÐn.\u0091EÎ|\u001c~\u009c\u0019}RÞ½ÿBÒÎ\u0012s\u00910:qü®çt0\u008dÙ,¡\u008f\u0013ç\u008fû\u009bó¡Ó\u0011\u0012Ñ\u0019J\u0019Å\u0013ç\u0009\u000bçýÅÏ?½+Æ4\'\u000f\u0098\u0083a\u00070¨\u0018\u0017Y<q\u0016Rfc×\u0015ñ\u0002\u0013$º$\u00899\u0013l.»1#.\u009bÏ\u0093\u0018»\u0005ã37ð|OÿÊ8\u008b±\u0010\u00803Et\u0089\u0084SÂ\u0091M4\u0096a\nkÍ\u0019\'H\u008a.ã\u008f.Aüs\u009e\u009d\u0003z\u0086dò\u0090¤\u0089|\u0002l¯_Á°\u0089\u0093s:.\u0003:¯\u0003R.c\u0013Py©<øÆ.¶¬k<¯X\u009c\u0013L¥^Ñå8\u0085\u0018\u0018\u0015\u008b$[mãP4Øâ¢\niÙ¶\u0089%I+»"ó£\u008dõê-ïr\u0006W\u001c\u0015p\u0014+À\r¸-dÌ\u008c\u0013I\r\u000fê|W§ú#¢ïµm¦<\u0011\u0005QÇ°K\u0008Í5«H\u0008Jh\rs\u00185ëäBI¼&¿\u007fá,Ïêp²äuh·ôs\u008d¥*s\u008fÈ¼¾®¼õ­\u0089½\u00006J÷Ó\u0002e¸\u000e\'\u0013Ó\\HF®\u0090D5nQ\u0014Ý"\u0013Ý\u0098\u0096}`­xüÐ\u0085©\u0095\u0093Ó\u0021ñøö\u00912\u008e\u001eRØ[áG\u001d\u0095ÛÎ\u0005ô\u001dô $G±ü-\'\u009dÆÝílâxÚ\u0084\u008ad\u0006sK\u0094N\u009cËÞÍõh:½v\\åLòT&wx\u0089Óû§\u000cW6z4U£ÆJ\u0092,­æ\u009aþéRM$pQkÁO\u0009å\u000fU¿\u0084(ÍÚÐ-¹¬\u009c}\u0083\u0007­ò\u0086Ô\u00833\u001c\'\u0004\u0095K\u0001Ò=þRÏ\u009dù]ã\u0002ã¿Æ\u0015L\u008açÒ\u000cg\u001f¹Ú\u0086\u0004\u0012ÊkÃ\u0006n2\u0006g9\u0008<eï®,\u0013ª\u0018Q@f\u0016n\u0016\u0088>ê>\u001fö+ë\u0012\u009e\u009bUÄ×\n<\u0088ÌòâëT4Ç`\u0009m\rW\u0008YÅ\u0004\u001701\u0014ùÇ (°B\u0091\u001fEÕ®+6×9ÒÓ§\u0021)8\u0006I¡\u0015\u0092\u0002¿N\u008dm$ééÓ\u0090\u0014\u001e\u0083¤È\u000eI=\u007fÐRmÁp¨;Å\u0009Ê-:\u0006I=+$\u0085A8l\u0021\u0009ZÐ©Hê\u001d\u0083¤¾\u001d\u0092F½6\u0092¢\u0010ÚúiÊ\rô³ýgÛÀ\nIQ\u007fÐFRÏ\u0083¾~\u001a\u0092\u0006Ç ih\u0085¤^8j%i\u0000}ý4$Á\u000b¤ýL\u001aY\u0021©ïûm$õ£#6nÐKkBVé¦µ[`líNéZ\u007fS×^]\u000e>\\NGF\u0098\u001d k\u001bþë¢MgÆ\u0001º6^$\u0014\u000b<e9\u0095ê\u001dR\u000bîì\u0093|Jk¡\u001d\u0098A\u0091Ïç°G­Ï)\u0093àWZC\u0018M5üýÛ\u009fÆ\u0005fZôðºrÓáÏ\u0013.ä\u001dÄ£d¹QÂMmËo\u0018\u0095JËÂâ \u00891\u0012ò\u0083HPi{\u0004I»\u0003;á~ì¼<ÿu\u0016¼<ÿýÆ\u0008²"g\u009biS½}ì\u009a6áËó?¯e%\u0002Ab5q¬(Ø&/½ý\u0013&²\u00900\u0091§ë\u0018Z\u0098¥\u009az¥n½¦qÊ\u0004\u009eM\u0013\u001e§xjÚ\u0090¡¦ÉW\u007f?¾ÎJ~\u000fï=Ö\u0099²"^\u009b¤èw\u0097b¼sOî¿Å\u000c:T¯¦¬Àü\u000eK\u0089ù¶\u0084Ñò`\u000fn\u0006V\u001a\u008fåê:T¦þ\u00077¥òØ9o\u0086o1o\u000eU§\u009a\u009bß\u0019At[ÚøúÑ±GÞ\u008c:\u0006æ\u007fí4\u009b\u0092\u0014¾[\u0082B\u0082¿+\u0009ÚÐ¥\u0095\u0086Ó\u009f9Á\u001d,\u0095\u0092m¸\u0005?~´½U\u001f"µô«\u001e°ÚÍ¸\u009bÿ(]ü\u000bPK\u0003\u0004\u0014\u0000\u0000\u0000\u0008\u0000\u0087Nâ@\u00023ÅØo\u0004\u0000\u0000Æ\u0013\u0000\u0000\u0012\u0000\u0000\u0000word/fontTable.xmlåXÁnã6\u0010½\u0017è?\u0008º\'"\u0015Ù\u0092\u008du\u0016\u008e\u001d¡Å\u0002\u008bb\u0093bÏ´LÛD%Ñ\u0010å¸¹õZ´\u0097¢ÿÐÃ\u0002] ·¶\u008bþMÚ¢\u007fÑ\u0021)Ù\u0092L\u0009vv³=TF gL\u008eÉ§7ï\rýìù×IlÝÑL0\u009e\u008el|\u008el\u008b¦\u0011\u009f³t9²¿¼\rÏ\u0002Û\u00129Iç$æ)\u001dÙ÷TØÏ/?ýäÙv¸ài.,\u0098\u009f\u008aa\u0012\u008dìU\u009e¯\u0087\u008e#¢\u0015M\u00888çk\u009aÂ\u0087\u000b\u009e%$\u0087\u007f³¥\u0093\u0090ì«Íú,âÉ\u009aälÆb\u0096ß;.B}»H\u0093\u001d\u0093\u0085/\u0016,¢S\u001em\u0012\u009aæj¾\u0093Ñ\u00182òT¬ØZ\u0094Ù¶ÇdÛòl¾ÎxD\u0085\u0080=\'±Î\u0097\u0010\u0096îÒ`ï QÂ¢\u008c\u000b¾ÈÏa3\u008e^\u0091#SÁt\u008cÔ»$¶­$\u001a~¾LyFf1`·Å\u009e}Y\u0000gm\u0087)I xË\u0012*¬\u0097tk½â\u0009IÕ\u00805I¹ \u0018ÆÜ\u0091xd#\u0017^}t\u0081zÈ\u0083?\u0017Þy¶#3E+\u0092\u0009\u009aï\u0006"\u001d^\u0090\u0084Å÷e4SyÕø5Ë£U\u0019¿#\u0019\u0093\u000bÓs\u0004[Â\u0007\u001b1C#\u001b\u001e\u0009òÇ\u0081oë\u0008\u001eÙ\u0001DäUD\\X\u0094¾\u0080\u001ejÖÅ.¢ÆD*\u008f\u001a\u0082ÃP\u008e\u0081\u0008ä)f©u:\u009aB\u0007\u0088üùö»\u0087?~T@\u00908\u007f\u0009(Át\u0005Ä_¿|ûðîÍÃo?É\u0021¿\u007fÿâµ^z\u0013®òK*÷\u0013à"\u009b\u009c\u0017y«hÍé\u0082lâü\u0010¬ò[ö`5"{°JøÚÁ\u0082©§\u0081õ\u001aH+\u008bU\u0018\u0089Ó+\u0097²¿\u009b\u0091pu¸N\u009cÿ\n\u0089*Ù\u008e§Í\u0018Ø\u001c\u001bQpÑ\u0015\u0094\u008f§ÊÈE\u0003¸·\u0094\u000f6¡ ¶L\u0008ýA­|Z\u0009q-Á\u001ekÖC=\u0015¬÷\u0003ï¢ È\u009e\u0010¸\u0088\u0018\u0009áÉ<øªR=Ó0ôeP®¦­zþy÷Cwõüú3\u000ci+\u001d©^}\u0080¨\u000f÷â¥·ÞP\u009a o\u0082êTÂ¨\u0007íê\u001dj¤.\u0082IèOÂq\u0013)\u000c\u0016Ñ©3\u0012,\u0085æñ\u0084\u0099ðMÆh&µ·\u00856>\u0090FÒÅ\u0005Õ\u001dÀûSh\u0093ð9ÍÒ÷ã\u008dÜÔÇâÍÍ}2ãº~\u001aªûBÊ\u000bX\u009duÃ\u0096å\u0086\u001a\u0006Õ\u0003\u00800À\u0084\u0091\u000fÔ\u0091pùFÚ £Î´\u0019Tk\u0085É\u001a\u0090WÁ\u0089ª¯h\u0096ì+¬\u001cc¬°Ç\u0009Í\u0084Äl\u00961\u0093A}Fã;\u009a³\u0088\u0000©6\u0085±6ÝÉE¡2qI+\u000f¬¼U\u008d\u008cf~²\u001ai¤\u008eÂªS\u008dT\u001e<¨¨Ñ.s\u0087\u001a\u001d:¶´û&$\u0008@èC:¯Ô\u001c(eS\u007fóaTg,\u0017^S\u001d\u001c\\?^uN4ì\u0002\u0091R\u0085ÿïpÔÅÅ\u0084ÆÑÚb¬\u0097S-iGj-$ -¸\u00085-iWRFi)&\u009dhI\rý0Á\u0021{ó\u001eÈ\u0086¾ä\u007f-®ôAà¸\u0096\u001d¤[íedÀ\u001fL¯\u009apàN¥Õ«Õ\u0090\u001dïÐ_\u0080ó\u0084$]Z7\u0093\u0016\u0087¾\u0002Í¨]O®\u001bU,üñ$\u000c§á\u0021\u0016åÉ©\u008d\u001a\u008fèVnÉ\nÎq­0ÈþV\u001f\u0010e\u009fû¤\u0094\u0080\u0082pkíí\u0004\u009e@\u001fõ\u000e`p\u0007]M\u001bP\u0017:Ìêá\u0010\u001cQ9²|\u0086mí­>\u001c\u009eýýö\u009b\u0016(0\u00929>\u008e\u0093\u0014Ì+}Sö\u0021\u0001¸;\\ÍêØEº\u0018q¢\u0093¬ÊfÃ\u0088D±¶êÍX\u001b°2eµïwôSg\u009eC\u009d\u0008\u000eIÑ\u008d\u0084Ô3Të2¼\u0010h\u0002W\u0017)àw \u0098\u001bQÐG¿\u0001\u0094F\u0000\u009cP-×S¢\u0000M\u008c[Ca\n\u001b\n\u00075\u0085P[t;\u007f7\u0091½\u0010ÂÓJ¯%eæ\u0000\u0085¢FÄå¿PK\u0003\u0004\n\u0000\u0000\u0000\u0000\u0000\u0087Nâ@\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0006\u0000\u0000\u0000_rels/PK\u0003\u0004\u0014\u0000\u0000\u0000\u0008\u0000\u0087Nâ@\u0001""\u001fý\u0000\u0000\u0000á\u0002\u0000\u0000\u000b\u0000\u0000\u0000_rels/.rels­\u0092ÝJ\u00031\u0010\u0085ï\u0005ß\u0021Ì}7Û*"ÒloDè\u009dH}\u0080\u0021\u0099Ý\rÝü\u0090Lµ}{\u0083\u007f¸°®½ðr2gÎ|sÈzst\u0083x¡\u0094mð\n\u0096U\r\u0082¼\u000eÆúNÁóîaq\u000b"3z\u0083Cð¤àD\u00196ÍåÅú\u0089\u0006ä2\u0094{\u001b³(.>+è\u0099ã\u009d\u0094Y÷ä0W\u0021\u0092/\u009d6$\u0087\\ÊÔÉ\u0088z\u008f\u001dÉU]ßÈôÓ\u0003\u009a\u0091§Ø\u001a\u0005ik®AìN±lþÛ;´­Õt\u001fôÁ\u0091ç\u0089\u0015r¬(Î\u0098:b\u0005¯\u0021\u0019i>\u0007«\u0082\u000cr\u009afu>Íï\u0097JG\u008c\u0006\u0019¥\u000e\u0089\u00161\u0095\u009c\u0012Û\u0092ì7Pay,Ïù]1\u0007´<\u001fh|üT<tdò\u0086Ì<\u0012Æ8Gtõ\u009fDú\u00909¸y\u009e\u000fÍ\u0017\u0092\u001c}Ìæ\rPK\u0003\u0004\n\u0000\u0000\u0000\u0000\u0000\u0087Nâ@\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u000b\u0000\u0000\u0000word/_rels/PK\u0003\u0004\u0014\u0000\u0000\u0000\u0008\u0000\u0087Nâ@\'Â&Þ\u000f\u0001\u0000\u00005\u0004\u0000\u0000\u001c\u0000\u0000\u0000word/_rels/document.xml.rels­\u0093MjÃ0\u0010\u0085÷\u0085ÞAÌ¾\u0096\u009d¶i)\u0091³)\u0081l\u008b{\u0000Å\u001eÿP{d¤I¨o_a°ë\u0094àn´\u0011Ì\u0013zó1o´Û\u007fw­¸ u\u008d\u0021\u0005I\u0014\u0083@ÊMÑP¥à3;<¼\u0082p¬©Ð­\u0021T0 \u0083}z\u007f·ûÀV³\u007fäê¦wÂ»\u0090SP3÷oRº¼ÆN»ÈôHþ¦4¶ÓìK[É^ç_ºB¹\u0089ã­´K\u000fH¯<Å±P`\u008fÅ\u000b\u0088lè}çÿ½MY69¾\u009büÜ\u0021ñ\u008d\u0016²4Ä\u0099>µèMµ­\u0090\u0015ÌRäIAÞ\u0086Ø\u0086\u0084 swBë\u0007ü\u000b1Kk\u0010Ï\u0021\u0021Ø\'´\u0098ÂXÊñLÖ\u0018\u009eB2 \u0015dØ/Ô\u001cÆ¤¬\u0021<\u0086D(\u008dá?\u000c³´\u0006±\u0009\u0009á\u0090Ù¯Ãb\u000e\u0093²\u0086\u0090\u0004Eà¡]\u0006áÆzj/¯>{ú\u0003PK\u0003\u0004\u0014\u0000\u0000\u0000\u0008\u0000\u0087Nâ@\u0012àÊV\u0086\u0001\u0000\u0000¡\u0006\u0000\u0000\u0013\u0000\u0000\u0000[Content_Types].xmlµ\u0095Mo\u0082@\u0010\u0086ïMú\u001fÈ^\u001bXí¡i\u001aÑC?\u008e­\u0007û\u0003ÖePRö#;\u0083Õ\u007fß\u0001Å\u0083ZÑZ/$°;ïûì;\u0003\u000cFKSF\u000b\u0008X8\u009b\u008a~Ò\u0013\u0011Xí²ÂÎRñ9y\u008b\u001fE\u0084¤l¦Jg\u0021\u0015+@1\u001aÞÞ\u000c&+\u000f\u0018qµÅTÌ\u0089ü\u0093\u0094¨ç`\u0014&Î\u0083å\u0095Ü\u0005£\u0088oÃLz¥¿Ô\u000cä}¯÷ µ³\u0004\u0096bª5Äpð\u0002¹ªJ\u008a^\u0097üxM\u0012 D\u0011=¯7Ö^©PÞ\u0097\u0085VÄ¤ra³\u001d\u0097xã\u0090pe³\u0007ç\u0085Ç;Æ\u0010ò C½ò»Á¦î\u0083£\u0009E\u0006ÑX\u0005zW\u00861dæô88\u008f\u0092\u0081\u0092ã*\u00070]\u009e\u0017\u001aX£2\u001cA\u0002õ\u00913ÈbÏ\u0092\u0010¨\u0080-óQoí\u0002\u009coÞfTW\u009fíX\u00219s¾çÎ\u0081u#s¢ù·\u000bY\u009d÷:«K³®Õ8f\r\u0088<Þ¦L¶ÊF\u0015¶\u001d\u0095C±7\u001cÜ\'ë\u0008ðâ\u0008ö8ZåN\u0084\u009cß\u0087\u0089\u009a\u0096\u007fhýN\u001bö\u0018¶Ò\'@8ºR\u0010¹ÛHwBØÊL\u0021p\u001bÿ¿\u001b[éN\u0008\u0004"F¸ÂD´ÊÝ\u0008´*¯1\u0092ØèvÚ\u0013\u007fðA6×þÅ\u009dhdZKÙü`\u0086?PK\u0001\u0002\u0014\u0000\u0014\u0000\u0000\u0000\u0008\u0000\u0087Nâ@\u0012àÊV\u0086\u0001\u0000\u0000¡\u0006\u0000\u0000\u0013\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000 \u0000\u0000\u0000¼;\u0000\u0000[Content_Types].xmlPK\u0001\u0002\u0014\u0000\n\u0000\u0000\u0000\u0000\u0000\u0087Nâ@\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0006\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0010\u0000\u0000\u0000\u00009\u0000\u0000_rels/PK\u0001\u0002\u0014\u0000\u0014\u0000\u0000\u0000\u0008\u0000\u0087Nâ@\u0001""\u001fý\u0000\u0000\u0000á\u0002\u0000\u0000\u000b\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000 \u0000\u0000\u0000$9\u0000\u0000_rels/.relsPK\u0001\u0002\u0014\u0000\n\u0000\u0000\u0000\u0000\u0000\u0087Nâ@\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0009\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0010\u0000\u0000\u0000\u0000\u0000\u0000\u0000docProps/PK\u0001\u0002\u0014\u0000\u0014\u0000\u0000\u0000\u0008\u0000\u0087Nâ@\u0011\u001a°e]\u0001\u0000\u0000o\u0002\u0000\u0000\u0010\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000 \u0000\u0000\u0000\'\u0000\u0000\u0000docProps/app.xmlPK\u0001\u0002\u0014\u0000\u0014\u0000\u0000\u0000\u0008\u0000\u0087Nâ@þ%O¿H\u0001\u0000\u0000s\u0002\u0000\u0000\u0011\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000 \u0000\u0000\u0000²\u0001\u0000\u0000docProps/core.xmlPK\u0001\u0002\u0014\u0000\u0014\u0000\u0000\u0000\u0008\u0000\u0087Nâ@uÕfh(\u0001\u0000\u0000\u000f\u0002\u0000\u0000\u0013\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000 \u0000\u0000\u0000)\u0003\u0000\u0000docProps/custom.xmlPK\u0001\u0002\u0014\u0000\n\u0000\u0000\u0000\u0000\u0000\u0087Nâ@\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0005\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0010\u0000\u0000\u0000\u0082\u0004\u0000\u0000word/PK\u0001\u0002\u0014\u0000\n\u0000\u0000\u0000\u0000\u0000\u0087Nâ@\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u000b\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0010\u0000\u0000\u0000J:\u0000\u0000word/_rels/PK\u0001\u0002\u0014\u0000\u0014\u0000\u0000\u0000\u0008\u0000\u0087Nâ@\'Â&Þ\u000f\u0001\u0000\u00005\u0004\u0000\u0000\u001c\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000 \u0000\u0000\u0000s:\u0000\u0000word/_rels/document.xml.relsPK\u0001\u0002\u0014\u0000\u0014\u0000\u0000\u0000\u0008\u0000\u0087Nâ@A\u0003\u0005û·\r\u0000\u0000L\u009a\u0000\u0000\u0011\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000 \u0000\u0000\u0000\u0000"\u0000\u0000word/document.xmlPK\u0001\u0002\u0014\u0000\u0014\u0000\u0000\u0000\u0008\u0000\u0087Nâ@®´4`ì\u0001\u0000\u0000<\u0006\u0000\u0000\u0011\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000 \u0000\u0000\u0000\u007f\u0019\u0000\u0000word/endnotes.xmlPK\u0001\u0002\u0014\u0000\u0014\u0000\u0000\u0000\u0008\u0000\u0087Nâ@\u00023ÅØo\u0004\u0000\u0000Æ\u0013\u0000\u0000\u0012\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000 \u0000\u0000\u0000a4\u0000\u0000word/fontTable.xmlPK\u0001\u0002\u0014\u0000\u0014\u0000\u0000\u0000\u0008\u0000\u0087Nâ@ø×¡\u0018û\u0001\u0000\u0000t\u0006\u0000\u0000\u0012\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000 \u0000\u0000\u0000T\u0017\u0000\u0000word/footnotes.xmlPK\u0001\u0002\u0014\u0000\u0014\u0000\u0000\u0000\u0008\u0000\u0087Nâ@ER|¨K\u0004\u0000\u0000\u0098\u001a\u0000\u0000\u0012\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000 \u0000\u0000\u0000æ/\u0000\u0000word/numbering.xmlPK\u0001\u0002\u0014\u0000\u0014\u0000\u0000\u0000\u0008\u0000\u0087Nâ@\u0000î=\u0096©\u0004\u0000\u0000\u0099\u000b\u0000\u0000\u0011\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000 \u0000\u0000\u0000|\u0012\u0000\u0000word/settings.xmlPK\u0001\u0002\u0014\u0000\u0014\u0000\u0000\u0000\u0008\u0000\u0087Nâ@ç\u000cÄ\u009cª\r\u0000\u0000ß\u0084\u0000\u0000\u000f\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000 \u0000\u0000\u0000¥\u0004\u0000\u0000word/styles.xmlPK\u0001\u0002\u0014\u0000\n\u0000\u0000\u0000\u0000\u0000\u0087Nâ@\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u000b\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0010\u0000\u0000\u0000\u009a\u001b\u0000\u0000word/theme/PK\u0001\u0002\u0014\u0000\u0014\u0000\u0000\u0000\u0008\u0000\u0087Nâ@Ýµ\u001aò\n\u0006\u0000\u0000»\u0018\u0000\u0000\u0015\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000 \u0000\u0000\u0000Ã\u001b\u0000\u0000word/theme/theme1.xmlPK\u0005\u0006\u0000\u0000\u0000\u0000\u0013\u0000\u0013\u0000\u008f\u0004\u0000\u0000s=\u0000\u0000\u0000\u0000\r\n------WebKitFormBoundaryl4TbR5O9fwdKFFAl\r\nContent-Disposition: form-data; name="path"\r\n\r\n/files/upload\r\n------WebKitFormBoundaryl4TbR5O9fwdKFFAl\r\nContent-Disposition: form-data; name="agentId"\r\n\r\ndfd7976e-f130-407a-8357-1ead8d48d31d\r\n------WebKitFormBoundaryl4TbR5O9fwdKFFAl\r\nContent-Disposition: form-data; name="user"\r\n\r\n648067228748181019\r\n------WebKitFormBoundaryl4TbR5O9fwdKFFAl\r\nContent-Disposition: form-data; name="libName"\r\n\r\n买卖合同规则.docx\r\n------WebKitFormBoundaryl4TbR5O9fwdKFFAl\r\nContent-Disposition: form-data; name="libDesc"\r\n\r\ndocx\r\n------WebKitFormBoundaryl4TbR5O9fwdKFFAl\r\nContent-Disposition: form-data; name="flag"\r\n\r\nfile\r\n------WebKitFormBoundaryl4TbR5O9fwdKFFAl--\r\n' \
+  --insecure
+
+{
+    "code": 200,
+    "msg": "成功",
+    "traceld": null,
+    "data": {
+        "id": "97320d8d-df88-4a9a-8219-a2f56292d1f4",
+        "name": "敏感词.docx",
+        "size": 15319,
+        "extension": "docx",
+        "mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "created_by": "8723adb4-5ba0-42a5-90ae-3f92a73f2e7c",
+        "created_at": 1764752103
+    }
+}
+
+
+// 根据上传的文件 提问
+curl 'http://192.168.113.67:30019/langwell-api/langwell-ins-server/dify/broker/agent/stream' \
+  -H 'Accept-Language: zh-CN,zh;q=0.9' \
+  -H 'Connection: keep-alive' \
+  -H 'Content-Type: application/json' \
+  -b 'Hm_lvt_b7fd400b2e66412997802961d8148bce=1762918649; HMACCOUNT=6DFF27950CC6A59D; Hm_lpvt_b7fd400b2e66412997802961d8148bce=1763426209; Token=3327f9e2-4617-4357-b0a5-3202ff2ed4a2' \
+  -H 'Origin: http://192.168.113.67:30019' \
+  -H 'Referer: http://192.168.113.67:30019/copilot-web-app/chat' \
+  -H 'TenantId: 1' \
+  -H 'Token: 170375c3-4886-4e86-a0e3-0b55636922cb' \
+  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36' \
+  -H 'accept: text/event-stream' \
+  --data-raw '{"insId":"1","bizType":"app:agent","bizId":"dfd7976e-f130-407a-8357-1ead8d48d31d","agentId":"dfd7976e-f130-407a-8357-1ead8d48d31d","path":"/chat-messages","difyJson":{"inputs":{"query":"有什么合同规则","personalLibs":"","knIds":"","Token":"170375c3-4886-4e86-a0e3-0b55636922cb","tenantid":"1","isWebSearch":false},"files":[{"type":"document","transfer_method":"local_file","upload_file_id":"ddff8fae-5d5d-426f-8814-58f8309fb1ea"}],"response_mode":"streaming","user":"648067228748181019","auto_generate_name":"true","query":"有什么合同规则","conversation_id":"9ad947d7-13b9-4c4d-94f5-de933f855a4b"},"query":"有什么合同规则","conversation_id":""}' \
+  --insecure
+
+
+返回一大堆 dify llm返回的东西
+
+
+// 看下对话页面有几个知识库
+curl 'http://192.168.113.67:30019/langwell-api/langwell-doc-server/knowledge/lib/all/listBackAll' \
+  -H 'Accept: application/json, text/plain, */*' \
+  -H 'Accept-Language: zh-CN,zh;q=0.9' \
+  -H 'Connection: keep-alive' \
+  -H 'Content-Type: application/json' \
+  -b 'Hm_lvt_b7fd400b2e66412997802961d8148bce=1762918649; HMACCOUNT=6DFF27950CC6A59D; Hm_lpvt_b7fd400b2e66412997802961d8148bce=1763426209; Token=3327f9e2-4617-4357-b0a5-3202ff2ed4a2' \
+  -H 'OVERTOKEN: 170375c3-4886-4e86-a0e3-0b55636922cb' \
+  -H 'Origin: http://192.168.113.67:30019' \
+  -H 'Referer: http://192.168.113.67:30019/copilot-web-app/chat' \
+  -H 'TenantId: 1' \
+  -H 'Token: 170375c3-4886-4e86-a0e3-0b55636922cb' \
+  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36' \
+  --data-raw '{}' \
+  --insecure
+
+{
+    "code": 200,
+    "msg": "成功",
+    "traceld": "29051148299029188341760",
+    "data": {
+        "enterpriseQueryVO": {
+            "knowledgeLibInfoVOS": [
+                {
+                    "id": "1979022903284789249",
+                    "dirId": "1971141406939246594",
+                    "libName": "工作报告-仿写",
+                    "libStatus": 1,
+                    "libDesc": "",
+                    "entityType": "enterprise",
+                    "dataType": "text",
+                    "retrievalType": "fulltext",
+                    "ancestorsName": null,
+                    "allFileSize": 0,
+                    "knCount": "0",
+                    "fileNum": null,
+                    "participateType": null,
+                    "tags": "",
+                    "entryType": null,
+                    "splitType": null,
+                    "embeddingModel": null,
+                    "searchTopK": null,
+                    "searchScore": null,
+                    "collection": null,
+                    "visibleRange": null,
+                    "databaseId": null,
+                    "isCollect": "0",
+                    "createBy": "648067228748181019",
+                    "lastSyncTime": null,
+                    "setIdAndPath": null,
+                    "libBindLocalDetailList": null,
+                    "bindPath": null
+                }
+            ],
+            "knowledgeKnInfoVOS": null
+        },
+        "individualQueryVO": {
+            "knowledgeLibInfoVOS": [
+                {
+                    "id": "1978739532843806721",
+                    "dirId": null,
+                    "libName": "敏感词库",
+                    "libStatus": 1,
+                    "libDesc": "",
+                    "entityType": "individual",
+                    "dataType": "text",
+                    "retrievalType": "vector",
+                    "ancestorsName": null,
+                    "allFileSize": 0,
+                    "knCount": "0",
+                    "fileNum": null,
+                    "participateType": null,
+                    "tags": null,
+                    "entryType": null,
+                    "splitType": null,
+                    "embeddingModel": null,
+                    "searchTopK": null,
+                    "searchScore": null,
+                    "collection": null,
+                    "visibleRange": null,
+                    "databaseId": null,
+                    "isCollect": "0",
+                    "createBy": "648067228748181019",
+                    "lastSyncTime": null,
+                    "setIdAndPath": null,
+                    "libBindLocalDetailList": null,
+                    "bindPath": null
+                },
+                {
+                    "id": "1996137484044443649",
+                    "dirId": null,
+                    "libName": "测试知识库",
+                    "libStatus": 1,
+                    "libDesc": "测试知识库描述",
+                    "entityType": "individual",
+                    "dataType": "text",
+                    "retrievalType": "vector",
+                    "ancestorsName": null,
+                    "allFileSize": 0.3858,
+                    "knCount": "2",
+                    "fileNum": null,
+                    "participateType": null,
+                    "tags": null,
+                    "entryType": null,
+                    "splitType": null,
+                    "embeddingModel": null,
+                    "searchTopK": null,
+                    "searchScore": null,
+                    "collection": null,
+                    "visibleRange": null,
+                    "databaseId": null,
+                    "isCollect": "0",
+                    "createBy": "648067228748181019",
+                    "lastSyncTime": null,
+                    "setIdAndPath": null,
+                    "libBindLocalDetailList": null,
+                    "bindPath": null
+                },
+                {
+                    "id": "1978739236553977858",
+                    "dirId": null,
+                    "libName": "合同规则库",
+                    "libStatus": 1,
+                    "libDesc": "",
+                    "entityType": "individual",
+                    "dataType": "text",
+                    "retrievalType": "vector",
+                    "ancestorsName": null,
+                    "allFileSize": 0,
+                    "knCount": "0",
+                    "fileNum": null,
+                    "participateType": null,
+                    "tags": null,
+                    "entryType": null,
+                    "splitType": null,
+                    "embeddingModel": null,
+                    "searchTopK": null,
+                    "searchScore": null,
+                    "collection": null,
+                    "visibleRange": null,
+                    "databaseId": null,
+                    "isCollect": "0",
+                    "createBy": "648067228748181019",
+                    "lastSyncTime": null,
+                    "setIdAndPath": null,
+                    "libBindLocalDetailList": null,
+                    "bindPath": null
+                },
+                {
+                    "id": "1983470556082606082",
+                    "dirId": null,
+                    "libName": "网页抓取测试",
+                    "libStatus": 1,
+                    "libDesc": "",
+                    "entityType": "individual",
+                    "dataType": "text",
+                    "retrievalType": "vector",
+                    "ancestorsName": null,
+                    "allFileSize": 0,
+                    "knCount": "0",
+                    "fileNum": null,
+                    "participateType": null,
+                    "tags": null,
+                    "entryType": null,
+                    "splitType": null,
+                    "embeddingModel": null,
+                    "searchTopK": null,
+                    "searchScore": null,
+                    "collection": null,
+                    "visibleRange": null,
+                    "databaseId": null,
+                    "isCollect": "0",
+                    "createBy": "648067228748181019",
+                    "lastSyncTime": null,
+                    "setIdAndPath": null,
+                    "libBindLocalDetailList": null,
+                    "bindPath": null
+                },
+                {
+                    "id": "1988540352994217985",
+                    "dirId": null,
+                    "libName": "测试",
+                    "libStatus": 1,
+                    "libDesc": "",
+                    "entityType": "individual",
+                    "dataType": "text",
+                    "retrievalType": "vector",
+                    "ancestorsName": null,
+                    "allFileSize": 3.5308,
+                    "knCount": "3",
+                    "fileNum": null,
+                    "participateType": null,
+                    "tags": null,
+                    "entryType": null,
+                    "splitType": null,
+                    "embeddingModel": null,
+                    "searchTopK": null,
+                    "searchScore": null,
+                    "collection": null,
+                    "visibleRange": null,
+                    "databaseId": null,
+                    "isCollect": "0",
+                    "createBy": "648067228748181019",
+                    "lastSyncTime": null,
+                    "setIdAndPath": null,
+                    "libBindLocalDetailList": null,
+                    "bindPath": null
+                },
+                {
+                    "id": "1983460905635024897",
+                    "dirId": null,
+                    "libName": "邮件采集测试",
+                    "libStatus": 1,
+                    "libDesc": "",
+                    "entityType": "individual",
+                    "dataType": "text",
+                    "retrievalType": "vector",
+                    "ancestorsName": null,
+                    "allFileSize": 0,
+                    "knCount": "0",
+                    "fileNum": null,
+                    "participateType": null,
+                    "tags": null,
+                    "entryType": null,
+                    "splitType": null,
+                    "embeddingModel": null,
+                    "searchTopK": null,
+                    "searchScore": null,
+                    "collection": null,
+                    "visibleRange": null,
+                    "databaseId": null,
+                    "isCollect": "0",
+                    "createBy": "648067228748181019",
+                    "lastSyncTime": null,
+                    "setIdAndPath": null,
+                    "libBindLocalDetailList": null,
+                    "bindPath": null
+                }
+            ],
+            "knowledgeKnInfoVOS": null
+        },
+        "projectQueryVO": null
+    }
+}
+
+
+
+
+// 根据知识库提问
+curl 'http://192.168.113.67:30019/langwell-api/langwell-ins-server/dify/broker/agent/stream' \
+  -H 'Accept-Language: zh-CN,zh;q=0.9' \
+  -H 'Connection: keep-alive' \
+  -H 'Content-Type: application/json' \
+  -b 'Hm_lvt_b7fd400b2e66412997802961d8148bce=1762918649; HMACCOUNT=6DFF27950CC6A59D; Hm_lpvt_b7fd400b2e66412997802961d8148bce=1763426209; Token=3327f9e2-4617-4357-b0a5-3202ff2ed4a2' \
+  -H 'Origin: http://192.168.113.67:30019' \
+  -H 'Referer: http://192.168.113.67:30019/copilot-web-app/chat' \
+  -H 'TenantId: 1' \
+  -H 'Token: 170375c3-4886-4e86-a0e3-0b55636922cb' \
+  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36' \
+  -H 'accept: text/event-stream' \
+  --data-raw '{"insId":"1","bizType":"app:agent","bizId":"dfd7976e-f130-407a-8357-1ead8d48d31d","agentId":"dfd7976e-f130-407a-8357-1ead8d48d31d","path":"/chat-messages","difyJson":{"inputs":{"query":"知识库有哪几个文件","personalLibs":"1996137484044443649","knIds":"","Token":"170375c3-4886-4e86-a0e3-0b55636922cb","tenantid":"1","isWebSearch":false},"files":[],"response_mode":"streaming","user":"648067228748181019","auto_generate_name":"true","query":"知识库有哪几个文件","conversation_id":"9ad947d7-13b9-4c4d-94f5-de933f855a4b"},"query":"知识库有哪几个文件","conversation_id":""}' \
+  --insecure
+
+
+返回一大堆 dify llm返回的东西
+
+data:{"event": "workflow_started", "conversation_id": "9ad947d7-13b9-4c4d-94f5-de933f855a4b", "message_id": "bc2613f1-ae91-444b-84cc-286a3138df67", "created_at": 1764751843, "task_id": "74219545-6ce1-401e-87d8-499708263349", "workflow_run_id": "107d13ae-dacc-4ca0-a3b9-3a5e72f9fdde", "data": {"id": "107d13ae-dacc-4ca0-a3b9-3a5e72f9fdde", "workflow_id": "aa7e0133-8dc9-4342-a23b-cf9b491b76e5", "inputs": {"personalLibs": "1996137484044443649", "Token": "170375c3-4886-4e86-a0e3-0b55636922cb", "tenantid": 1, "sys.query": "\u77e5\u8bc6\u5e93\u6709\u54ea\u51e0\u4e2a\u6587\u4ef6", "sys.files": [], "sys.conversation_id": "9ad947d7-13b9-4c4d-94f5-de933f855a4b", "sys.user_id": "648067228748181019", "sys.dialogue_count": 2, "sys.app_id": "dfd7976e-f130-407a-8357-1ead8d48d31d", "sys.workflow_id": "aa7e0133-8dc9-4342-a23b-cf9b491b76e5", "sys.workflow_run_id": "107d13ae-dacc-4ca0-a3b9-3a5e72f9fdde"}, "created_at": 1764751843}}
+
+data:{"event": "node_started", "conversation_id": "9ad947d7-13b9-4c4d-94f5-de933f855a4b", "message_id": "bc2613f1-ae91-444b-84cc-286a3138df67", "created_at": 1764751843, "task_id": "74219545-6ce1-401e-87d8-499708263349", "workflow_run_id": "107d13ae-dacc-4ca0-a3b9-3a5e72f9fdde", "data": {"id": "880d70d0-0206-4350-9e8c-8acf472f368b", "node_id": "1742454872552", "node_type": "start", "title": "\u5f00\u59cb", "index": 1, "predecessor_node_id": null, "inputs": null, "created_at": 1764751843, "extras": {}, "parallel_id": null, "parallel_start_node_id": null, "parent_parallel_id": null, "parent_parallel_start_node_id": null, "iteration_id": null, "loop_id": null, "parallel_run_id": null, "agent_strategy": null}}
+
+data:{"event": "node_finished", "conversation_id": "9ad947d7-13b9-4c4d-94f5-de933f855a4b", "message_id": "bc2613f1-ae91-444b-84cc-286a3138df67", "created_at": 1764751843, "task_id": "74219545-6ce1-401e-87d8-499708263349", "workflow_run_id": "107d13ae-dacc-4ca0-a3b9-3a5e72f9fdde", "data": {"id": "880d70d0-0206-4350-9e8c-8acf472f368b", "node_id": "1742454872552", "node_type": "start", "title": "\u5f00\u59cb", "index": 1, "predecessor_node_id": null, "inputs": {"personalLibs": "1996137484044443649", "Token": "170375c3-4886-4e86-a0e3-0b55636922cb", "tenantid": 1, "sys.query": "\u77e5\u8bc6\u5e93\u6709\u54ea\u51e0\u4e2a\u6587\u4ef6", "sys.files": [], "sys.conversation_id": "9ad947d7-13b9-4c4d-94f5-de933f855a4b", "sys.user_id": "648067228748181019", "sys.dialogue_count": 2, "sys.app_id": "dfd7976e-f130-407a-8357-1ead8d48d31d", "sys.workflow_id": "aa7e0133-8dc9-4342-a23b-cf9b491b76e5", "sys.workflow_run_id": "107d13ae-dacc-4ca0-a3b9-3a5e72f9fdde"}, "process_data": null, "outputs": {"personalLibs": "1996137484044443649", "Token": "170375c3-4886-4e86-a0e3-0b55636922cb", "tenantid": 1, "sys.query": "\u77e5\u8bc6\u5e93\u6709\u54ea\u51e0\u4e2a\u6587\u4ef6", "sys.files": [], "sys.conversation_id": "9ad947d7-13b9-4c4d-94f5-de933f855a4b", "sys.user_id": "648067228748181019", "sys.dialogue_count": 2, "sys.app_id": "dfd7976e-f130-407a-8357-1ead8d48d31d", "sys.workflow_id": "aa7e0133-8dc9-4342-a23b-cf9b491b76e5", "sys.workflow_run_id": "107d13ae-dacc-4ca0-a3b9-3a5e72f9fdde"}, "status": "succeeded", "error": null, "elapsed_time": 0.044675, "execution_metadata": {}, "created_at": 1764751843, "finished_at": 1764751843, "files": [], "parallel_id": null, "parallel_start_node_id": null, "parent_parallel_id": null, "parent_parallel_start_node_id": null, "iteration_id": null, "loop_id": null}}
+
+data:{"event": "node_started", "conversation_id": "9ad947d7-13b9-4c4d-94f5-de933f855a4b", "message_id": "bc2613f1-ae91-444b-84cc-286a3138df67", "created_at": 1764751843, "task_id": "74219545-6ce1-401e-87d8-499708263349", "workflow_run_id": "107d13ae-dacc-4ca0-a3b9-3a5e72f9fdde", "data": {"id": "9f0c8176-fb1f-4da6-88ea-5b27757c16ed", "node_id": "1742520437868", "node_type": "if-else", "title": "\u5224\u65ad\u77e5\u8bc6\u5e93\u4e0d\u4e3a\u7a7a", "index": 2, "predecessor_node_id": "1742454872552", "inputs": null, "created_at": 1764751843, "extras": {}, "parallel_id": null, "parallel_start_node_id": null, "parent_parallel_id": null, "parent_parallel_start_node_id": null, "iteration_id": null, "loop_id": null, "parallel_run_id": null, "agent_strategy": null}}
+
+data:{"event": "node_finished", "conversation_id": "9ad947d7-13b9-4c4d-94f5-de933f855a4b", "message_id": "bc2613f1-ae91-444b-84cc-286a3138df67", "created_at": 1764751843, "task_id": "74219545-6ce1-401e-87d8-499708263349", "workflow_run_id": "107d13ae-dacc-4ca0-a3b9-3a5e72f9fdde", "data": {"id": "9f0c8176-fb1f-4da6-88ea-5b27757c16ed", "node_id": "1742520437868", "node_type": "if-else", "title": "\u5224\u65ad\u77e5\u8bc6\u5e93\u4e0d\u4e3a\u7a7a", "index": 2, "predecessor_node_id": "1742454872552", "inputs": {"conditions": [{"actual_value": "1996137484044443649", "expected_value": "", "comparison_operator": "empty"}]}, "process_data": {"condition_results": [{"group": {"case_id": "true", "logical_operator": "and", "conditions": [{"variable_selector": ["1742454872552", "personalLibs"], "comparison_operator": "empty", "value": "", "sub_variable_condition": null}]}, "results": [false], "final_result": false}]}, "outputs": {"result": false, "selected_case_id": null}, "status": "succeeded", "error": null, "elapsed_time": 0.293583, "execution_metadata": {}, "created_at": 1764751843, "finished_at": 1764751843, "files": [], "parallel_id": null, "parallel_start_node_id": null, "parent_parallel_id": null, "parent_parallel_start_node_id": null, "iteration_id": null, "loop_id": null}}
+
+
