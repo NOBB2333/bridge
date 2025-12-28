@@ -1,0 +1,44 @@
+// 检查yml依赖
+
+
+
+curl 'http://117.72.147.216/console/api/apps/imports/d1c18cd9-fbd4-4b73-b4f0-d67ae1506aa4/check-dependencies' \
+  -H 'Accept: */*' \
+  -H 'Accept-Language: zh-CN,zh;q=0.9' \
+  -b 'locale=zh-Hans; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZDcwY2UyOGQtZjg5Zi00MTcxLTllMTktYzgyYTY2NTk3NTYzIiwiZXhwIjoxNzY0OTA4Njc3LCJpc3MiOiJTRUxGX0hPU1RFRCIsInN1YiI6IkNvbnNvbGUgQVBJIFBhc3Nwb3J0In0.bcjnxqy9pvQTdCnVB4_aFjM5wrRFksO3ILhfESNm6E4; refresh_token=8ee7ff5c88cbf195348daa7c067ced507ee2ba9f7b9b983d96337a0fcdd39a3e09fbf85ffc43a2e98767008a6ca124f6aa5714d026eaff00b351d4afc01fc6b4; csrf_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NjQ5MDg2NzcsInN1YiI6ImQ3MGNlMjhkLWY4OWYtNDE3MS05ZTE5LWM4MmE2NjU5NzU2MyJ9.7L48DriYJ4DRWKjN6TL56xeSU_wOKc5mP4BbhrzZ5Ys' \
+  -H 'Proxy-Connection: keep-alive' \
+  -H 'Referer: http://117.72.147.216/apps' \
+  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36' \
+  -H 'content-type: application/json' \
+  -H 'x-csrf-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NjQ5MDg2NzcsInN1YiI6ImQ3MGNlMjhkLWY4OWYtNDE3MS05ZTE5LWM4MmE2NjU5NzU2MyJ9.7L48DriYJ4DRWKjN6TL56xeSU_wOKc5mP4BbhrzZ5Ys' \
+  --insecure
+
+
+  {
+    "leaked_dependencies": [
+        {
+            "type": "marketplace",
+            "value": {
+                "marketplace_plugin_unique_identifier": "langgenius\/deepseek:0.0.7@c4e7b999ae67bfc059f6f51630bed36def5a835d12b0251694f5784b5ff1cd95",
+                "version": "0.0.7"
+            },
+            "current_identifier": ""
+        }
+    ]
+}
+
+
+// 从应用市场安装 不过离线是安装不了的  只能看看
+
+curl 'http://117.72.147.216/console/api/workspaces/current/plugin/install/marketplace' \
+  -H 'Accept: */*' \
+  -H 'Accept-Language: zh-CN,zh;q=0.9' \
+  -b 'locale=zh-Hans; csrf_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NjQ5MTcwOTQsInN1YiI6ImQ3MGNlMjhkLWY4OWYtNDE3MS05ZTE5LWM4MmE2NjU5NzU2MyJ9.SsBpWlZt4ONTTFLnBDv3LS9kHELj26MO3POE2fgrxpo; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZDcwY2UyOGQtZjg5Zi00MTcxLTllMTktYzgyYTY2NTk3NTYzIiwiZXhwIjoxNzY0OTE3MDk0LCJpc3MiOiJTRUxGX0hPU1RFRCIsInN1YiI6IkNvbnNvbGUgQVBJIFBhc3Nwb3J0In0.0bwkswLptDQV5djWEmRRvFuOeMsZaWBmW7OFS0ri0iM; refresh_token=abeae36a1b9d2535ef0463639dd8f4dd208179031926e2ef8b0b89b612bf13b177a2c91de5ddbd4b16bc040754e277bf750340a80cfed63615d420acec635a63' \
+  -H 'Origin: http://117.72.147.216' \
+  -H 'Proxy-Connection: keep-alive' \
+  -H 'Referer: http://117.72.147.216/app/ed4d793d-683c-4898-ac59-a6b1d28f9539/workflow' \
+  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36' \
+  -H 'content-type: application/json' \
+  -H 'x-csrf-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NjQ5MTcwOTQsInN1YiI6ImQ3MGNlMjhkLWY4OWYtNDE3MS05ZTE5LWM4MmE2NjU5NzU2MyJ9.SsBpWlZt4ONTTFLnBDv3LS9kHELj26MO3POE2fgrxpo' \
+  --data-raw '{"plugin_unique_identifiers":["langgenius/siliconflow:0.0.15@775950e2071600bd3ba0415ec306c1b1582bc4a2a94688d642f627d112d87cd3"]}' \
+  --insecure

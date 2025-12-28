@@ -200,6 +200,40 @@ public static class DifyMigrationCommand
                 else
                 {
                     Console.WriteLine($"Imported {path} -> appId={response.AppId}, status={response.Status}, task={response.TaskId}");
+                    
+                    // 检查依赖项
+                    if (!string.IsNullOrEmpty(response.TaskId))
+                    {
+                        try
+                        {
+                            var checkRequest = new ConsoleApiAppsImportsCheckDependenciesRequest { ImportId = response.TaskId };
+                            var checkResponse = await client.ExecuteConsoleApiAppsImportsCheckDependenciesAsync(checkRequest);
+                            
+                            if (checkResponse.IsSuccessful() && checkResponse.LeakedDependencies != null && checkResponse.LeakedDependencies.Count > 0)
+                            {
+                                Console.WriteLine($"  Warning: Found {checkResponse.LeakedDependencies.Count} leaked dependencies:");
+                                foreach (var dep in checkResponse.LeakedDependencies)
+                                {
+                                    var identifier = dep.Value?.MarketplacePluginUniqueIdentifier ?? "unknown";
+                                    var version = dep.Value?.Version ?? "unknown";
+                                    Console.WriteLine($"    - Type: {dep.Type}, Identifier: {identifier}, Version: {version}");
+                                }
+                            }
+                            else if (checkResponse.IsSuccessful())
+                            {
+                                Console.WriteLine($"  Dependencies check passed: No leaked dependencies found.");
+                            }
+                            else
+                            {
+                                Console.WriteLine($"  Warning: Failed to check dependencies: {checkResponse.ErrorCode} {checkResponse.ErrorMessage}");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"  Warning: Exception while checking dependencies: {ex.Message}");
+                        }
+                    }
+                    
                     processed++;
                     await Task.Delay(300);
                     return response.AppId;
@@ -836,6 +870,8 @@ public static class DifyMigrationCommand
 
         // 存储 Chat 应用信息：应用名 -> (工作流名 -> 使用次数)
         var chatAppWorkflows = new Dictionary<string, Dictionary<string, int>>();
+        // 存储 Chat 应用信息：应用名 -> 插件信息字典
+        var chatAppPlugins = new Dictionary<string, Dictionary<string, MarketplacePluginInfo>>();
 
         foreach (var info in chatFiles)
         {
@@ -843,9 +879,15 @@ public static class DifyMigrationCommand
             {
                 var appName = info.Name ?? Path.GetFileNameWithoutExtension(info.FilePath);
                 var workflowCounts = GetWorkflowUsageMap(info.Content);
+                var pluginMap = GetMarketplacePluginUsageMap(info.Content);
                 if (workflowCounts.Count > 0)
                 {
                     chatAppWorkflows[appName] = workflowCounts;
+                }
+                
+                if (pluginMap.Count > 0)
+                {
+                    chatAppPlugins[appName] = pluginMap;
                 }
             }
             catch (Exception ex)
@@ -854,9 +896,9 @@ public static class DifyMigrationCommand
             }
         }
 
-        if (chatAppWorkflows.Count == 0)
+        if (chatAppWorkflows.Count == 0 && chatAppPlugins.Count == 0)
         {
-            Console.WriteLine("未在 Chat 应用中找到任何工作流引用。");
+            Console.WriteLine("未在 Chat 应用中找到任何工作流引用或插件依赖。");
             return;
         }
 
@@ -864,65 +906,172 @@ public static class DifyMigrationCommand
         Console.WriteLine("Chat 应用与工作流关系图");
         Console.WriteLine("═══════════════════════════════════════════════════════════════\n");
 
-        var totalChatApps = chatAppWorkflows.Count;
+        var totalChatApps = Math.Max(chatAppWorkflows.Count, chatAppPlugins.Count);
         var totalWorkflows = chatAppWorkflows.Values.SelectMany(w => w.Keys).Distinct().Count();
         var totalUsages = chatAppWorkflows.Values.SelectMany(w => w.Values).Sum();
+        var totalPlugins = chatAppPlugins.Values.SelectMany(p => p.Keys).Distinct().Count();
 
         Console.WriteLine($"统计信息：");
         Console.WriteLine($"  - Chat 应用总数: {totalChatApps}");
         Console.WriteLine($"  - 涉及的工作流总数: {totalWorkflows}");
         Console.WriteLine($"  - 工作流总使用次数: {totalUsages}");
+        Console.WriteLine($"  - 涉及的插件市场插件总数: {totalPlugins}");
         Console.WriteLine();
 
+        // 合并所有应用（有工作流或插件的）
+        var allApps = new HashSet<string>(chatAppWorkflows.Keys);
+        foreach (var app in chatAppPlugins.Keys)
+        {
+            allApps.Add(app);
+        }
+
         var index = 0;
-        foreach (var kvp in chatAppWorkflows.OrderBy(x => x.Key, StringComparer.OrdinalIgnoreCase))
+        foreach (var appName in allApps.OrderBy(x => x, StringComparer.OrdinalIgnoreCase))
         {
             index++;
-            var appName = kvp.Key;
-            var workflows = kvp.Value;
+            var hasWorkflows = chatAppWorkflows.TryGetValue(appName, out var workflows);
+            var hasPlugins = chatAppPlugins.TryGetValue(appName, out var plugins);
 
-            Console.WriteLine($"【{index}/{totalChatApps}】{appName}");
-            Console.WriteLine($"  └─ 涉及工作流数量: {workflows.Count}");
+            Console.WriteLine($"【{index}/{allApps.Count}】{appName}");
 
-            foreach (var workflow in workflows.OrderBy(w => w.Key, StringComparer.OrdinalIgnoreCase))
+            if (hasWorkflows && workflows != null && workflows.Count > 0)
             {
-                var workflowName = workflow.Key;
-                var usageCount = workflow.Value;
-                Console.WriteLine($"     • {workflowName} (使用 {usageCount} 次)");
+                Console.WriteLine($"  ├─ 涉及工作流数量: {workflows.Count}");
+                foreach (var workflow in workflows.OrderBy(w => w.Key, StringComparer.OrdinalIgnoreCase))
+                {
+                    var workflowName = workflow.Key;
+                    var usageCount = workflow.Value;
+                    Console.WriteLine($"  │  • {workflowName} (使用 {usageCount} 次)");
+                }
+            }
+
+            if (hasPlugins && plugins != null && plugins.Count > 0)
+            {
+                var prefix = hasWorkflows && workflows != null && workflows.Count > 0 ? "  ├─" : "  └─";
+                Console.WriteLine($"{prefix} 涉及插件市场插件数量: {plugins.Count}");
+                foreach (var plugin in plugins.OrderBy(p => p.Key, StringComparer.OrdinalIgnoreCase))
+                {
+                    var pluginInfo = plugin.Value;
+                    var displayName = !string.IsNullOrWhiteSpace(pluginInfo.Title)
+                        ? pluginInfo.Title!
+                        : (!string.IsNullOrWhiteSpace(pluginInfo.ProviderName) ? pluginInfo.ProviderName : pluginInfo.ProviderId);
+                    var toolNamesStr = pluginInfo.ToolNames.Count > 0 
+                        ? $" (工具: {string.Join(", ", pluginInfo.ToolNames)})" 
+                        : "";
+                    Console.WriteLine($"  │  • {displayName} (ID: {pluginInfo.ProviderId}, 使用 {pluginInfo.UsageCount} 次{toolNamesStr})");
+                }
+            }
+
+            if (!hasWorkflows && (!hasPlugins || plugins == null || plugins.Count == 0))
+            {
+                Console.WriteLine($"  └─ 无工作流或插件依赖");
             }
 
             Console.WriteLine();
         }
 
         // 输出工作流使用统计（按使用次数排序）
-        Console.WriteLine("═══════════════════════════════════════════════════════════════");
-        Console.WriteLine("工作流使用统计（按使用次数排序）");
-        Console.WriteLine("═══════════════════════════════════════════════════════════════\n");
-
-        var workflowStats = new Dictionary<string, int>();
-        foreach (var appWorkflows in chatAppWorkflows.Values)
+        if (totalWorkflows > 0)
         {
-            foreach (var workflow in appWorkflows)
+            Console.WriteLine("═══════════════════════════════════════════════════════════════");
+            Console.WriteLine("工作流使用统计（按使用次数排序）");
+            Console.WriteLine("═══════════════════════════════════════════════════════════════\n");
+
+            var workflowStats = new Dictionary<string, int>();
+            foreach (var appWorkflows in chatAppWorkflows.Values)
             {
-                if (workflowStats.ContainsKey(workflow.Key))
+                foreach (var workflow in appWorkflows)
                 {
-                    workflowStats[workflow.Key] += workflow.Value;
+                    if (workflowStats.ContainsKey(workflow.Key))
+                    {
+                        workflowStats[workflow.Key] += workflow.Value;
+                    }
+                    else
+                    {
+                        workflowStats[workflow.Key] = workflow.Value;
+                    }
                 }
-                else
-                {
-                    workflowStats[workflow.Key] = workflow.Value;
-                }
+            }
+
+            var sortedWorkflows = workflowStats.OrderByDescending(w => w.Value).ThenBy(w => w.Key, StringComparer.OrdinalIgnoreCase).ToList();
+            foreach (var workflow in sortedWorkflows)
+            {
+                var appsUsingThis = chatAppWorkflows.Count(app => app.Value.ContainsKey(workflow.Key));
+                Console.WriteLine($"  {workflow.Key}");
+                Console.WriteLine($"    总使用次数: {workflow.Value}");
+                Console.WriteLine($"    被 {appsUsingThis} 个 Chat 应用使用");
+                Console.WriteLine();
             }
         }
 
-        var sortedWorkflows = workflowStats.OrderByDescending(w => w.Value).ThenBy(w => w.Key, StringComparer.OrdinalIgnoreCase).ToList();
-        foreach (var workflow in sortedWorkflows)
+        // 输出插件市场插件使用统计（按使用次数排序）
+        if (totalPlugins > 0)
         {
-            var appsUsingThis = chatAppWorkflows.Count(app => app.Value.ContainsKey(workflow.Key));
-            Console.WriteLine($"  {workflow.Key}");
-            Console.WriteLine($"    总使用次数: {workflow.Value}");
-            Console.WriteLine($"    被 {appsUsingThis} 个 Chat 应用使用");
-            Console.WriteLine();
+            Console.WriteLine("═══════════════════════════════════════════════════════════════");
+            Console.WriteLine("插件市场插件使用统计（按使用次数排序）");
+            Console.WriteLine("═══════════════════════════════════════════════════════════════\n");
+
+            var pluginStats = new Dictionary<string, MarketplacePluginInfo>();
+            foreach (var appPlugins in chatAppPlugins.Values)
+            {
+                foreach (var plugin in appPlugins)
+                {
+                    if (pluginStats.ContainsKey(plugin.Key))
+                    {
+                        pluginStats[plugin.Key].UsageCount += plugin.Value.UsageCount;
+                        // 补全标题
+                        if (pluginStats[plugin.Key].Title is null && !string.IsNullOrEmpty(plugin.Value.Title))
+                        {
+                            pluginStats[plugin.Key].Title = plugin.Value.Title;
+                        }
+                        // 合并工具名称列表
+                        foreach (var toolName in plugin.Value.ToolNames)
+                        {
+                            if (!pluginStats[plugin.Key].ToolNames.Contains(toolName))
+                            {
+                                pluginStats[plugin.Key].ToolNames.Add(toolName);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        pluginStats[plugin.Key] = new MarketplacePluginInfo
+                        {
+                            ProviderId = plugin.Value.ProviderId,
+                            ProviderName = plugin.Value.ProviderName,
+                            Title = plugin.Value.Title,
+                            ProviderType = plugin.Value.ProviderType,
+                            UsageCount = plugin.Value.UsageCount,
+                            ToolNames = new List<string>(plugin.Value.ToolNames)
+                        };
+                    }
+                }
+            }
+
+            var sortedPlugins = pluginStats.OrderByDescending(p => p.Value.UsageCount).ThenBy(p => p.Key, StringComparer.OrdinalIgnoreCase).ToList();
+            foreach (var plugin in sortedPlugins)
+            {
+                var pluginInfo = plugin.Value;
+                var appsUsingThis = chatAppPlugins.Where(app => app.Value.ContainsKey(plugin.Key)).ToList();
+                var displayName = !string.IsNullOrWhiteSpace(pluginInfo.Title)
+                    ? pluginInfo.Title!
+                    : (!string.IsNullOrWhiteSpace(pluginInfo.ProviderName) ? pluginInfo.ProviderName : pluginInfo.ProviderId);
+                var toolNamesStr = pluginInfo.ToolNames.Count > 0 
+                    ? $" (工具: {string.Join(", ", pluginInfo.ToolNames)})" 
+                    : "";
+                
+                Console.WriteLine($"  {displayName}");
+                Console.WriteLine($"    插件 ID: {pluginInfo.ProviderId}");
+                Console.WriteLine($"    类型: {pluginInfo.ProviderType}");
+                Console.WriteLine($"    总使用次数: {pluginInfo.UsageCount}{toolNamesStr}");
+                Console.WriteLine($"    被 {appsUsingThis.Count} 个 Chat 应用使用");
+                if (appsUsingThis.Count > 0)
+                {
+                    var appNames = appsUsingThis.Select(app => app.Key).OrderBy(name => name, StringComparer.OrdinalIgnoreCase);
+                    Console.WriteLine($"    使用该插件的应用: {string.Join(", ", appNames)}");
+                }
+                Console.WriteLine();
+            }
         }
 
         Console.WriteLine("═══════════════════════════════════════════════════════════════\n");
@@ -1159,6 +1308,114 @@ public static class DifyMigrationCommand
         }
 
         return workflowCounts;
+    }
+
+    /// <summary>
+    /// 检测字符串是否是 UUID 格式。
+    /// </summary>
+    private static bool IsUuid(string? value)
+    {
+        if (string.IsNullOrEmpty(value))
+            return false;
+
+        // UUID 格式：8-4-4-4-12 个十六进制字符，例如：a7d001e8-65fc-4586-a881-b8dd804a8916
+        return Regex.IsMatch(value, @"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", RegexOptions.IgnoreCase);
+    }
+
+    /// <summary>
+    /// 提取插件市场插件使用情况。
+    /// 返回插件标识符 -> 使用次数的映射。
+    /// </summary>
+    private static Dictionary<string, MarketplacePluginInfo> GetMarketplacePluginUsageMap(string content)
+    {
+        var pluginMap = new Dictionary<string, MarketplacePluginInfo>(StringComparer.OrdinalIgnoreCase);
+        string? NormalizeValue(string? value) => string.IsNullOrWhiteSpace(value)
+            ? null
+            : value.Trim().Trim('\'', '"');
+
+        // 直接匹配 provider_type: builtin 特征（插件市场的特征）
+        var builtinMatches = Regex.Matches(content, @"provider_type:\s*builtin", RegexOptions.Multiline | RegexOptions.IgnoreCase);
+        
+        foreach (Match builtinMatch in builtinMatches)
+        {
+            // 这些字段是连续的，在 provider_type 附近查找  是200 -1000字符
+            var blockStart = Math.Max(0, builtinMatch.Index - 200);
+            var blockEnd = Math.Min(content.Length, builtinMatch.Index + 1000);
+            var pluginBlock = content.Substring(blockStart, blockEnd - blockStart);
+
+            // 查找 provider_id（必须在 provider_type 之前或之后）
+            var providerIdMatch = Regex.Match(pluginBlock, @"provider_id:\s*([^\r\n]+)", RegexOptions.Multiline | RegexOptions.IgnoreCase);
+            if (!providerIdMatch.Success)
+                continue;
+
+            var providerId = NormalizeValue(providerIdMatch.Groups[1].Value);
+            if (string.IsNullOrEmpty(providerId))
+                continue;
+
+            // 判断是否是插件市场插件：provider_id 包含斜杠且不是 UUID
+            if (!providerId.Contains('/') || IsUuid(providerId))
+                continue;
+
+            // 查找 provider_name
+            var providerNameMatch = Regex.Match(pluginBlock, @"provider_name:\s*([^\r\n]+)", RegexOptions.Multiline | RegexOptions.IgnoreCase);
+            var providerName = providerNameMatch.Success 
+                ? NormalizeValue(providerNameMatch.Groups[1].Value)
+                : providerId;
+
+            // 查找 title（在 provider_type 附近）
+            var titleMatch = Regex.Match(pluginBlock, @"title:\s*([^\r\n]+)", RegexOptions.Multiline | RegexOptions.IgnoreCase);
+            var title = titleMatch.Success
+                ? NormalizeValue(titleMatch.Groups[1].Value)
+                : null;
+
+            // 查找 tool_name
+            var toolNameMatch = Regex.Match(pluginBlock, @"tool_name:\s*([^\r\n]+)", RegexOptions.Multiline | RegexOptions.IgnoreCase);
+            var toolName = toolNameMatch.Success 
+                ? NormalizeValue(toolNameMatch.Groups[1].Value)
+                : null;
+
+            if (pluginMap.ContainsKey(providerId))
+            {
+                pluginMap[providerId].UsageCount++;
+                // 尝试补全标题
+                if (pluginMap[providerId].Title is null && !string.IsNullOrEmpty(title))
+                {
+                    pluginMap[providerId].Title = title;
+                }
+                // 更新工具名称列表（去重）
+                if (!string.IsNullOrEmpty(toolName) && !pluginMap[providerId].ToolNames.Contains(toolName))
+                {
+                    pluginMap[providerId].ToolNames.Add(toolName);
+                }
+            }
+            else
+            {
+                pluginMap[providerId] = new MarketplacePluginInfo
+                {
+                    ProviderId = providerId,
+                    ProviderName = providerName,
+                    Title = title,
+                    ProviderType = "builtin",
+                    UsageCount = 1,
+                    ToolNames = string.IsNullOrEmpty(toolName) ? new List<string>() : new List<string> { toolName }
+                };
+            }
+        }
+
+        return pluginMap;
+    }
+
+    /// <summary>
+    /// 插件市场插件信息。
+    /// </summary>
+    private class MarketplacePluginInfo
+    {
+        public string ProviderId { get; set; } = string.Empty;
+        public string ProviderName { get; set; } = string.Empty;
+        public string? Title { get; set; }
+        public string ProviderType { get; set; } = string.Empty;
+        public int UsageCount { get; set; }
+        public List<string> ToolNames { get; set; } = new();
     }
 
     private static async Task<List<YamlAppFileInfo>> LoadYamlFileInfosAsync()

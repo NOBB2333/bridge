@@ -98,6 +98,23 @@ public static class DifyApiClientExecuteConsoleAppsExtensions
         }
 
         /// <summary>
+        /// <para>异步调用 [GET] /console/api/apps/imports/{import_id}/check-dependencies 接口。</para>
+        /// <para>检查导入应用的依赖项。</para>
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<ConsoleApiAppsImportsCheckDependenciesResponse> ExecuteConsoleApiAppsImportsCheckDependenciesAsync(ConsoleApiAppsImportsCheckDependenciesRequest request, CancellationToken cancellationToken = default)
+        {
+            if (client is null) throw new ArgumentNullException(nameof(client));
+            if (request is null) throw new ArgumentNullException(nameof(request));
+
+            IFlurlRequest flurlRequest = client.CreateFlurlRequest(request, HttpMethod.Get, "console", "api", "apps", "imports", request.ImportId, "check-dependencies");
+
+            return await client.SendFlurlRequestAsJsonAsync<ConsoleApiAppsImportsCheckDependenciesResponse>(flurlRequest, data: null, cancellationToken: cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
         /// <para>异步调用 [GET] /console/api/apps/{app_id}/api-keys 接口。</para>
         /// </summary>
         /// <param name="request"></param>
@@ -234,6 +251,23 @@ public static class DifyApiClientExecuteConsoleAppsExtensions
                 .SetQueryParam("workflow_app_id", request.WorkflowAppId);
 
             return await client.SendFlurlRequestAsJsonAsync<ConsoleApiWorkspacesCurrentToolProviderWorkflowGetResponse>(flurlRequest, data: null, cancellationToken: cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// <para>异步调用 [POST] /console/api/workspaces/current/plugin/install/marketplace 接口。</para>
+        /// <para>从应用市场安装插件。</para>
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<ConsoleApiWorkspacesCurrentPluginInstallMarketplaceResponse> ExecuteConsoleApiWorkspacesCurrentPluginInstallMarketplaceAsync(ConsoleApiWorkspacesCurrentPluginInstallMarketplaceRequest request, CancellationToken cancellationToken = default)
+        {
+            if (client is null) throw new ArgumentNullException(nameof(client));
+            if (request is null) throw new ArgumentNullException(nameof(request));
+
+            IFlurlRequest flurlRequest = client.CreateFlurlRequest(request, HttpMethod.Post, "console", "api", "workspaces", "current", "plugin", "install", "marketplace");
+
+            return await client.SendFlurlRequestAsJsonAsync<ConsoleApiWorkspacesCurrentPluginInstallMarketplaceResponse>(flurlRequest, data: request, cancellationToken: cancellationToken).ConfigureAwait(false);
         }
     }
 }

@@ -1,16 +1,16 @@
 {
 
   "Host": {
-    "BaseUrl": "http://192.168.113.44:88",
+    "BaseUrl": "http://192.168.104.116:88",
     "Headers": {
       "Accept": "*/*",
       "Accept-Language": "zh-CN,zh;q=0.9",
       "Connection": "keep-alive",
-      "Referer": "http://192.168.113.44:90/apps",
+      "Referer": "http://192.168.104.116:88/apps?category=all",
       "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36",
-      "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiODQwZGZkOTctNDI0OS00ZmM1LTk4OTgtYWE5NjA4MmRjM2I1IiwiZXhwIjoxNzY0ODMxMzM5LCJpc3MiOiJTRUxGX0hPU1RFRCIsInN1YiI6IkNvbnNvbGUgQVBJIFBhc3Nwb3J0In0.XoJwO6gDfUXQMz25rNZ_U3zSFy_1TnLmClJ8cbZ7S9U",
       "content-type": "application/json",
-      "Cookie": "locale=en-US"
+      "x-csrf-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NjY3MzE1NzIsInN1YiI6IjhkZDcwZTNmLTAxMDktNDdkMi04MGJiLWEzNTQ4YWMyMGM1OCJ9.L3Fw6gGBRjIkXd4sKbqSuR8uF1fSmnIrj-aKXL1-vJ4",
+      "Cookie": "locale=zh-Hans; Token=e28d1328-55f1-41f5-9a75-3ad585899516; csrf_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NjY3MzE1NzIsInN1YiI6IjhkZDcwZTNmLTAxMDktNDdkMi04MGJiLWEzNTQ4YWMyMGM1OCJ9.L3Fw6gGBRjIkXd4sKbqSuR8uF1fSmnIrj-aKXL1-vJ4; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiOGRkNzBlM2YtMDEwOS00N2QyLTgwYmItYTM1NDhhYzIwYzU4IiwiZXhwIjoxNzY2NzMxNTcyLCJpc3MiOiJTRUxGX0hPU1RFRCIsInN1YiI6IkNvbnNvbGUgQVBJIFBhc3Nwb3J0In0.OdlhV0riFrrfLEwE0LK1GEnN14pSKnVt_b96llJ6Q7Q; refresh_token=ef2f947a9d169f3e0093154aa6d6765d7394bb76f6b9d48029890f89a21deb631f006046d3e53f55db721d7db8c71685e5246d4202772f07c172ba20e0dcb478"
     }
   },
 
