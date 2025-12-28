@@ -2,7 +2,8 @@ name: Publish Native AOT Multi-Platform
 
 on:
   push:
-    tags: ["v*"] # 推送 v1.0.0 等 tag 触发
+    # tags: ["v*"] # 推送 v1.0.0 等 tag 触发
+    tags: ["v*", "V*"]
 
 jobs:
   build:
