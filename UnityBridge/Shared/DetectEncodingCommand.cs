@@ -1,6 +1,6 @@
 using UnityBridge.Tools;
 
-namespace UnityBridge.Commands;
+namespace UnityBridge.Shared;
 
 /// <summary>
 /// 文件/文件夹编码检测命令（移植自 Rust encoding_detector.rs）

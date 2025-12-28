@@ -7,12 +7,12 @@ using System.Security.Cryptography;
 using System.Text;
 using UnityBridge.Tools;
 
-namespace UnityBridge.Helpers;
+namespace UnityBridge.Infrastructure.Licensing;
 
 /// <summary>
 /// 试用期管理类，用于检测试用期和验证激活 key
 /// </summary>
-public static class TrialManager
+public static class LicenseManager
 {
     private const string ConfigFileName = "trial.dat"; // 二进制加密文件
     private const int TrialDays = 30; // 试用期30天

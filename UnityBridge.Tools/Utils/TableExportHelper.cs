@@ -9,7 +9,7 @@ namespace UnityBridge.Tools;
 /// <summary>
 /// 导出数据类型枚举。
 /// </summary>
-public enum ExportDataType
+public enum ExportDataTypeEnum
 {
     /// <summary>
     /// 二维字符串列表。
@@ -24,10 +24,10 @@ public enum ExportDataType
 /// <summary>
 /// 数据导出工具，支持 Excel (xlsx) 和 CSV 格式。
 /// </summary>
-public class ExportHelper
+public class TableExportHelper
 {
     private readonly Dictionary<string, object> _sheets = new();
-    private readonly Dictionary<string, ExportDataType> _sheetTypes = new();
+    private readonly Dictionary<string, ExportDataTypeEnum> _sheetTypes = new();
 
     /// <summary>
     /// 添加表格数据工作表。
@@ -37,7 +37,7 @@ public class ExportHelper
     public void AddSheet(string name, List<List<string>> data)
     {
         _sheets[name] = data;
-        _sheetTypes[name] = ExportDataType.Table;
+        _sheetTypes[name] = ExportDataTypeEnum.Table;
     }
 
     /// <summary>
@@ -48,7 +48,7 @@ public class ExportHelper
     public void AddSheet(string name, List<Dictionary<string, object>> data)
     {
         _sheets[name] = data;
-        _sheetTypes[name] = ExportDataType.Json;
+        _sheetTypes[name] = ExportDataTypeEnum.Json;
     }
 
     /// <summary>
@@ -128,7 +128,7 @@ public class ExportHelper
             var data = _sheets[sheetName];
             var worksheet = workbook.Worksheets.Add(sheetName);
 
-            if (type == ExportDataType.Table)
+            if (type == ExportDataTypeEnum.Table)
             {
                 var tableData = (List<List<string>>)data;
                 for (int r = 0; r < tableData.Count; r++)
@@ -139,7 +139,7 @@ public class ExportHelper
                     }
                 }
             }
-            else if (type == ExportDataType.Json)
+            else if (type == ExportDataTypeEnum.Json)
             {
                 var jsonData = (List<Dictionary<string, object>>)data;
                 if (jsonData.Count > 0)
@@ -177,19 +177,19 @@ public class ExportHelper
     public void ExportToCsv(string path, string? sheetName = null)
     {
         object data;
-        ExportDataType type;
+        ExportDataTypeEnum typeEnum;
 
         if (sheetName != null)
         {
             if (!_sheets.ContainsKey(sheetName)) throw new ArgumentException($"Sheet {sheetName} not found");
             data = _sheets[sheetName];
-            type = _sheetTypes[sheetName];
+            typeEnum = _sheetTypes[sheetName];
         }
         else if (_sheets.Count == 1)
         {
             var first = _sheets.Keys.First();
             data = _sheets[first];
-            type = _sheetTypes[first];
+            typeEnum = _sheetTypes[first];
         }
         else
         {
@@ -202,7 +202,7 @@ public class ExportHelper
         
         using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
 
-        if (type == ExportDataType.Table)
+        if (typeEnum == ExportDataTypeEnum.Table)
         {
             var tableData = (List<List<string>>)data;
             foreach (var row in tableData)
@@ -214,7 +214,7 @@ public class ExportHelper
                 csv.NextRecord();
             }
         }
-        else if (type == ExportDataType.Json)
+        else if (typeEnum == ExportDataTypeEnum.Json)
         {
             var jsonData = (List<Dictionary<string, object>>)data;
             if (jsonData.Count > 0)

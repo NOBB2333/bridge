@@ -1,7 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 
-namespace UnityBridge.Options;
+namespace UnityBridge.Configuration.Options;
 
 /// <summary>
 /// 简单的 Options 管理器：启动时读取 <c>Configuration</c> 目录下的所有 json，
@@ -14,7 +14,7 @@ public static class ConfigManager
         ReadCommentHandling = JsonCommentHandling.Skip,
         AllowTrailingCommas = true,
         PropertyNameCaseInsensitive = true,
-        TypeInfoResolver = ConfigJsonSerializerContext.Default
+        TypeInfoResolver = AppJsonSerializerContext.Default
     };
 
     private static readonly JsonDocumentOptions DocumentOptions = new()
@@ -89,13 +89,13 @@ public static class ConfigManager
         }
     }
 
-    private static readonly Lazy<EndpointOptions> _downloadOptions = new(() => BindSection<EndpointOptions>("Download"));
-    private static readonly Lazy<EndpointOptions> _uploadOptions = new(() => BindSection<EndpointOptions>("Upload"));
-    private static readonly Lazy<DifyMigrationOptions> _difyMigrationOptions = new(() => BindSection<DifyMigrationOptions>("DifyMigration"));
-    private static readonly Lazy<SionWebAppOptions> _sionWebAppOptions = new(() => BindSection<SionWebAppOptions>("SionWebApp"));
+    private static readonly Lazy<EndpointOptions> DownloadOptions = new(() => BindSection<EndpointOptions>("Download"));
+    private static readonly Lazy<EndpointOptions> UploadOptions = new(() => BindSection<EndpointOptions>("Upload"));
+    private static readonly Lazy<DifyMigrationOptions> DifyMigrationOptions = new(() => BindSection<DifyMigrationOptions>("DifyMigration"));
+    private static readonly Lazy<SionWebAppOptions> SionWebAppOptions = new(() => BindSection<SionWebAppOptions>("SionWebApp"));
 
-    public static EndpointOptions Download => _downloadOptions.Value;
-    public static EndpointOptions Upload => _uploadOptions.Value;
-    public static DifyMigrationOptions DifyMigration => _difyMigrationOptions.Value;
-    public static SionWebAppOptions SionWebApp => _sionWebAppOptions.Value;
+    public static EndpointOptions Download => DownloadOptions.Value;
+    public static EndpointOptions Upload => UploadOptions.Value;
+    public static DifyMigrationOptions DifyMigration => DifyMigrationOptions.Value;
+    public static SionWebAppOptions SionWebApp => SionWebAppOptions.Value;
 }

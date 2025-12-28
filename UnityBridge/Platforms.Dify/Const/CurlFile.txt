@@ -322,3 +322,92 @@ curl 'http://192.168.113.44:88/console/api/apps/89ed1f0a-113f-4a37-abad-84d0ae18
 
 
 
+# 查询1个APP所有的K
+curl 'http://nucbox-g3.local:8070/console/api/apps/195dd6f5-8c83-4bf0-a1b6-aa47ba0bbb0d/api-keys' \
+  -H 'Accept: */*' \
+  -H 'Accept-Language: zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6' \
+  -H 'Connection: keep-alive' \
+  -b 'session=eyJjc3JmX3Rva2VuIjoiZTk2ZTNiZjM2MWM1Y2Y4M2I4MjA2NzdiNWEzOGFhZmMzN2EwOWUwNyJ9.aU9PXg.Y9mtSnIIxfDqjYjBy_qu6ncaU10; panel_public_key=LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUF6R1FESEhHejBtWEVBL3JJeUFTRgp2SFlwR0VwYzBUbHBTaDRIQmtvek53RXg2Z0RWajNVL0drWkJkLzhMTE81eC9OUHBRVW82Y2NjclJKL3M1N2s4ClRwRmFESmZBc2s4dFpmYitHM2ZCemVHL3dPSWJ1aElrUVpGSnpZamQ5MGlUVGozTEZKREV0Y0VQYWppMEFSc0QKV2dhQ3ZNTEk3aXo3cEhXUGJWUmdEeDlXNEJ1bno5NHpUSFNrMkRUZG5ISXE4MGRDdGJhNjNkZUtmUmJkUWVRTApIT1dQNDdJNUluR1VDZDNhRFA0RjZaOGM4d2hRQlNZbHpORUl2aUNDWWNPQysrUTNLMWUrWG5Fc1NHTWlKeHNICjJGazVuVC9iVkdZcDRjdEhHZHVVNTF6S2I0TG90aWpmU1I2d3RveFhLTzhqbUEydXN3OWdEUWVoWmlHL2FxZW0KRndJREFRQUIKLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg%3D%3D; SecurityEntrance=MXBhbmVs; locale=zh-Hans; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNDJiYWI0ZmMtNDJlYi00YWEyLTk1NmQtNGMyNzExZWFkM2VmIiwiZXhwIjoxNzY2OTIzMDY2LCJpc3MiOiJTRUxGX0hPU1RFRCIsInN1YiI6IkNvbnNvbGUgQVBJIFBhc3Nwb3J0In0.l6mCQ-xXmdTfmsXNweysbLM44-W0ZZPU-qAYXdeMUmc; refresh_token=a88a5b2beaee174992503b9543cfdef81f9a78af59859eca8e2a9a5b7496fb0c29ae64fde512317fad92774a1cebf36bbd324d9768c84ea2d789f178fd361494; csrf_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NjY5MjMwNjYsInN1YiI6IjQyYmFiNGZjLTQyZWItNGFhMi05NTZkLTRjMjcxMWVhZDNlZiJ9.XEnWZPz3uN7UoaeEW2D7HMlzDwPTAZH8sj3jKi-D_xU' \
+  -H 'Referer: http://nucbox-g3.local:8070/app/195dd6f5-8c83-4bf0-a1b6-aa47ba0bbb0d/develop' \
+  -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0' \
+  -H 'content-type: application/json' \
+  -H 'x-csrf-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NjY5MjMwNjYsInN1YiI6IjQyYmFiNGZjLTQyZWItNGFhMi05NTZkLTRjMjcxMWVhZDNlZiJ9.XEnWZPz3uN7UoaeEW2D7HMlzDwPTAZH8sj3jKi-D_xU' \
+  --insecure
+
+# 响应
+{
+    "data": [
+        {
+            "id": "d09cedbd-d2b5-4a85-a631-ef87fac9ba30",
+            "type": "app",
+            "token": "app-kKhCw6UfU2KT8FFVdFrhcjvw",
+            "last_used_at": null,
+            "created_at": 1766920453
+        },
+        {
+            "id": "3103991e-3c63-4acd-8d18-106c79b77ecc",
+            "type": "app",
+            "token": "app-PBwItDYuzbmurBUczzBqibzw",
+            "last_used_at": null,
+            "created_at": 1766920503
+        },
+        {
+            "id": "32e73349-2a3a-4287-96f1-d7816f148235",
+            "type": "app",
+            "token": "app-Ok1eQJJZAD12qCXBk0mpAXjp",
+            "last_used_at": null,
+            "created_at": 1766920759
+        },
+        {
+            "id": "f7a84b7d-d767-49f5-bc15-4435b7cab877",
+            "type": "app",
+            "token": "app-htfuRz0f1YRNOTnDZJiAkmh3",
+            "last_used_at": null,
+            "created_at": 1766920781
+        }
+    ]
+}
+
+
+
+
+
+# 删除某一个单独的K
+
+curl 'http://nucbox-g3.local:8070/console/api/apps/195dd6f5-8c83-4bf0-a1b6-aa47ba0bbb0d/api-keys/f7a84b7d-d767-49f5-bc15-4435b7cab877' \
+  -X 'DELETE' \
+  -H 'Accept: */*' \
+  -H 'Accept-Language: zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6' \
+  -H 'Connection: keep-alive' \
+  -b 'session=eyJjc3JmX3Rva2VuIjoiZTk2ZTNiZjM2MWM1Y2Y4M2I4MjA2NzdiNWEzOGFhZmMzN2EwOWUwNyJ9.aU9PXg.Y9mtSnIIxfDqjYjBy_qu6ncaU10; panel_public_key=LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUF6R1FESEhHejBtWEVBL3JJeUFTRgp2SFlwR0VwYzBUbHBTaDRIQmtvek53RXg2Z0RWajNVL0drWkJkLzhMTE81eC9OUHBRVW82Y2NjclJKL3M1N2s4ClRwRmFESmZBc2s4dFpmYitHM2ZCemVHL3dPSWJ1aElrUVpGSnpZamQ5MGlUVGozTEZKREV0Y0VQYWppMEFSc0QKV2dhQ3ZNTEk3aXo3cEhXUGJWUmdEeDlXNEJ1bno5NHpUSFNrMkRUZG5ISXE4MGRDdGJhNjNkZUtmUmJkUWVRTApIT1dQNDdJNUluR1VDZDNhRFA0RjZaOGM4d2hRQlNZbHpORUl2aUNDWWNPQysrUTNLMWUrWG5Fc1NHTWlKeHNICjJGazVuVC9iVkdZcDRjdEhHZHVVNTF6S2I0TG90aWpmU1I2d3RveFhLTzhqbUEydXN3OWdEUWVoWmlHL2FxZW0KRndJREFRQUIKLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg%3D%3D; SecurityEntrance=MXBhbmVs; locale=zh-Hans; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNDJiYWI0ZmMtNDJlYi00YWEyLTk1NmQtNGMyNzExZWFkM2VmIiwiZXhwIjoxNzY2OTIzMDY2LCJpc3MiOiJTRUxGX0hPU1RFRCIsInN1YiI6IkNvbnNvbGUgQVBJIFBhc3Nwb3J0In0.l6mCQ-xXmdTfmsXNweysbLM44-W0ZZPU-qAYXdeMUmc; refresh_token=a88a5b2beaee174992503b9543cfdef81f9a78af59859eca8e2a9a5b7496fb0c29ae64fde512317fad92774a1cebf36bbd324d9768c84ea2d789f178fd361494; csrf_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NjY5MjMwNjYsInN1YiI6IjQyYmFiNGZjLTQyZWItNGFhMi05NTZkLTRjMjcxMWVhZDNlZiJ9.XEnWZPz3uN7UoaeEW2D7HMlzDwPTAZH8sj3jKi-D_xU' \
+  -H 'Origin: http://nucbox-g3.local:8070' \
+  -H 'Referer: http://nucbox-g3.local:8070/app/195dd6f5-8c83-4bf0-a1b6-aa47ba0bbb0d/develop' \
+  -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0' \
+  -H 'content-type: application/json' \
+  -H 'x-csrf-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NjY5MjMwNjYsInN1YiI6IjQyYmFiNGZjLTQyZWItNGFhMi05NTZkLTRjMjcxMWVhZDNlZiJ9.XEnWZPz3uN7UoaeEW2D7HMlzDwPTAZH8sj3jKi-D_xU' \
+  --insecure
+
+没有响应
+
+
+
+
+# 工作流发布为工具
+这里有几个要注意的点，就是它的名称的话是要做特殊处理的，不能有横杠那样的特殊字符。
+
+curl 'http://nucbox-g3.local:8070/console/api/workspaces/current/tool-provider/workflow/create' \
+  -H 'Accept: */*' \
+  -H 'Accept-Language: zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6' \
+  -H 'Connection: keep-alive' \
+  -b 'session=eyJjc3JmX3Rva2VuIjoiZTk2ZTNiZjM2MWM1Y2Y4M2I4MjA2NzdiNWEzOGFhZmMzN2EwOWUwNyJ9.aU9PXg.Y9mtSnIIxfDqjYjBy_qu6ncaU10; panel_public_key=LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUF6R1FESEhHejBtWEVBL3JJeUFTRgp2SFlwR0VwYzBUbHBTaDRIQmtvek53RXg2Z0RWajNVL0drWkJkLzhMTE81eC9OUHBRVW82Y2NjclJKL3M1N2s4ClRwRmFESmZBc2s4dFpmYitHM2ZCemVHL3dPSWJ1aElrUVpGSnpZamQ5MGlUVGozTEZKREV0Y0VQYWppMEFSc0QKV2dhQ3ZNTEk3aXo3cEhXUGJWUmdEeDlXNEJ1bno5NHpUSFNrMkRUZG5ISXE4MGRDdGJhNjNkZUtmUmJkUWVRTApIT1dQNDdJNUluR1VDZDNhRFA0RjZaOGM4d2hRQlNZbHpORUl2aUNDWWNPQysrUTNLMWUrWG5Fc1NHTWlKeHNICjJGazVuVC9iVkdZcDRjdEhHZHVVNTF6S2I0TG90aWpmU1I2d3RveFhLTzhqbUEydXN3OWdEUWVoWmlHL2FxZW0KRndJREFRQUIKLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg%3D%3D; SecurityEntrance=MXBhbmVs; locale=zh-Hans; csrf_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NjY5MjY3NDgsInN1YiI6IjQyYmFiNGZjLTQyZWItNGFhMi05NTZkLTRjMjcxMWVhZDNlZiJ9.BT2shLuApZ2KGeV21d7leOiNCEPiM1Qv109M17hg_Kk; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNDJiYWI0ZmMtNDJlYi00YWEyLTk1NmQtNGMyNzExZWFkM2VmIiwiZXhwIjoxNzY2OTI2NzQ4LCJpc3MiOiJTRUxGX0hPU1RFRCIsInN1YiI6IkNvbnNvbGUgQVBJIFBhc3Nwb3J0In0.YUDv8_JpQQ6iEpZ1UqLKJlYkqgOY84ab-t-c7gJqFtM; refresh_token=619dda49602d996848bd1ffe8e8ac221e9307bbaddd0ae3ee7f918cc62b7e88e9a8b0d717ab813f987f91c436cfdea10d5daf766948d36986e4d2e8a729617b0' \
+  -H 'Origin: http://nucbox-g3.local:8070' \
+  -H 'Referer: http://nucbox-g3.local:8070/app/500d1d58-60a4-452a-b557-9187029d00de/workflow' \
+  -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0' \
+  -H 'content-type: application/json' \
+  -H 'x-csrf-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NjY5MjY3NDgsInN1YiI6IjQyYmFiNGZjLTQyZWItNGFhMi05NTZkLTRjMjcxMWVhZDNlZiJ9.BT2shLuApZ2KGeV21d7leOiNCEPiM1Qv109M17hg_Kk' \
+  --data-raw '{"name":"Inside_Workflow","description":"工具用途的简要描述，例如获取特定位置的温度。","icon":{"content":"🤖","background":"#FFEAD5"},"label":"Inside-Workflow","parameters":[{"name":"name","description":"","form":"llm"}],"labels":[],"privacy_policy":"","workflow_app_id":"500d1d58-60a4-452a-b557-9187029d00de"}' \
+  --insecure
+
+
+# 响应
+{"result":"success"}

@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace UnityBridge.Options;
+namespace UnityBridge.Configuration.Options;
 
 /// <summary>
 /// 对应 <c>Configuration/SionWebApp.json</c> 配置。

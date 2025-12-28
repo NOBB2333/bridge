@@ -1,6 +1,4 @@
-using System.Text.RegularExpressions;
-
-namespace UnityBridge.Helpers;
+namespace UnityBridge.Shared;
 
 public static class HeaderHelper
 {

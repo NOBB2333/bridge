@@ -1,4 +1,4 @@
-namespace UnityBridge.Const;
+namespace UnityBridge.Platforms.Sino;
 
 public static class SinoPrompt
 {

@@ -3,7 +3,7 @@ using UnityBridge.Api.Sino;
 using UnityBridge.Api.Sino.Extensions;
 using UnityBridge.Api.Sino.Models;
 
-namespace UnityBridge.Commands;
+namespace UnityBridge.Platforms.Sino;
 
 /// <summary>
 /// 基于 Company API 的知识库辅助命令，封装 curl.txt 中的场景。

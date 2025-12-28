@@ -1,5 +1,8 @@
-namespace UnityBridge.Helpers;
+namespace UnityBridge.Shared;
 
+/// <summary>
+/// 
+/// </summary>
 public static class SanitizationHelper
 {
     public static string SanitizeFilename(string name)

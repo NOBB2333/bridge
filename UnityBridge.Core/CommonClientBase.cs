@@ -19,6 +19,11 @@ public abstract class CommonClientBase : ICommonClient
     public Flurl.Http.Configuration.ISerializer JsonSerializer => FlurlClient.Settings.JsonSerializer;
 
     /// <summary>
+    /// 获取当前客户端使用的拦截器集合。
+    /// </summary>
+    public IList<HttpInterceptor> Interceptors { get; } = new List<HttpInterceptor>();
+
+    /// <summary>
     /// 
     /// </summary>
     /// <param name="httpClient"></param>
@@ -75,12 +80,67 @@ public abstract class CommonClientBase : ICommonClient
     {
         if (flurlRequest is null) throw new ArgumentNullException(nameof(flurlRequest));
 
+        // 创建拦截器上下文
+        var context = new HttpInterceptorContext
+        {
+            FlurlRequest = flurlRequest
+        };
+
+        // 尝试捕获请求体（用于日志）
         if (httpContent is not null)
         {
-            return await flurlRequest.SendAsync(flurlRequest.Verb, httpContent, cancellationToken: cancellationToken).ConfigureAwait(false);
+            try
+            {
+                context.RequestBody = await httpContent.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+            }
+            catch
+            {
+                // 忽略无法读取的情况
+            }
         }
-            
-        return await flurlRequest.SendAsync(flurlRequest.Verb, null, cancellationToken: cancellationToken).ConfigureAwait(false);
+
+        // 执行请求前拦截器
+        context.Stopwatch.Start();
+        foreach (var interceptor in Interceptors)
+        {
+            await interceptor.BeforeCallAsync(context, cancellationToken).ConfigureAwait(false);
+        }
+
+        IFlurlResponse response;
+        try
+        {
+            if (httpContent is not null)
+            {
+                response = await flurlRequest.SendAsync(flurlRequest.Verb, httpContent, cancellationToken: cancellationToken).ConfigureAwait(false);
+            }
+            else
+            {
+                response = await flurlRequest.SendAsync(flurlRequest.Verb, null, cancellationToken: cancellationToken).ConfigureAwait(false);
+            }
+            context.FlurlResponse = response;
+        }
+        catch (Exception ex)
+        {
+            context.Exception = ex;
+            context.Stopwatch.Stop();
+
+            // 执行异常后拦截器
+            foreach (var interceptor in Interceptors)
+            {
+                await interceptor.AfterCallAsync(context, cancellationToken).ConfigureAwait(false);
+            }
+            throw;
+        }
+
+        context.Stopwatch.Stop();
+
+        // 执行请求后拦截器
+        foreach (var interceptor in Interceptors)
+        {
+            await interceptor.AfterCallAsync(context, cancellationToken).ConfigureAwait(false);
+        }
+
+        return response;
     }
 
     /// <summary>
@@ -94,7 +154,48 @@ public abstract class CommonClientBase : ICommonClient
     {
         if (flurlRequest is null) throw new ArgumentNullException(nameof(flurlRequest));
 
-        return await flurlRequest.SendJsonAsync(flurlRequest.Verb, data, cancellationToken: cancellationToken).ConfigureAwait(false);
+        // 创建拦截器上下文
+        var context = new HttpInterceptorContext
+        {
+            FlurlRequest = flurlRequest,
+            RequestBody = data is not null ? JsonSerializer.Serialize(data) : null
+        };
+
+        // 执行请求前拦截器
+        context.Stopwatch.Start();
+        foreach (var interceptor in Interceptors)
+        {
+            await interceptor.BeforeCallAsync(context, cancellationToken).ConfigureAwait(false);
+        }
+
+        IFlurlResponse response;
+        try
+        {
+            response = await flurlRequest.SendJsonAsync(flurlRequest.Verb, data, cancellationToken: cancellationToken).ConfigureAwait(false);
+            context.FlurlResponse = response;
+        }
+        catch (Exception ex)
+        {
+            context.Exception = ex;
+            context.Stopwatch.Stop();
+
+            // 执行异常后拦截器
+            foreach (var interceptor in Interceptors)
+            {
+                await interceptor.AfterCallAsync(context, cancellationToken).ConfigureAwait(false);
+            }
+            throw;
+        }
+
+        context.Stopwatch.Stop();
+
+        // 执行请求后拦截器
+        foreach (var interceptor in Interceptors)
+        {
+            await interceptor.AfterCallAsync(context, cancellationToken).ConfigureAwait(false);
+        }
+
+        return response;
     }
 
     /// <summary>

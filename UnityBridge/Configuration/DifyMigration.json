@@ -1,6 +1,18 @@
 {
-
   "Host": {
+    "BaseUrl": "http://nucbox-g3.local:8070",
+    "Headers": {
+      "Accept": "*/*",
+      "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6",
+      "Connection": "keep-alive",
+      "Referer": "http://nucbox-g3.local:8070/app/195dd6f5-8c83-4bf0-a1b6-aa47ba0bbb0d/develop",
+      "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0",
+      "content-type": "application/json",
+      "x-csrf-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NjY5MjY3NDgsInN1YiI6IjQyYmFiNGZjLTQyZWItNGFhMi05NTZkLTRjMjcxMWVhZDNlZiJ9.BT2shLuApZ2KGeV21d7leOiNCEPiM1Qv109M17hg_Kk",
+      "Cookie": "session=eyJjc3JmX3Rva2VuIjoiZTk2ZTNiZjM2MWM1Y2Y4M2I4MjA2NzdiNWEzOGFhZmMzN2EwOWUwNyJ9.aU9PXg.Y9mtSnIIxfDqjYjBy_qu6ncaU10; panel_public_key=LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUF6R1FESEhHejBtWEVBL3JJeUFTRgp2SFlwR0VwYzBUbHBTaDRIQmtvek53RXg2Z0RWajNVL0drWkJkLzhMTE81eC9OUHBRVW82Y2NjclJKL3M1N2s4ClRwRmFESmZBc2s4dFpmYitHM2ZCemVHL3dPSWJ1aElrUVpGSnpZamQ5MGlUVGozTEZKREV0Y0VQYWppMEFSc0QKV2dhQ3ZNTEk3aXo3cEhXUGJWUmdEeDlXNEJ1bno5NHpUSFNrMkRUZG5ISXE4MGRDdGJhNjNkZUtmUmJkUWVRTApIT1dQNDdJNUluR1VDZDNhRFA0RjZaOGM4d2hRQlNZbHpORUl2aUNDWWNPQysrUTNLMWUrWG5Fc1NHTWlKeHNICjJGazVuVC9iVkdZcDRjdEhHZHVVNTF6S2I0TG90aWpmU1I2d3RveFhLTzhqbUEydXN3OWdEUWVoWmlHL2FxZW0KRndJREFRQUIKLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg%3D%3D; SecurityEntrance=MXBhbmVs; locale=zh-Hans; csrf_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NjY5MjY3NDgsInN1YiI6IjQyYmFiNGZjLTQyZWItNGFhMi05NTZkLTRjMjcxMWVhZDNlZiJ9.BT2shLuApZ2KGeV21d7leOiNCEPiM1Qv109M17hg_Kk; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNDJiYWI0ZmMtNDJlYi00YWEyLTk1NmQtNGMyNzExZWFkM2VmIiwiZXhwIjoxNzY2OTI2NzQ4LCJpc3MiOiJTRUxGX0hPU1RFRCIsInN1YiI6IkNvbnNvbGUgQVBJIFBhc3Nwb3J0In0.YUDv8_JpQQ6iEpZ1UqLKJlYkqgOY84ab-t-c7gJqFtM; refresh_token=619dda49602d996848bd1ffe8e8ac221e9307bbaddd0ae3ee7f918cc62b7e88e9a8b0d717ab813f987f91c436cfdea10d5daf766948d36986e4d2e8a729617b0"
+    }
+  },
+  "Host3": {
     "BaseUrl": "http://192.168.104.116:88",
     "Headers": {
       "Accept": "*/*",
@@ -13,7 +25,6 @@
       "Cookie": "locale=zh-Hans; Token=e28d1328-55f1-41f5-9a75-3ad585899516; csrf_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NjY3MzE1NzIsInN1YiI6IjhkZDcwZTNmLTAxMDktNDdkMi04MGJiLWEzNTQ4YWMyMGM1OCJ9.L3Fw6gGBRjIkXd4sKbqSuR8uF1fSmnIrj-aKXL1-vJ4; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiOGRkNzBlM2YtMDEwOS00N2QyLTgwYmItYTM1NDhhYzIwYzU4IiwiZXhwIjoxNzY2NzMxNTcyLCJpc3MiOiJTRUxGX0hPU1RFRCIsInN1YiI6IkNvbnNvbGUgQVBJIFBhc3Nwb3J0In0.OdlhV0riFrrfLEwE0LK1GEnN14pSKnVt_b96llJ6Q7Q; refresh_token=ef2f947a9d169f3e0093154aa6d6765d7394bb76f6b9d48029890f89a21deb631f006046d3e53f55db721d7db8c71685e5246d4202772f07c172ba20e0dcb478"
     }
   },
-
   "Host2": {
     "BaseUrl": "http://192.168.113.44:90",
     "Headers": {
@@ -39,9 +50,6 @@
       "content-type": "application/json",
       "Cookie": "locale=en-US"
     }
-  }
-  ,
-  "ExportDir":"exports2"
-
-
+  },
+  "ExportDir": "exports2"
 }

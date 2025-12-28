@@ -1,16 +1,16 @@
-using CsvHelper;
 using Flurl.Http;
-using System.Globalization;
 using UnityBridge.Api.Dify;
 using UnityBridge.Api.Dify.Extensions;
 using UnityBridge.Api.Dify.Models;
+using UnityBridge.Shared;
+using AppJsonSerializerContext = UnityBridge.Configuration.Options.AppJsonSerializerContext;
 
-namespace UnityBridge.Commands;
+namespace UnityBridge.Platforms.Dify;
 
 /// <summary>
 /// 合并了“发布 API Key / 批量发布”和“获取应用信息”的互动命令。
 /// </summary>
-public static class DifyAppCommand
+public static class DifyAppKeyCommand
 {
     private const string ExportDir = "exports";
 
@@ -21,30 +21,41 @@ public static class DifyAppCommand
         while (true)
         {
             Console.WriteLine("\n请选择操作:");
-            Console.WriteLine("1) 为指定应用生成 API Key");
-            Console.WriteLine("2) 列出所有应用并选择生成");
-            Console.WriteLine("3) 为所有应用生成 API Key 并导出 CSV");
-            Console.WriteLine("4) 返回主菜单");
+            Console.WriteLine("1) 从应用列表选择并生成 API Key");
+            Console.WriteLine("2) 为所有应用生成 API Key 并导出 CSV");
+            Console.WriteLine("3) 查看指定应用的所有 API Key");
+            Console.WriteLine("4) 查看所有应用的 API Key 汇总");
+            Console.WriteLine("5) 清理冗余 API Key (每个应用只保留1个)");
+            Console.WriteLine("0) 返回主菜单");
             Console.Write("输入选项编号后回车: ");
 
             var choice = Console.ReadLine()?.Trim();
             switch (choice)
             {
                 case "1":
-                    var appId = PromptAppId();
-                    await GenerateKeyForAppAsync(client, appId);
-                    break;
-                case "2":
                     var selectedId = await SelectAppFromListAsync(client);
                     if (selectedId != null)
                     {
                         await GenerateKeyForAppAsync(client, selectedId);
                     }
                     break;
-                case "3":
+                case "2":
                     await GenerateKeysForAllAppsAsync(client);
                     break;
+                case "3":
+                    var appId = await SelectAppFromListAsync(client);
+                    if (appId != null)
+                    {
+                        await ListApiKeysForAppAsync(client, appId);
+                    }
+                    break;
                 case "4":
+                    await ListAllAppsApiKeysAsync(client);
+                    break;
+                case "5":
+                    await CleanupRedundantApiKeysAsync(client);
+                    break;
+                case "0":
                     return;
                 default:
                     Console.WriteLine("无效选项，请重新输入。\n");
@@ -105,6 +116,224 @@ public static class DifyAppCommand
         await Task.Delay(300);
     }
 
+    /// <summary>
+    /// 查看指定应用的所有 API Key。
+    /// </summary>
+    private static async Task ListApiKeysForAppAsync(DifyApiClient client, string appId)
+    {
+        try
+        {
+            var listRequest = new ConsoleApiAppsAppidApikeysRequest { AppId = appId };
+            var listResponse = await client.ExecuteConsoleApiAppsAppidApikeysAsync(listRequest);
+
+            if (listResponse.Data is not { Length: > 0 })
+            {
+                Console.WriteLine("\n该应用下暂无 API Key 记录。\n");
+                return;
+            }
+
+            Console.WriteLine($"\n该应用下共有 {listResponse.Data.Length} 个 API Key：");
+            Console.WriteLine("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+            for (int i = 0; i < listResponse.Data.Length; i++)
+            {
+                var key = listResponse.Data[i];
+                var createdText = key.CreatedAt.HasValue 
+                    ? DateTimeOffset.FromUnixTimeSeconds(key.CreatedAt.Value).ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")
+                    : "N/A";
+                var lastUsedText = key.LastUsedAt.HasValue 
+                    ? DateTimeOffset.FromUnixTimeSeconds(key.LastUsedAt.Value).ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")
+                    : "从未使用";
+                
+                Console.WriteLine($"[{i + 1}] ID:        {key.Id}");
+                Console.WriteLine($"    Token:     {key.Token}");
+                Console.WriteLine($"    Created:   {createdText}");
+                Console.WriteLine($"    Last Used: {lastUsedText}");
+                Console.WriteLine("────────────────────────────────────────────────────────────────────────────────────");
+            }
+            Console.WriteLine("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine($"获取 API Key 列表失败: {ex.Message}");
+            await LogDetailFetchErrorAsync(ex);
+        }
+    }
+
+    /// <summary>
+    /// 查看所有应用的 API Key 汇总。
+    /// </summary>
+    private static async Task ListAllAppsApiKeysAsync(DifyApiClient client)
+    {
+        Console.WriteLine("\n正在获取所有应用的 API Key 汇总...");
+
+        var apps = await FetchAllAppsSummaryAsync(client);
+        if (apps.Count == 0)
+        {
+            Console.WriteLine("未获取到任何应用。");
+            return;
+        }
+
+
+        Console.WriteLine($"正在获取 {apps.Count} 个应用的 API Key 信息...");
+
+        // 先收集所有数据
+        var rows = new List<(string Name, string AppId, int KeyCount, List<string> Tokens, string? Error)>();
+        var totalKeys = 0;
+
+        foreach (var app in apps)
+        {
+            try
+            {
+                var listRequest = new ConsoleApiAppsAppidApikeysRequest { AppId = app.Id };
+                var listResponse = await client.ExecuteConsoleApiAppsAppidApikeysAsync(listRequest);
+
+                var keyCount = listResponse.Data?.Length ?? 0;
+                totalKeys += keyCount;
+
+                // 收集所有 Token
+                var tokens = keyCount > 0 
+                    ? listResponse.Data!.OrderByDescending(k => k.LastUsedAt ?? 0).ThenByDescending(k => k.CreatedAt ?? 0)
+                        .Select(k => k.Token ?? "").ToList()
+                    : new List<string> { "无" };
+
+                rows.Add((app.Name ?? "", app.Id, keyCount, tokens, null));
+            }
+            catch (Exception ex)
+            {
+                rows.Add((app.Name ?? "", app.Id, 0, new List<string>(), ex.Message));
+            }
+
+            await Task.Delay(100);
+        }
+
+        // 统一打印表格
+        Console.WriteLine("\n┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+        Console.WriteLine("┃ 应用名称              ┃ App ID                                 ┃ Key数量 ┃ Token                                             ┃");
+        Console.WriteLine("┣━━━━━━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╋━━━━━━━━━╋━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫");
+
+        foreach (var row in rows)
+        {
+            var name = TruncateOrPad(row.Name, 20);
+            var appId = TruncateOrPad(row.AppId, 38);
+            var count = TruncateOrPad(row.KeyCount.ToString(), 7);
+
+            if (row.Error != null)
+            {
+                Console.WriteLine($"┃ {name} ┃ {appId} ┃ 错误    ┃ {TruncateOrPad(row.Error, 49)} ┃");
+            }
+            else if (row.Tokens.Count == 0)
+            {
+                Console.WriteLine($"┃ {name} ┃ {appId} ┃ {count} ┃ {TruncateOrPad("无", 49)} ┃");
+            }
+            else
+            {
+                // 第一行显示应用信息和第一个 Token
+                Console.WriteLine($"┃ {name} ┃ {appId} ┃ {count} ┃ {TruncateOrPad(row.Tokens[0], 49)} ┃");
+                
+                // 后续行只显示 Token
+                for (int i = 1; i < row.Tokens.Count; i++)
+                {
+                    var emptyName = TruncateOrPad("", 20);
+                    var emptyId = TruncateOrPad("", 38);
+                    var emptyCount = TruncateOrPad("", 7);
+                    Console.WriteLine($"┃ {emptyName} ┃ {emptyId} ┃ {emptyCount} ┃ {TruncateOrPad(row.Tokens[i], 49)} ┃");
+                }
+            }
+        }
+
+        Console.WriteLine("┗━━━━━━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┻━━━━━━━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
+        Console.WriteLine($"\n共 {apps.Count} 个应用，{totalKeys} 个 API Key\n");
+    }
+
+    /// <summary>
+    /// 清理冗余 API Key，每个应用只保留1个（优先保留最近使用的，若都未使用则保留第一个）。
+    /// </summary>
+    private static async Task CleanupRedundantApiKeysAsync(DifyApiClient client)
+    {
+        Console.WriteLine("\n正在获取所有应用...");
+
+        var apps = await FetchAllAppsSummaryAsync(client);
+        if (apps.Count == 0)
+        {
+            Console.WriteLine("未获取到任何应用。");
+            return;
+        }
+
+        Console.WriteLine($"共 {apps.Count} 个应用，开始清理冗余 API Key...\n");
+
+        var totalDeleted = 0;
+        var totalKept = 0;
+
+        foreach (var app in apps)
+        {
+            try
+            {
+                var listRequest = new ConsoleApiAppsAppidApikeysRequest { AppId = app.Id };
+                var listResponse = await client.ExecuteConsoleApiAppsAppidApikeysAsync(listRequest);
+
+                if (listResponse.Data is not { Length: > 1 })
+                {
+                    // 0 或 1 个 Key，不需要清理
+                    if (listResponse.Data?.Length == 1)
+                        totalKept++;
+                    continue;
+                }
+
+                var keys = listResponse.Data.ToList();
+                Console.WriteLine($"[{app.Name}] 有 {keys.Count} 个 API Key，准备清理...");
+
+                // 选择要保留的 Key：优先选最近使用的，若都未使用则选第一个
+                var keyToKeep = keys
+                    .OrderByDescending(k => k.LastUsedAt ?? 0)  // 最近使用的排前面
+                    .ThenBy(k => k.CreatedAt ?? long.MaxValue)  // 相同时保留最早创建的
+                    .First();
+
+                Console.WriteLine($"  保留: {keyToKeep.Token} (LastUsed: {(keyToKeep.LastUsedAt.HasValue ? DateTimeOffset.FromUnixTimeSeconds(keyToKeep.LastUsedAt.Value).ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss") : "从未使用")})");
+
+                // 删除其他 Key
+                foreach (var key in keys.Where(k => k.Id != keyToKeep.Id))
+                {
+                    try
+                    {
+                        var deleteRequest = new ConsoleApiAppsAppidApikeysKeyidRequest
+                        {
+                            AppId = app.Id,
+                            KeyId = key.Id
+                        };
+                        var success = await client.ExecuteConsoleApiAppsAppidApikeysKeyidDeleteAsync(deleteRequest);
+                        if (success)
+                        {
+                            Console.WriteLine($"  删除: {key.Token}");
+                            totalDeleted++;
+                        }
+                        else
+                        {
+                            Console.Error.WriteLine($"  删除失败: {key.Token}");
+                        }
+                    }
+                    catch (Exception deleteEx)
+                    {
+                        Console.Error.WriteLine($"  删除失败: {key.Token} - {deleteEx.Message}");
+                    }
+
+                    await Task.Delay(100);
+                }
+
+                totalKept++;
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"[{app.Name}] 处理失败: {ex.Message}");
+            }
+
+            await Task.Delay(100);
+        }
+
+        Console.WriteLine("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+        Console.WriteLine($"清理完成！删除了 {totalDeleted} 个冗余 Key，保留了 {totalKept} 个 Key");
+        Console.WriteLine("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+    }
+
     #endregion
 
     #region 应用信息
@@ -114,30 +343,25 @@ public static class DifyAppCommand
         while (true)
         {
             Console.WriteLine("\n请选择操作:");
-            Console.WriteLine("1) 通过应用 ID 获取应用详情");
-            Console.WriteLine("2) 从应用列表中选择并查看详情");
-            Console.WriteLine("3) 下载全部应用详情并导出综合表");
-            Console.WriteLine("4) 返回主菜单");
+            Console.WriteLine("1) 从应用列表中选择并查看详情");
+            Console.WriteLine("2) 下载全部应用详情并导出综合表");
+            Console.WriteLine("3) 返回主菜单");
             Console.Write("输入选项编号后回车: ");
 
             var choice = Console.ReadLine()?.Trim();
             switch (choice)
             {
                 case "1":
-                    var appId = PromptAppId();
-                    await GetAppInfoAsync(client, appId);
-                    break;
-                case "2":
                     var selectedId = await SelectAppFromListAsync(client);
                     if (selectedId != null)
                     {
                         await GetAppInfoAsync(client, selectedId);
                     }
                     break;
-                case "3":
+                case "2":
                     await ExportAppMatrixAsync(client);
                     break;
-                case "4":
+                case "3":
                     return;
                 default:
                     Console.WriteLine("无效选项，请重新输入。\n");
@@ -297,22 +521,11 @@ public static class DifyAppCommand
                 WorkflowToolId = workflowTool?.WorkflowToolId,
                 HasDetail = detail is not null
             });
-            await Task.Delay(150);
+            // 延迟
+            await Task.Delay(200);
         }
 
-        if (!Directory.Exists(ExportDir))
-        {
-            Directory.CreateDirectory(ExportDir);
-        }
-
-        var csvPath = Path.Combine(ExportDir, "apps_matrix.csv");
-        using (var writer = new StreamWriter(csvPath))
-        using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
-        {
-            csv.WriteRecords(rows);
-        }
-
-        Console.WriteLine($"已将 {rows.Count} 条记录导出到 {csvPath}");
+        CsvExportHelper.ExportAndPrint(rows, ExportDir, "apps_matrix.csv");
     }
 
     /// <summary>
@@ -479,19 +692,76 @@ public static class DifyAppCommand
             await Task.Delay(150);
         }
 
-        if (!Directory.Exists(ExportDir))
+        // 打印汇总表格
+        PrintApiKeySummaryTable(rows);
+
+        Console.WriteLine();
+        CsvExportHelper.ExportAndPrint(rows, ExportDir, "all_app_apikeys.csv", "条应用 API Key 信息");
+    }
+
+    /// <summary>
+    /// 打印 API Key 生成结果汇总表格。
+    /// </summary>
+    private static void PrintApiKeySummaryTable(List<AllAppKeyRow> rows)
+    {
+        Console.WriteLine("\n┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+        Console.WriteLine("┃ API Key 生成汇总                                                                                                                  ┃");
+        Console.WriteLine("┣━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫");
+        Console.WriteLine("┃ 应用名称              ┃ App ID                                 ┃ 模式            ┃ API Key Token                                     ┃");
+        Console.WriteLine("┣━━━━━━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫");
+
+        foreach (var row in rows)
         {
-            Directory.CreateDirectory(ExportDir);
+            var name = TruncateOrPad(row.Name ?? "", 20);
+            var appId = TruncateOrPad(row.AppId, 38);
+            var mode = TruncateOrPad(row.Mode ?? "", 15);
+            var token = string.IsNullOrEmpty(row.ApiKeyToken) 
+                ? TruncateOrPad(row.ApiKeyError ?? "❌ 失败", 49)
+                : TruncateOrPad(row.ApiKeyToken, 49);
+
+            Console.WriteLine($"┃ {name} ┃ {appId} ┃ {mode} ┃ {token} ┃");
         }
 
-        var csvPath = Path.Combine(ExportDir, "all_app_apikeys.csv");
-        using (var writer = new StreamWriter(csvPath))
-        using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+        Console.WriteLine("┗━━━━━━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
+
+        // 统计
+        var success = rows.Count(r => !string.IsNullOrEmpty(r.ApiKeyToken));
+        var failed = rows.Count - success;
+        Console.WriteLine($"\n✓ 成功: {success}  ✗ 失败: {failed}  总计: {rows.Count}");
+    }
+
+    /// <summary>
+    /// 截断或填充字符串到指定长度。
+    /// </summary>
+    private static string TruncateOrPad(string value, int length)
+    {
+        if (string.IsNullOrEmpty(value))
+            return new string(' ', length);
+
+        // 计算实际显示宽度（中文字符算2个宽度）
+        var displayWidth = 0;
+        var sb = new System.Text.StringBuilder();
+        foreach (var c in value)
         {
-            csv.WriteRecords(rows);
+            var charWidth = c > 127 ? 2 : 1;
+            if (displayWidth + charWidth > length - 1)
+            {
+                sb.Append('…');
+                displayWidth++;
+                break;
+            }
+            sb.Append(c);
+            displayWidth += charWidth;
         }
 
-        Console.WriteLine($"\n已将 {rows.Count} 条应用 API Key 信息导出到 {csvPath}");
+        // 填充到指定宽度
+        while (displayWidth < length)
+        {
+            sb.Append(' ');
+            displayWidth++;
+        }
+
+        return sb.ToString();
     }
 
 

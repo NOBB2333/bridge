@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace UnityBridge.Options;
+namespace UnityBridge.Configuration.Options;
 
 /// <summary>
 /// 对应 <c>Configuration/DifyMigration.json</c> 的整体结构。

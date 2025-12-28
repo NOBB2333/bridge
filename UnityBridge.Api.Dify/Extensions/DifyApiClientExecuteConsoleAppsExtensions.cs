@@ -150,18 +150,23 @@ public static class DifyApiClientExecuteConsoleAppsExtensions
 
         /// <summary>
         /// <para>异步调用 [DELETE] /console/api/apps/{app_id}/api-keys/{key_id} 接口。</para>
+        /// <para>该接口返回 204 No Content，无响应体。</para>
         /// </summary>
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task<ConsoleApiAppsAppidApikeysKeyidResponse> ExecuteConsoleApiAppsAppidApikeysKeyidAsync(ConsoleApiAppsAppidApikeysKeyidRequest request, CancellationToken cancellationToken = default)
+        /// <returns>是否删除成功 (HTTP 2xx)</returns>
+        public async Task<bool> ExecuteConsoleApiAppsAppidApikeysKeyidDeleteAsync(ConsoleApiAppsAppidApikeysKeyidRequest request, CancellationToken cancellationToken = default)
         {
             if (client is null) throw new ArgumentNullException(nameof(client));
             if (request is null) throw new ArgumentNullException(nameof(request));
 
             IFlurlRequest flurlRequest = client.CreateFlurlRequest(request, HttpMethod.Delete, "console", "api", "apps", request.AppId, "api-keys", request.KeyId);
 
-            return await client.SendFlurlRequestAsJsonAsync<ConsoleApiAppsAppidApikeysKeyidResponse>(flurlRequest, data: null, cancellationToken: cancellationToken).ConfigureAwait(false);
+            // DELETE 返回 204 No Content，无响应体
+            using IFlurlResponse flurlResponse = await client.SendFlurlRequestAsync(flurlRequest, null, cancellationToken).ConfigureAwait(false);
+            
+            // 返回是否成功 (2xx 状态码)
+            return flurlResponse.StatusCode is >= 200 and < 300;
         }
 
         /// <summary>
@@ -251,6 +256,23 @@ public static class DifyApiClientExecuteConsoleAppsExtensions
                 .SetQueryParam("workflow_app_id", request.WorkflowAppId);
 
             return await client.SendFlurlRequestAsJsonAsync<ConsoleApiWorkspacesCurrentToolProviderWorkflowGetResponse>(flurlRequest, data: null, cancellationToken: cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// <para>异步调用 [POST] /console/api/workspaces/current/tool-provider/workflow/update 接口。</para>
+        /// <para>更新工作流工具。</para>
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<ConsoleApiWorkspacesCurrentToolProviderWorkflowUpdateResponse> ExecuteConsoleApiWorkspacesCurrentToolProviderWorkflowUpdateAsync(ConsoleApiWorkspacesCurrentToolProviderWorkflowUpdateRequest request, CancellationToken cancellationToken = default)
+        {
+            if (client is null) throw new ArgumentNullException(nameof(client));
+            if (request is null) throw new ArgumentNullException(nameof(request));
+
+            IFlurlRequest flurlRequest = client.CreateFlurlRequest(request, HttpMethod.Post, "console", "api", "workspaces", "current", "tool-provider", "workflow", "update");
+
+            return await client.SendFlurlRequestAsJsonAsync<ConsoleApiWorkspacesCurrentToolProviderWorkflowUpdateResponse>(flurlRequest, data: request, cancellationToken: cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>

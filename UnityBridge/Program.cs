@@ -1,18 +1,23 @@
-﻿namespace UnityBridge;
+﻿using UnityBridge.Configuration.Options;
+using UnityBridge.Infrastructure.Licensing;
+using UnityBridge.Platforms.Dify;
+using UnityBridge.Platforms.Sino;
+using UnityBridge.Shared;
+using AppJsonSerializerContext = UnityBridge.Configuration.Options.AppJsonSerializerContext;
+
+namespace UnityBridge;
 
 using Flurl.Http;
 using UnityBridge.Api.Dify;
 using UnityBridge.Api.Sino;
-using UnityBridge.Commands;
-using UnityBridge.Helpers;
-using UnityBridge.Options;
+using UnityBridge.Core.Interceptors;
 
 class Program
 {
     static async Task Main(string[] args)
     {
         // 试用期检测 - 必须在程序启动时最先执行
-        if (!TrialManager.CheckTrialStatus())
+        if (!LicenseManager.CheckTrialStatus())
         {
             return; // 试用期已过期且未激活，退出程序
         }
@@ -48,6 +53,21 @@ class Program
 
         var client = new DifyApiClient(options, null, true, jsonOptions);
 
+        // 配置请求拦截器（日志 + 指标）
+        var loggingInterceptor = new LoggingInterceptor(
+            logger: msg => Console.WriteLine($"[Dify] {msg}"),
+            options: new LoggingInterceptorOptions
+            {
+                LogRequestHeaders = false, // 不记录请求头（可能含敏感信息）
+                LogRequestBody = true, // 记录请求体
+                LogResponseBody = false, // 不记录响应体（可能很大）
+                MaxBodyLength = 500 // 请求体最大长度
+            });
+        // 指标收集拦截器，统计请求的成功率、耗时等指标
+        var metricsInterceptor = new MetricsInterceptor();
+        client.Interceptors.Add(loggingInterceptor);
+        client.Interceptors.Add(metricsInterceptor);
+
         // Apply headers to the underlying FlurlClient
         foreach (var header in headers)
         {
@@ -75,6 +95,16 @@ class Program
 
             woWebClient = new CompanyApiClient(sionClientOptions);
 
+            // 配置 WoWeb 客户端的请求拦截器
+            woWebClient.Interceptors.Add(new LoggingInterceptor(
+                logger: msg => Console.WriteLine($"[WoWeb] {msg}"),
+                options: new LoggingInterceptorOptions
+                {
+                    LogRequestBody = true,
+                    MaxBodyLength = 500
+                }));
+            woWebClient.Interceptors.Add(new MetricsInterceptor());
+
             if (sionSection.Headers is { Count: > 0 })
             {
                 sionHeaders = new Dictionary<string, string>(sionSection.Headers, StringComparer.OrdinalIgnoreCase);
@@ -90,50 +120,45 @@ class Program
         {
             "1) 下载 (导出) 应用",
             "2) 上传 (导入) 应用",
-            "3) 检测文件/文件夹编码",
-            "4) 发布 / 管理 API Key",
-            "5) 获取应用详情 / 导出综合表",
-            "6) 查看试用期信息",
-            "7) 测试本机授权 (显示机器码并生成测试激活 key)",
-            "8) 一次性测试 WoWeb 项目流程",
-            "9) 批量发布所有工作流并创建工具",
-            "10) 分析 Chat 应用与工作流关系图",
-            "11) 打包 Chat 应用及其所需工作流"
+            "3) 管理 API Key",
+            "4) 获取App应用详情综合表",
+            "5) 工作流发布管理",
+            "6) 一次性测试 WoWeb 项目流程",
+            "7) 分析 Chat 应用与工作流关系图",
+            "8) 打包 Chat 应用及其所需工作流",
+            "9) 检测文件/文件夹编码",
+            "10) 查看试用期信息",
+            "11) 测试本机授权 (显示机器码并生成测试激活 key)"
         };
 
         // 菜单选项与命令方法的映射关系
-        // 选项 1 -> DifyMigrationCommand.ExportAsync
-        // 选项 2 -> DifyMigrationCommand.ImportAsync
-        // 选项 3 -> DetectEncodingCommand.RunAsync
-        // 选项 4 -> DifyAppCommand.ManageApiKeysAsync
-        // 选项 5 -> DifyAppCommand.InspectAppsAsync
-        // 选项 6 -> TrialManager.ShowTrialInfo
-        // 选项 7 -> 本机授权测试 (打印机器码 + 生成并应用测试激活 key)
-        // 选项 8 -> RunWoWebSmokeTestsAsync
-        // 选项 9 -> DifyMigrationCommand.PublishAllWorkflowsAsync
         var commands = new Dictionary<string, Func<Task>>
         {
-            ["1"] = async () => await DifyMigrationCommand.ExportAsync(client), // 下载 (导出) 应用
-            ["2"] = async () => await DifyMigrationCommand.ImportAsync(client), // 上传 (导入) 应用
-            ["3"] = async () => await DetectEncodingCommand.RunAsync(), // 检测文件/文件夹编码
-            ["4"] = async () => await DifyAppCommand.ManageApiKeysAsync(client), // 发布/管理 API Key
-            ["5"] = async () => await DifyAppCommand.InspectAppsAsync(client), // 获取应用详情 / 导出综合表
-            ["6"] = () =>
+            ["1"] = async () => await DifyMigrationCommand.ExportAsync(client),
+            ["2"] = async () => await DifyMigrationCommand.ImportAsync(client),
+            ["3"] = async () => await DifyAppKeyCommand.ManageApiKeysAsync(client),
+            ["4"] = async () => await DifyAppKeyCommand.InspectAppsAsync(client),
+            ["5"] = async () => await DifyWorkflowPublishCommand.ManageWorkflowsAsync(client),
+            ["6"] = async () => await RunWoWebSmokeTestsAsync(woWebClient),
+            ["7"] = async () => await DifyMigrationCommand.AnalyzeChatWorkflowRelationsAsync(),
+            ["8"] = async () => await DifyMigrationCommand.PrepareChatAppPackagesAsync(),
+            ["9"] = async () => await DetectEncodingCommand.RunAsync(),
+            ["10"] = () =>
             {
-                TrialManager.ShowTrialInfo();
+                LicenseManager.ShowTrialInfo();
                 return Task.CompletedTask;
-            }, // 查看试用期信息
-            ["7"] = () => // 本机授权测试
+            },
+            ["11"] = () =>
             {
                 Console.WriteLine("\n========================================");
                 Console.WriteLine("本机授权测试");
                 Console.WriteLine("========================================");
-                var machineCode = TrialManager.GetMachineCode();
+                var machineCode = LicenseManager.GetMachineCode();
                 Console.WriteLine($"机器码：{machineCode}");
                 Console.WriteLine("说明：将此机器码发给作者，可由作者生成正式激活 key。");
 
                 // 为了本机自测，直接生成一个延长 365 天的测试 key，并立即尝试激活
-                var testKey = TrialManager.GenerateActivationKey(365);
+                var testKey = LicenseManager.GenerateActivationKey(365);
                 Console.WriteLine($"\n测试激活 key（仅用于当前机器调试）：\n{testKey}\n");
 
                 Console.WriteLine("尝试使用测试 key 激活并延长试用期...");
@@ -144,10 +169,6 @@ class Program
 
                 return Task.CompletedTask;
             },
-            ["8"] = async () => await RunWoWebSmokeTestsAsync(woWebClient),
-            ["9"] = async () => await DifyMigrationCommand.PublishAllWorkflowsAsync(client), // 批量发布所有工作流并创建工具
-            ["10"] = async () => await DifyMigrationCommand.AnalyzeChatWorkflowRelationsAsync(), // 分析 Chat 应用与工作流关系图
-            ["11"] = async () => await DifyMigrationCommand.PrepareChatAppPackagesAsync() // 打包 Chat 应用及依赖工作流
         };
 
         while (true)

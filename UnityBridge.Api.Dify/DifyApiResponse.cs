@@ -28,12 +28,13 @@ public abstract class DifyApiResponse : CommonResponseBase, ICommonResponse
     /// <summary>
     /// 获取一个值，该值指示调用 Dify API 是否成功。
     /// <para>
-    ///（即 HTTP 状态码为 200，且 <see cref="ErrorCode"/> 为空或 "success"）。
+    ///（即 HTTP 状态码为 2xx，且 <see cref="ErrorCode"/> 为空或 "success"）。
     /// </para>
     /// </summary>
     /// <returns></returns>
     public override bool IsSuccessful()
     {
-        return GetRawStatus() == 200 && (string.IsNullOrEmpty(ErrorCode) || "success".Equals(ErrorCode, System.StringComparison.OrdinalIgnoreCase));
+        var status = GetRawStatus();
+        return status is >= 200 and < 300 && (string.IsNullOrEmpty(ErrorCode) || "success".Equals(ErrorCode, System.StringComparison.OrdinalIgnoreCase));
     }
 }
