@@ -1,0 +1,18 @@
+<Directives xmlns="http://schemas.microsoft.com/netfx/2013/01/metadata">
+  <Application>
+    <!-- SqlSugar 核心反射支持 -->
+    <Assembly Name="SqlSugar" Dynamic="Required All" />
+    
+    <!-- 主项目 -->
+    <Assembly Name="UnityBridge.Crawler" Dynamic="Required All" />
+    
+    <!-- 子项目实体类（包含 [SugarColumn] 属性） -->
+    <Assembly Name="UnityBridge.Crawler.XiaoHongShu" Dynamic="Required All" />
+    <Assembly Name="UnityBridge.Crawler.BiliBili" Dynamic="Required All" />
+    <Assembly Name="UnityBridge.Crawler.Douyin" Dynamic="Required All" />
+    <Assembly Name="UnityBridge.Crawler.Tieba" Dynamic="Required All" />
+    <Assembly Name="UnityBridge.Crawler.Kuaishou" Dynamic="Required All" />
+    <Assembly Name="UnityBridge.Crawler.Zhihu" Dynamic="Required All" />
+    <Assembly Name="UnityBridge.Crawler.Weibo" Dynamic="Required All" />
+  </Application>
+</Directives>

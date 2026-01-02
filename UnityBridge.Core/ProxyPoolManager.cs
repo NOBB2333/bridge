@@ -6,7 +6,7 @@ namespace UnityBridge.Core;
 /// <summary>
 /// 代理池管理器，负责代理的选择、健康检查等。
 /// </summary>
-internal class ProxyPoolManager
+public class ProxyPoolManager
 {
     private readonly ConcurrentQueue<ProxyInfo> _proxyQueue = new();
     private readonly ConcurrentDictionary<string, ProxyInfo> _proxyMap = new();

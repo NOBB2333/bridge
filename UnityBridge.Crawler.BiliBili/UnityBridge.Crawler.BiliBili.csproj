@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>preview</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\UnityBridge.Core\UnityBridge.Core.csproj" />
+    <ProjectReference Include="..\UnityBridge.Crawler.Core\UnityBridge.Crawler.Core.csproj" />
+  </ItemGroup>
+
+  <!-- SqlSugar 依赖由主项目 UnityBridge.Crawler 统一提供 -->
+
+</Project>

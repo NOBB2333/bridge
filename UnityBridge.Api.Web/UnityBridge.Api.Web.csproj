@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>UnityBridge.Api.Web</RootNamespace>
+    
+    <!-- 单文件发布配置 -->
+    <!-- SelfContained=true 意味着包含 .NET Runtime，目标机器无需安装 .NET -->
+    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>true</SelfContained>
+    <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    
+    <!-- 嵌入资源配置 -->
+    <EnableDefaultContentItems>false</EnableDefaultContentItems>
+    <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LibGit2Sharp" Version="0.31.0" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="9.0.0" />
+    <!-- 显式包含 SQLite 驱动，防止单文件裁剪问题 -->
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.0" />
+    
+    <!-- AOT 兼容包 (保留以便未来升级, 即使当前使用 SingleFile) -->
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0" />
+    <PackageReference Include="Scalar.AspNetCore" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\UnityBridge.Api.Dify\UnityBridge.Api.Dify.csproj" />
+    <ProjectReference Include="..\UnityBridge.Api.Sino\UnityBridge.Api.Sino.csproj" />
+    <ProjectReference Include="..\UnityBridge.Core\UnityBridge.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="wwwroot\**\*" LinkBase="wwwroot" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings*.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

@@ -69,6 +69,7 @@
       <ProjectReference Include="..\UnityBridge.Api.Sino\UnityBridge.Api.Sino.csproj" />
       <ProjectReference Include="..\UnityBridge.Core\UnityBridge.Core.csproj" />
       <ProjectReference Include="..\UnityBridge.Tools\UnityBridge.Tools.csproj" />
+<!--      <ProjectReference Include="..\UnityBridge.Crawler\UnityBridge.Crawler.csproj" />-->
     </ItemGroup>
 
 </Project>

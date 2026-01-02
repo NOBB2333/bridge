@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>preview</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\UnityBridge.Core\UnityBridge.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- SqlSugar 依赖由 UnityBridge.Core 统一提供 -->
+    <PackageReference Include="Jint" Version="4.2.2" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- 嵌入 JS 资源文件 -->
+    <EmbeddedResource Include="SignService\js\*.js" />
+  </ItemGroup>
+
+</Project>

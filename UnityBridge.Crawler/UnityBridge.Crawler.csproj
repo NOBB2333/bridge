@@ -1,0 +1,74 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>preview</LangVersion>
+  </PropertyGroup>
+
+  <!-- AOT 发布配置 -->
+  <PropertyGroup>
+    <PublishAot>true</PublishAot>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <!-- 优化大小而非速度 -->
+    <IlcOptimizationPreference>Size</IlcOptimizationPreference>
+    <!-- 不生成堆栈跟踪数据 -->
+    <IlcGenerateStackTraceData>false</IlcGenerateStackTraceData>
+    <!-- 不生成调试符号文件 (.dSYM) -->
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <StripSymbols>true</StripSymbols>
+    <!-- 禁用原生调试符号 (.dSYM on macOS) -->
+    <NativeDebugSymbols>false</NativeDebugSymbols>
+    <!-- 不复制调试符号到发布目录 -->
+    <CopyOutputSymbolsToPublishDirectory>false</CopyOutputSymbolsToPublishDirectory>
+    <CopyDebugSymbolFilesFromPackages>false</CopyDebugSymbolFilesFromPackages>
+    <!-- 启用裁剪优化 -->
+    <PublishTrimmed>true</PublishTrimmed>
+    <TrimMode>full</TrimMode>
+    <!-- 启用压缩 -->
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <!-- 去除未使用的代码 -->
+    <IlcTrimMetadata>true</IlcTrimMetadata>
+    <IlcFoldIdenticalMethodBodies>true</IlcFoldIdenticalMethodBodies>
+  </PropertyGroup>
+
+  <!-- SqlSugar AOT 运行时指令 -->
+  <ItemGroup>
+    <RdXmlFile Include="rd.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Configuration\*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="rd.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\UnityBridge.Crawler.Core\UnityBridge.Crawler.Core.csproj" />
+    <ProjectReference Include="..\UnityBridge.Crawler.XiaoHongShu\UnityBridge.Crawler.XiaoHongShu.csproj" />
+    <ProjectReference Include="..\UnityBridge.Crawler.BiliBili\UnityBridge.Crawler.BiliBili.csproj" />
+    <ProjectReference Include="..\UnityBridge.Crawler.Douyin\UnityBridge.Crawler.Douyin.csproj" />
+    <ProjectReference Include="..\UnityBridge.Crawler.Tieba\UnityBridge.Crawler.Tieba.csproj" />
+    <ProjectReference Include="..\UnityBridge.Crawler.Kuaishou\UnityBridge.Crawler.Kuaishou.csproj" />
+    <ProjectReference Include="..\UnityBridge.Crawler.Zhihu\UnityBridge.Crawler.Zhihu.csproj" />
+    <ProjectReference Include="..\UnityBridge.Crawler.Weibo\UnityBridge.Crawler.Weibo.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.0" />
+    <!-- SqlSugar 依赖由 UnityBridge.Crawler.Core 统一提供 -->
+    
+    <!-- 显式保留需要的程序集，防止被裁剪 -->
+    <TrimmerRootAssembly Include="UnityBridge.Crawler" />
+    <TrimmerRootAssembly Include="Microsoft.Data.Sqlite" />
+  </ItemGroup>
+
+</Project>

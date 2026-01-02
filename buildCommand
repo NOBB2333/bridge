@@ -1,1 +1,166 @@
-﻿mise exec -- dotnet publish -c Release -r osx-arm64 --self-contained
+﻿#!/bin/bash
+# ============================================
+# UnityBridge AOT 发布命令说明
+# ============================================
+# -c Release                              使用 Release 配置
+# -r osx-arm64                            目标运行时: macOS ARM64 (Apple Silicon)
+# --self-contained true                   自包含部署，不依赖系统 .NET 运行时
+# -p:PublishAot=true                      启用 Native AOT 编译，生成原生机器码
+# -p:PublishSingleFile=true               打包为单个可执行文件
+# -p:PublishTrimmed=true                  启用 IL 裁剪，移除未使用的代码
+# -p:TrimMode=full                        完全裁剪模式，最大程度减小体积
+# -p:StripSymbols=true                    剥离调试符号，减小二进制体积
+# -p:NoDSymUtil=true                      禁止生成 .dSYM 调试符号目录 (macOS)
+# -p:IncludeAllContentForSelfExtract=true 将所有内容包含在自解压包中
+# -p:DebugType=None                       不生成调试信息
+# -p:DebugSymbols=false                   不生成调试符号文件
+# -o ./UnityBridge/bin/publish            输出目录
+# ============================================
+
+# 发布 UnityBridge 主项目
+mise exec -- dotnet publish UnityBridge \
+  -c Release \
+  -r osx-arm64 \
+  --self-contained true \
+  -p:PublishAot=true \
+  -p:PublishSingleFile=true \
+  -p:PublishTrimmed=true \
+  -p:TrimMode=full \
+  -p:StripSymbols=true \
+  -p:NoDSymUtil=true \
+  -p:IncludeAllContentForSelfExtract=true \
+  -p:DebugType=None \
+  -p:DebugSymbols=false \
+  -o ./UnityBridge/bin/publish
+
+
+# ============================================
+# 发布 UnityBridge.Api.Web
+# ============================================
+# 前置步骤: 
+# 1. cd ../DifyConfigManager/vue-pure-admin && pnpm build
+# 2. cp -r dist/* ../../UnityBridge/UnityBridge.Api.Web/wwwroot/
+# ============================================
+
+# --------------------------------------------
+# 方式一: Self-Contained SingleFile (推荐 ✅)
+# --------------------------------------------
+# ✅ 包含 .NET Runtime -> 可直接在其他机器运行，无需安装环境
+# ✅ 包含 Vue 前端 -> 前端资源嵌入 EXE 内部
+# ✅ 单文件 -> 只有一个可执行文件
+# ✅ 兼容性好 -> 所有依赖库都能正常工作
+# ⚠️ 体积较大 (~60-80MB)
+# ============================================
+# 0. 编译前端并复制到 wwwroot
+# ============================================
+echo "Building Vue Frontend..."
+cd ../DifyConfigManager/vue-pure-admin && pnpm build && cd ../../UnityBridge
+
+echo "Copying Vue artifacts to wwwroot..."
+mkdir -p UnityBridge.Api.Web/wwwroot
+rm -rf UnityBridge.Api.Web/wwwroot/*
+cp -r ../DifyConfigManager/vue-pure-admin/dist/* UnityBridge.Api.Web/wwwroot/
+
+mise exec -- dotnet publish UnityBridge.Api.Web \
+  -c Release \
+  -r osx-arm64 \
+  --self-contained true \
+  -p:PublishSingleFile=true \
+  -p:IncludeAllContentForSelfExtract=true \
+  -p:EnableCompressionInSingleFile=true \
+  -p:DebugType=None \
+  -p:DebugSymbols=false \
+  -o ./UnityBridge.Api.Web/bin/publish
+
+# --------------------------------------------
+# 方式二: Native AOT (实验性 ⚠️)
+# --------------------------------------------
+# ✅ 启动极快 (~10ms)
+# ✅ 内存占用小
+# ⚠️ 可能失败: SqlSugarCore/LibGit2Sharp 依赖反射，不完全兼容 AOT
+# ⚠️ 如果编译失败，请使用方式一
+mise exec -- dotnet publish UnityBridge.Api.Web \
+  -c Release \
+  -r osx-arm64 \
+  --self-contained true \
+  -p:PublishAot=true \
+  -p:PublishSingleFile=true \
+  -p:PublishTrimmed=true \
+  -p:TrimMode=full \
+  -p:StripSymbols=true \
+  -p:NoDSymUtil=true \
+  -p:IncludeAllContentForSelfExtract=true \
+  -p:DebugType=None \
+  -p:DebugSymbols=false \
+  -o ./UnityBridge.Api.Web/bin/publish-aot
+
+
+mise exec -- dotnet publish LinuxTUI/ \
+  -c Release \
+  -r osx-arm64 \
+  --self-contained true \
+  # -p:PublishAot=true \
+  -p:PublishSingleFile=true \
+  -p:PublishTrimmed=true \
+  -p:TrimMode=full \
+  -p:StripSymbols=true \
+  -p:NoDSymUtil=true \
+  -p:IncludeAllContentForSelfExtract=true \
+  -p:DebugType=None \
+  -p:DebugSymbols=false \
+  -o ./LinuxTUI/bin/publish-aot
+
+
+
+
+# 发布 UnityBridge.Crawler 项目
+mise exec -- dotnet publish UnityBridge.Crawler \
+  -c Release \
+  -r osx-arm64 \
+  --self-contained true \
+  -p:PublishAot=true \
+  -p:PublishSingleFile=true \
+  -p:PublishTrimmed=true \
+  -p:TrimMode=full \
+  -p:StripSymbols=true \
+  -p:NoDSymUtil=true \
+  -p:IncludeAllContentForSelfExtract=true \
+  -p:DebugType=None \
+  -p:DebugSymbols=false \
+  -o ./UnityBridge.Crawler/bin/publish
+
+
+
+# 发布 UnityBridge.db 项目 
+mise exec -- dotnet publish UnityBridge.db \
+  -c Release \
+  -r osx-arm64 \
+  --self-contained true \
+  -p:PublishAot=true \
+  -p:PublishSingleFile=true \
+  -p:PublishTrimmed=true \
+  -p:TrimMode=full \
+  -p:StripSymbols=true \
+  -p:NoDSymUtil=true \
+  -p:IncludeAllContentForSelfExtract=true \
+  -p:DebugType=None \
+  -p:DebugSymbols=false \
+  -o ./UnityBridge.db/bin/publish
+
+
+
+# 开发模式
+dotnet run --project UnityBridge.Crawler.SignServer
+
+# 已发布的二进制 (8888端口)
+./UnityBridge.Crawler.SignServer/bin/publish/UnityBridge.Crawler.SignServer
+
+
+
+cd UnityBridge.db
+dotnet run
+dotnet run --project UnityBridge.db
+# 在 Shell 中：
+db> connect ../crawler.db
+db> show tables
+db> select * from xhs_note_cards limit 10
