@@ -184,6 +184,7 @@ class Program
         }
     }
 
+    // SionWebApp 流程测试  一次性运行所有的流程
     private static async Task RunWoWebSmokeTestsAsync(CompanyApiClient? woWebClient)
     {
         if (woWebClient is null)

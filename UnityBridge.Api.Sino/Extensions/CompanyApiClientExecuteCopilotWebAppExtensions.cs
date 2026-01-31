@@ -38,5 +38,34 @@ public static class CompanyApiClientExecuteCopilotWebAppExtensions
 
             return await client.SendFlurlRequestAsync<CopilotWebAppOcrResponse>(flurlRequest, httpContent, cancellationToken).ConfigureAwait(false);
         }
+
+        /// <summary>
+        /// <para>异步调用 [GET] /copilot-web-app/chat 接口。</para>
+        /// <para>对应 curl.txt：健康度检查。</para>
+        /// </summary>
+        public async Task<CopilotWebAppHealthCheckResponse> ExecuteCopilotWebAppHealthCheckAsync(CopilotWebAppHealthCheckRequest request, CancellationToken cancellationToken = default)
+        {
+            if (client is null) throw new ArgumentNullException(nameof(client));
+            if (request is null) throw new ArgumentNullException(nameof(request));
+
+            IFlurlRequest flurlRequest = client.CreateFlurlRequest(request, HttpMethod.Get, "copilot-web-app", "chat")
+                .WithHeader("Upgrade-Insecure-Requests", "1");
+
+            using IFlurlResponse flurlResponse = await client.SendFlurlRequestAsync(flurlRequest, null, cancellationToken).ConfigureAwait(false);
+            
+            var response = new CopilotWebAppHealthCheckResponse();
+            response.RawStatus = (int)flurlResponse.StatusCode;
+            
+            try
+            {
+                response.HtmlContent = await flurlResponse.GetStringAsync().ConfigureAwait(false);
+            }
+            catch
+            {
+                // Ignore content parsing errors for health check
+            }
+            
+            return response;
+        }
     }
 }

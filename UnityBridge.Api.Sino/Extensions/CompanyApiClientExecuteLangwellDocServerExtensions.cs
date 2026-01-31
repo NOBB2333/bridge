@@ -80,5 +80,18 @@ public static class CompanyApiClientExecuteLangwellDocServerExtensions
 
             return await client.SendFlurlRequestAsync<LangwellDocServerKnowledgeFileIndividualUploadResponse>(flurlRequest, formContent, cancellationToken).ConfigureAwait(false);
         }
+
+        /// <summary>
+        /// <para>异步调用 [POST] /langwell-api/langwell-doc-server/knowledge/kn/page 接口。</para>
+        /// <para>对应 curl.txt：查看对话界面知识库列表。</para>
+        /// </summary>
+        public async Task<LangwellDocServerKnowledgeKnPageResponse> ExecuteLangwellDocServerKnowledgeKnPageAsync(LangwellDocServerKnowledgeKnPageRequest request, CancellationToken cancellationToken = default)
+        {
+            if (client is null) throw new ArgumentNullException(nameof(client));
+            if (request is null) throw new ArgumentNullException(nameof(request));
+
+            IFlurlRequest flurlRequest = client.CreateFlurlRequest(request, HttpMethod.Post, "langwell-api", "langwell-doc-server", "knowledge", "kn", "page");
+            return await client.SendFlurlRequestAsJsonAsync<LangwellDocServerKnowledgeKnPageResponse>(flurlRequest, data: request, cancellationToken: cancellationToken).ConfigureAwait(false);
+        }
     }
 }

@@ -17,9 +17,9 @@
     <!-- 终端 UI 和智能提示 -->
     <PackageReference Include="Spectre.Console" Version="0.54.1-alpha.0.10" />
     <!-- PrettyPrompt: fish 风格的 ghost text 内联提示 -->
-    <PackageReference Include="PrettyPrompt" Version="4.1.0" />
+    <PackageReference Include="PrettyPrompt" Version="4.1.1" />
     <!-- SQLite 驱动 -->
-    <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.1" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.2" />
   </ItemGroup>
 
 </Project>

@@ -93,22 +93,61 @@ public class DbShell
 
     private bool ShowHelp()
     {
-        var table = new Table()
+        AnsiConsole.MarkupLine("\n[bold cyan]═══ 数据库连接帮助 ═══[/]\n");
+        
+        // 命令列表
+        var cmdTable = new Table()
             .AddColumn("[cyan]命令[/]")
             .AddColumn("[cyan]描述[/]");
         
-        table.AddRow("connect <path>", "连接 SQLite 数据库");
-        table.AddRow("connect mysql <connstr>", "连接 MySQL 数据库");
-        table.AddRow("show tables", "显示所有表");
-        table.AddRow("describe <table>", "显示表结构");
-        table.AddRow("select ...", "执行 SQL 查询");
-        table.AddRow("history", "显示命令历史");
-        table.AddRow("clear", "清屏");
-        table.AddRow("exit", "退出");
-        table.AddRow("[grey]Tab / →[/]", "[grey]接受灰色补全建议[/]");
-        table.AddRow("[grey]↑/↓[/]", "[grey]历史记录导航[/]");
+        cmdTable.AddRow("connect <path>", "连接 SQLite 数据库");
+        cmdTable.AddRow("connect mysql <connstr>", "连接 MySQL 数据库");
+        cmdTable.AddRow("connect pgsql <connstr>", "连接 PostgreSQL 数据库");
+        cmdTable.AddRow("connect mssql <connstr>", "连接 SQL Server 数据库");
+        cmdTable.AddRow("show tables", "显示所有表");
+        cmdTable.AddRow("show databases", "显示所有数据库");
+        cmdTable.AddRow("use <database>", "切换数据库");
+        cmdTable.AddRow("describe <table>", "显示表结构");
+        cmdTable.AddRow("select/insert/...", "执行 SQL 语句");
+        cmdTable.AddRow("history", "显示命令历史");
+        cmdTable.AddRow("clear", "清屏");
+        cmdTable.AddRow("exit", "退出");
         
-        AnsiConsole.Write(table);
+        AnsiConsole.Write(cmdTable);
+        
+        // 连接串速查表
+        AnsiConsole.MarkupLine("\n[bold yellow]═══ 连接串速查表 ═══[/]\n");
+        
+        var connTable = new Table()
+            .AddColumn("[yellow]数据库[/]")
+            .AddColumn("[yellow]服务器[/]")
+            .AddColumn("[yellow]用户名[/]")
+            .AddColumn("[yellow]端口写法[/]");
+        
+        connTable.AddRow("MySQL", "[green]server=[/]", "[green]user=[/]", "port=3306");
+        connTable.AddRow("PostgreSQL", "[green]host=[/]", "[green]username=[/]", "port=5432");
+        connTable.AddRow("SQL Server", "[green]server=[/]", "[green]user id=[/]", "server=host[red],[/]1433");
+        connTable.AddRow("SQLite", "直接写路径", "-", "-");
+        
+        AnsiConsole.Write(connTable);
+        
+        // 示例
+        AnsiConsole.MarkupLine("\n[bold green]═══ 连接示例 ═══[/]\n");
+        AnsiConsole.MarkupLine("[grey]# SQLite[/]");
+        AnsiConsole.MarkupLine("  connect ./mydata.db");
+        AnsiConsole.MarkupLine("");
+        AnsiConsole.MarkupLine("[grey]# MySQL[/]");
+        AnsiConsole.MarkupLine("  connect mysql [green]server[/]=127.0.0.1;port=3306;database=mydb;[green]user[/]=root;");
+        AnsiConsole.MarkupLine("");
+        AnsiConsole.MarkupLine("[grey]# PostgreSQL[/]  [yellow]⚠ 注意用 host 和 username[/]");
+        AnsiConsole.MarkupLine("  connect pgsql [green]host[/]=127.0.0.1;port=5432;database=mydb;[green]username[/]=postgres;");
+        AnsiConsole.MarkupLine("");
+        AnsiConsole.MarkupLine("[grey]# SQL Server[/]  [yellow]⚠ 端口用逗号分隔[/]");
+        AnsiConsole.MarkupLine("  connect mssql [green]server[/]=127.0.0.1[red],[/]1433;database=mydb;[green]user id[/]=sa;");
+        
+        AnsiConsole.MarkupLine("\n[grey]💡 密码不需要写在连接串中，系统会安全提示输入[/]");
+        AnsiConsole.MarkupLine("[grey]   Tab/→ 接受补全建议, ↑/↓ 历史导航[/]\n");
+        
         return true;
     }
 

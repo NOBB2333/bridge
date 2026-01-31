@@ -13,8 +13,8 @@
 
   <ItemGroup>
     <!-- SqlSugar 依赖由 UnityBridge.Core 统一提供 -->
-    <PackageReference Include="Jint" Version="4.2.2" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.0" />
+    <PackageReference Include="Jint" Version="4.5.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="10.0.2" />
   </ItemGroup>
 
   <ItemGroup>

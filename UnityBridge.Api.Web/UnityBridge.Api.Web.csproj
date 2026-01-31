@@ -20,13 +20,13 @@
 
   <ItemGroup>
     <PackageReference Include="LibGit2Sharp" Version="0.31.0" />
-    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="10.0.2" />
     <!-- 显式包含 SQLite 驱动，防止单文件裁剪问题 -->
-    <PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.2" />
     
     <!-- AOT 兼容包 (保留以便未来升级, 即使当前使用 SingleFile) -->
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0" />
-    <PackageReference Include="Scalar.AspNetCore" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.2" />
+    <PackageReference Include="Scalar.AspNetCore" Version="2.12.18" />
   </ItemGroup>
 
   <ItemGroup>

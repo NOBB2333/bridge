@@ -104,4 +104,92 @@ public static class SinoKnowledgeCommand
                 $"- {lib?.Name ?? "(未命名)"} ({lib?.Id ?? "无 ID"}) | 数据类型: {lib?.DataType ?? "-"} | 文件总量: {lib?.AllFileSize?.ToString() ?? "-"}");
         }
     }
+
+    /// <summary>
+    /// 对应 curl.txt #381：分页查看知识库文件列表。
+    /// </summary>
+    public static async Task ListKnowledgeFilesAsync(CompanyApiClient client, string libraryId, string? title = null,
+        int pageSize = 50, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(client);
+        ArgumentNullException.ThrowIfNull(libraryId);
+
+        var request = new LangwellDocServerKnowledgeKnPageRequest
+        {
+            PageNumber = 1,
+            PageSize = pageSize,
+            Entity = new LangwellDocServerKnowledgeKnPageRequest.Types.Filter
+            {
+                LibraryId = libraryId,
+                Title = title ?? string.Empty
+            }
+        };
+
+        var response = await client.ExecuteLangwellDocServerKnowledgeKnPageAsync(request, cancellationToken)
+            .ConfigureAwait(false);
+        if (!response.IsSuccessful())
+        {
+            Console.WriteLine($"查询失败：{response.ErrorCode} {response.ErrorMessage ?? "未知错误"}");
+            return;
+        }
+
+        if (response.Data?.Records is not { Count: > 0 } records)
+        {
+            Console.WriteLine("该知识库中暂无文件。");
+            return;
+        }
+
+        var table = BuildFileTable(records);
+        Console.WriteLine(table);
+        Console.WriteLine(
+            $"总数: {response.Data.Total ?? "?"} | 当前页: {response.Data.Current ?? "?"}/{response.Data.Pages ?? "?"}");
+    }
+
+    /// <summary>
+    /// 对应 curl.txt #12：健康度检查。
+    /// </summary>
+    public static async Task<bool> CheckHealthAsync(CompanyApiClient client,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(client);
+
+        var request = new CopilotWebAppHealthCheckRequest();
+        var response = await client.ExecuteCopilotWebAppHealthCheckAsync(request, cancellationToken)
+            .ConfigureAwait(false);
+
+        if (response.IsHealthy)
+        {
+            Console.WriteLine("✅ 服务健康状态: 正常");
+            return true;
+        }
+        else
+        {
+            Console.WriteLine($"❌ 服务健康状态: 异常 (HTTP {response.RawStatus})");
+            return false;
+        }
+    }
+
+    private static string BuildFileTable(
+        IList<LangwellDocServerKnowledgeKnPageResponse.Types.KnowledgeFileRecord> records)
+    {
+        var builder = new StringBuilder();
+        builder.AppendLine("ID\t文件名\t类型\t大小\t状态\t标签");
+        foreach (var record in records)
+        {
+            builder.Append(record.Id ?? "-").Append('\t')
+                .Append(record.FileName ?? "-").Append('\t')
+                .Append(record.FileType ?? "-").Append('\t')
+                .Append(record.FileSize?.ToString("F2") ?? "-").Append(" KB\t")
+                .Append(record.AnalyzeStatus ?? "-").Append('\t')
+                .Append(string.IsNullOrWhiteSpace(record.Tags) ? "-" : TruncateString(record.Tags, 30)).AppendLine();
+        }
+
+        return builder.ToString();
+    }
+
+    private static string TruncateString(string value, int maxLength)
+    {
+        if (string.IsNullOrEmpty(value)) return string.Empty;
+        return value.Length <= maxLength ? value : value.Substring(0, maxLength - 3) + "...";
+    }
 }

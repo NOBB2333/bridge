@@ -124,4 +124,118 @@ public class LangwellApiLangwellInsServerDifyBrokerAgentStreamRequest : CompanyA
     /// </summary>
     [System.Text.Json.Serialization.JsonPropertyName("conversation_id")]
     public string? ConversationId { get; set; }
+
+    /// <summary>
+    /// 获取或设置操作类型（如 "writing" 用于写作功能）。
+    /// </summary>
+    [System.Text.Json.Serialization.JsonPropertyName("action")]
+    public string? Action { get; set; }
+}
+
+/// <summary>
+/// <para>写作功能的输入数据模型。</para>
+/// </summary>
+public class WritingInputs
+{
+    /// <summary>
+    /// 获取或设置回复内容。
+    /// </summary>
+    [System.Text.Json.Serialization.JsonPropertyName("reply")]
+    public string? Reply { get; set; }
+
+    /// <summary>
+    /// 获取或设置文档文件列表。
+    /// </summary>
+    [System.Text.Json.Serialization.JsonPropertyName("docFiles")]
+    public IList<object>? DocFiles { get; set; }
+
+    /// <summary>
+    /// 获取或设置个人知识库 ID。
+    /// </summary>
+    [System.Text.Json.Serialization.JsonPropertyName("personalLibs")]
+    public string? PersonalLibs { get; set; }
+
+    /// <summary>
+    /// 获取或设置 Token。
+    /// </summary>
+    [System.Text.Json.Serialization.JsonPropertyName("Token")]
+    public string? Token { get; set; }
+
+    /// <summary>
+    /// 获取或设置租户 ID。
+    /// </summary>
+    [System.Text.Json.Serialization.JsonPropertyName("tenantid")]
+    public string? TenantId { get; set; }
+
+    /// <summary>
+    /// 获取或设置输出模板。
+    /// </summary>
+    [System.Text.Json.Serialization.JsonPropertyName("outputTemplate")]
+    public string? OutputTemplate { get; set; }
+
+    /// <summary>
+    /// 获取或设置长度要求（如 "不超过200字"）。
+    /// </summary>
+    [System.Text.Json.Serialization.JsonPropertyName("length")]
+    public string? Length { get; set; }
+
+    /// <summary>
+    /// 获取或设置语言（如 "中文(简体)"）。
+    /// </summary>
+    [System.Text.Json.Serialization.JsonPropertyName("lang")]
+    public string? Language { get; set; }
+
+    /// <summary>
+    /// 获取或设置语气风格（如 "详细的"）。
+    /// </summary>
+    [System.Text.Json.Serialization.JsonPropertyName("tone")]
+    public string? Tone { get; set; }
+
+    /// <summary>
+    /// 获取或设置选中的知识库数组。
+    /// </summary>
+    [System.Text.Json.Serialization.JsonPropertyName("selectKnowledgeArr")]
+    public IList<object>? SelectedKnowledgeArray { get; set; }
+
+    /// <summary>
+    /// 获取或设置本地文件列表。
+    /// </summary>
+    [System.Text.Json.Serialization.JsonPropertyName("localFile")]
+    public IList<object>? LocalFiles { get; set; }
+}
+
+/// <summary>
+/// <para>对话功能的输入数据模型。</para>
+/// </summary>
+public class ChatInputs
+{
+    /// <summary>
+    /// 获取或设置查询内容。
+    /// </summary>
+    [System.Text.Json.Serialization.JsonPropertyName("query")]
+    public string? Query { get; set; }
+
+    /// <summary>
+    /// 获取或设置个人知识库 ID。
+    /// </summary>
+    [System.Text.Json.Serialization.JsonPropertyName("personalLibs")]
+    public string? PersonalLibs { get; set; }
+
+    /// <summary>
+    /// 获取或设置知识库 ID。
+    /// </summary>
+    [System.Text.Json.Serialization.JsonPropertyName("knIds")]
+    public string? KnowledgeIds { get; set; }
+
+    /// <summary>
+    /// 获取或设置 Token。
+    /// </summary>
+    [System.Text.Json.Serialization.JsonPropertyName("Token")]
+    public string? Token { get; set; }
+
+    /// <summary>
+    /// 获取或设置租户 ID。
+    /// </summary>
+    [System.Text.Json.Serialization.JsonPropertyName("tenantid")]
+    public string? TenantId { get; set; }
 }
