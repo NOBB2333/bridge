@@ -2,7 +2,7 @@
 
 UnityBridge 是一个综合性的 .NET 解决方案，旨在连接企业级 AI 应用平台（如 Dify、Sino）与主流社交/内容平台（如 Bilibili、抖音、小红书等）。
 
-它不仅提供了针对 Dify/Sino 的 API 客户端 SDK，还内置了一套强大的、统一架构的爬虫框架，用于数据采集和内容分发。
+它不仅提供了针对 Dify/Sino 的 API 客户端 SDK，还内置了一套强大的、统一架构的爬虫框架，用于数据采集和内容分发。参考DotNetCore.SKIT.FlurlHttpClient.Wechat 风格
 
 ## ✨ 功能特性
 

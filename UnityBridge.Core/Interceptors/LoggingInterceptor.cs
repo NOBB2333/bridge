@@ -45,6 +45,12 @@ public class LoggingInterceptor : HttpInterceptor
             Log($"[{traceId}]   Body: {body}");
         }
 
+        if (_options.LogCurl)
+        {
+            var curl = GenerateCurlCommand(context);
+            Log($"[{traceId}]   cURL: {curl}");
+        }
+
         return Task.CompletedTask;
     }
 
@@ -73,6 +79,15 @@ public class LoggingInterceptor : HttpInterceptor
         return Task.CompletedTask;
     }
 
+    private string TruncateIfNeeded(string text)
+    {
+        if (_options.MaxBodyLength > 0 && text.Length > _options.MaxBodyLength)
+        {
+            return text[.._options.MaxBodyLength] + "... (truncated)";
+        }
+        return text;
+    }
+
     private void Log(string message)
     {
         try
@@ -85,13 +100,45 @@ public class LoggingInterceptor : HttpInterceptor
         }
     }
 
-    private string TruncateIfNeeded(string text)
+    private string GenerateCurlCommand(HttpInterceptorContext context)
     {
-        if (_options.MaxBodyLength > 0 && text.Length > _options.MaxBodyLength)
+        if (context.FlurlRequest is null) return "(no request)";
+
+        var sb = new StringBuilder();
+        sb.Append("curl");
+
+        // Method
+        var method = context.HttpMethod?.Method ?? "GET";
+        sb.Append($" -X {method}");
+
+        // URL
+        var url = context.RequestUrl ?? "";
+        sb.Append($" \"{url}\"");
+
+        // Headers
+        foreach (var header in context.FlurlRequest.Headers)
         {
-            return text[.._options.MaxBodyLength] + "... (truncated)";
+            var value = _options.SensitiveHeaders.Contains(header.Name, StringComparer.OrdinalIgnoreCase)
+                ? "***"
+                : header.Value?.ToString().Replace("\"", "\\\""); // Escape quotes
+            sb.Append($" -H \"{header.Name}: {value}\"");
         }
-        return text;
+
+        // Body
+        if (!string.IsNullOrEmpty(context.RequestBody))
+        {
+            // Simple escaping for JSON body. For complex cases, might need more robust escaping.
+            var body = context.RequestBody.Replace("\"", "\\\""); 
+            sb.Append($" -d \"{body}\"");
+        }
+        else if (context.FlurlCall?.RequestBody != null) // Fallback to FlurlCall properties if context body not set
+        {
+             // Note: FlurlCall.RequestBody represents the object, not the serialized string. 
+             // We rely on context.RequestBody being populated by previous steps or interceptors if we want the exact string.
+             // If context.RequestBody is empty, we assume no body or it wasn't captured.
+        }
+
+        return sb.ToString();
     }
 }
 
@@ -114,6 +161,11 @@ public class LoggingInterceptorOptions
     /// 是否记录响应体，默认 false（可能很大）。
     /// </summary>
     public bool LogResponseBody { get; set; } = false;
+
+    /// <summary>
+    /// 是否记录 cURL 命令，默认 false。
+    /// </summary>
+    public bool LogCurl { get; set; } = false;
 
     /// <summary>
     /// 请求/响应体最大长度，超过则截断。0 表示不限制，默认 2000。

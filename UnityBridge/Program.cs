@@ -61,6 +61,7 @@ class Program
                 LogRequestHeaders = false, // 不记录请求头（可能含敏感信息）
                 LogRequestBody = true, // 记录请求体
                 LogResponseBody = false, // 不记录响应体（可能很大）
+                LogCurl = true, // 开启 cURL 日志打印
                 MaxBodyLength = 500 // 请求体最大长度
             });
         // 指标收集拦截器，统计请求的成功率、耗时等指标
@@ -101,6 +102,7 @@ class Program
                 options: new LoggingInterceptorOptions
                 {
                     LogRequestBody = true,
+                    LogCurl = true, // 开启 cURL 日志
                     MaxBodyLength = 500
                 }));
             woWebClient.Interceptors.Add(new MetricsInterceptor());
