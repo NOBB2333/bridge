@@ -3,7 +3,7 @@ namespace UnityBridge.Crawler.Douyin;
 /// <summary>
 /// 抖音 API 请求基类。
 /// </summary>
-public abstract class DouyinRequest : ICommonRequest
+public abstract class DouyinRequest : CommonRequestBase
 {
     /// <summary>
     /// 获取或设置自定义请求头。

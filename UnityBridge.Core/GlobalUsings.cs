@@ -10,3 +10,8 @@ global using System.Threading.Tasks;
 global using Flurl.Http;
 global using System.IO;
 global using System.Runtime.CompilerServices;
+global using UnityBridge.Core.Clients;
+global using UnityBridge.Core.Interceptors;
+global using UnityBridge.Core.Models;
+global using UnityBridge.Core.Services;
+

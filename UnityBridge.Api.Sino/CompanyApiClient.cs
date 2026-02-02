@@ -6,7 +6,7 @@ namespace UnityBridge.Api.Sino;
 /// <summary>
 /// 一个 Company API HTTP 客户端。
 /// </summary>
-public class CompanyApiClient : CommonClientBase, ICommonClient
+public partial class CompanyApiClient : CommonClientBase
 {
     /// <summary>
     /// 获取当前客户端使用的凭证。

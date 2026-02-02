@@ -5,7 +5,7 @@ namespace UnityBridge.Api.Dify;
 /// <summary>
 /// 表示 Dify API 响应的基类。
 /// </summary>
-public abstract class DifyApiResponse : CommonResponseBase, ICommonResponse
+public abstract class DifyApiResponse : CommonResponseBase
 {
     /// <summary>
     /// 获取或设置 Dify 错误码。

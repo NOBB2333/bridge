@@ -1,7 +1,7 @@
 using System.Collections.Concurrent;
 using System.Net;
 
-namespace UnityBridge.Core;
+namespace UnityBridge.Core.Services;
 
 /// <summary>
 /// Cookie 管理器，按域名管理 Cookie（内存存储）。

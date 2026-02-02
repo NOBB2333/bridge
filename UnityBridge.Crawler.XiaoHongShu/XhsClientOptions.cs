@@ -3,7 +3,7 @@ namespace UnityBridge.Crawler.XiaoHongShu;
 /// <summary>
 /// 小红书客户端配置项。
 /// </summary>
-public class XhsClientOptions : CrawlerClientOptions
+public class XhsClientOptions : ClientOptions
 {
     /// <summary>
     /// 获取或设置 API 端点。

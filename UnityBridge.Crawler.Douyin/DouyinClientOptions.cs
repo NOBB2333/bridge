@@ -3,7 +3,7 @@ namespace UnityBridge.Crawler.Douyin;
 /// <summary>
 /// 抖音客户端配置项。
 /// </summary>
-public class DouyinClientOptions : CrawlerClientOptions
+public class DouyinClientOptions : ClientOptions
 {
     /// <summary>
     /// 获取或设置 API 端点。

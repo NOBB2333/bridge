@@ -3,7 +3,7 @@ namespace UnityBridge.Crawler.Tieba;
 /// <summary>
 /// 贴吧客户端配置项。
 /// </summary>
-public class TiebaClientOptions : CrawlerClientOptions
+public class TiebaClientOptions : ClientOptions
 {
     /// <summary>
     /// 获取或设置网页端点。

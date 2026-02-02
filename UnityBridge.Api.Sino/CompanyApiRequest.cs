@@ -5,7 +5,7 @@ namespace UnityBridge.Api.Sino;
 /// <summary>
 /// 表示 Company API 请求的基类。
 /// </summary>
-public abstract class CompanyApiRequest : CommonRequestBase, ICommonRequest
+public abstract class CompanyApiRequest : CommonRequestBase
 {
     /// <summary>
     /// 获取或设置 Token（对应 HTTP 请求头中的 <c>Token</c>）。

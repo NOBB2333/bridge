@@ -1,9 +1,9 @@
-namespace UnityBridge.Core;
+namespace UnityBridge.Core.Models;
 
 /// <summary>
 /// SKIT.FlurlHttpClient 响应基类。
 /// </summary>
-public abstract class CommonResponseBase : ICommonResponse
+public abstract class CommonResponseBase
 {
     /// <summary>
     /// 

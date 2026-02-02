@@ -5,7 +5,7 @@ namespace UnityBridge.Api.Sino;
 /// <summary>
 /// 一个用于构造 <see cref="CompanyApiClient"/> 时使用的配置项。
 /// </summary>
-public class CompanyApiClientOptions : CommonClientOptions
+public class CompanyApiClientOptions : ClientOptions
 {
     /// <summary>
     /// 获取或设置 API 接口域名。

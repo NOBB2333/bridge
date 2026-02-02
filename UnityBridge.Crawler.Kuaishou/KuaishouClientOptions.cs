@@ -3,7 +3,7 @@ namespace UnityBridge.Crawler.Kuaishou;
 /// <summary>
 /// 快手客户端配置项。
 /// </summary>
-public class KuaishouClientOptions : CrawlerClientOptions
+public class KuaishouClientOptions : ClientOptions
 {
     /// <summary>
     /// 获取或设置 GraphQL API 端点。

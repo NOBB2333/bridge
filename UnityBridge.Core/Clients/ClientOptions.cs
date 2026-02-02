@@ -1,10 +1,16 @@
-namespace UnityBridge.Core;
+namespace UnityBridge.Core.Clients;
 
 /// <summary>
-/// 爬虫客户端配置项，提供代理池、重试、并发等通用配置。
+/// UnityBridge 统一客户端配置项（ClientOptions）。
+/// 提供超时、代理池、重试、并发等通用配置。
 /// </summary>
-public class CrawlerClientOptions : CommonClientOptions
+public class ClientOptions
 {
+    /// <summary>
+    /// 获取或设置请求超时时间（单位：毫秒）。
+    /// </summary>
+    public int Timeout { get; set; } = 30 * 1000;
+
     /// <summary>
     /// 获取或设置代理池列表（格式：http://host:port 或 socks5://host:port）。
     /// </summary>
@@ -66,4 +72,3 @@ public enum ProxySelectionStrategy
     /// </summary>
     Random
 }
-

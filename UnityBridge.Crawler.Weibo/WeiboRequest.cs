@@ -3,7 +3,7 @@ namespace UnityBridge.Crawler.Weibo;
 /// <summary>
 /// 微博请求基类。
 /// </summary>
-public abstract class WeiboRequest : ICommonRequest
+public abstract class WeiboRequest : CommonRequestBase
 {
     /// <summary>
     /// 获取或设置自定义请求头。

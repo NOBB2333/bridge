@@ -1,12 +1,12 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace UnityBridge.Core;
+namespace UnityBridge.Core.Clients;
 
 /// <summary>
 /// SKIT.FlurlHttpClient 客户端基类。
 /// </summary>
-public abstract class CommonClientBase : ICommonClient
+public abstract class CommonClientBase
 {
     /// <summary>
     /// 获取当前客户端使用的 <see cref="IFlurlClient"/> 对象。

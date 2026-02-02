@@ -3,12 +3,12 @@ namespace UnityBridge.Crawler.Weibo;
 /// <summary>
 /// 微博 API 客户端。
 /// </summary>
-public class WeiboClient : CrawlerClientBase, ICommonClient
+public class WeiboClient : CrawlerClientBase
 {
     /// <summary>
     /// 获取当前客户端使用的配置项。
     /// </summary>
-    public WeiboClientOptions ClientOptions { get; }
+    public new WeiboClientOptions ClientOptions { get; }
 
     private readonly AccountPoolManager? _accountPool;
     private AccountInfo? _currentAccount;

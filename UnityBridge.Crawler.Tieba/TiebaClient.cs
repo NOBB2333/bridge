@@ -3,12 +3,12 @@ namespace UnityBridge.Crawler.Tieba;
 /// <summary>
 /// 百度贴吧客户端。
 /// </summary>
-public class TiebaClient : CrawlerClientBase, ICommonClient
+public class TiebaClient : CrawlerClientBase
 {
     /// <summary>
     /// 获取当前客户端使用的配置项。
     /// </summary>
-    public TiebaClientOptions ClientOptions { get; }
+    public new TiebaClientOptions ClientOptions { get; }
 
     private readonly AccountPoolManager? _accountPool;
     private AccountInfo? _currentAccount;

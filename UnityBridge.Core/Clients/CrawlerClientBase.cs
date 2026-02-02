@@ -4,8 +4,9 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Polly;
 using Polly.Retry;
+using UnityBridge.Core.Interceptors;
 
-namespace UnityBridge.Core;
+namespace UnityBridge.Core.Clients;
 
 /// <summary>
 /// 爬虫客户端基类，提供代理池、Cookie管理、重试策略、并发控制等通用功能。
@@ -13,49 +14,48 @@ namespace UnityBridge.Core;
 /// </summary>
 public abstract class CrawlerClientBase : CommonClientBase
 {
-    private readonly CrawlerClientOptions _crawlerOptions;
+    private readonly ClientOptions _clientOptions;
     private readonly ProxyPoolManager? _proxyPoolManager;
     private readonly CookieManager? _cookieManager;
     private readonly SemaphoreSlim _semaphore;
     private readonly ConcurrentDictionary<string, DateTime> _requestCache = new();
-    private readonly List<IRequestInterceptor> _interceptors = new();
     private readonly AsyncRetryPolicy<IFlurlResponse> _retryPolicy;
 
     /// <summary>
-    /// 获取爬虫客户端配置项。
+    /// 获取客户端配置项。
     /// </summary>
-    public CrawlerClientOptions CrawlerOptions => _crawlerOptions;
+    public ClientOptions ClientOptions => _clientOptions;
 
     /// <summary>
     /// 初始化爬虫客户端基类。
     /// </summary>
-    /// <param name="options">爬虫客户端配置项。</param>
+    /// <param name="options">客户端配置项。</param>
     /// <param name="httpClient">可选的 HttpClient 实例。如果为 null，将自动创建带代理支持的 HttpClient。</param>
     /// <param name="disposeClient">是否在释放时销毁 HttpClient。</param>
     /// <param name="jsonOptions">JSON 序列化选项。</param>
     protected CrawlerClientBase(
-        CrawlerClientOptions options,
+        ClientOptions options,
         HttpClient? httpClient = null,
         bool disposeClient = true,
         JsonSerializerOptions? jsonOptions = null)
         : base(CreateHttpClientWithProxy(options, httpClient), disposeClient, jsonOptions)
     {
-        _crawlerOptions = options ?? throw new ArgumentNullException(nameof(options));
+        _clientOptions = options ?? throw new ArgumentNullException(nameof(options));
 
         // 初始化代理池
-        if (_crawlerOptions.EnableProxyPool && _crawlerOptions.ProxyPool.Count > 0)
+        if (_clientOptions.EnableProxyPool && _clientOptions.ProxyPool.Count > 0)
         {
-            _proxyPoolManager = new ProxyPoolManager(_crawlerOptions.ProxyPool, _crawlerOptions.ProxySelectionStrategy);
+            _proxyPoolManager = new ProxyPoolManager(_clientOptions.ProxyPool, _clientOptions.ProxySelectionStrategy);
         }
 
         // 初始化 Cookie 管理器
-        if (_crawlerOptions.EnableCookieManagement)
+        if (_clientOptions.EnableCookieManagement)
         {
             _cookieManager = new CookieManager();
         }
 
         // 初始化并发控制
-        _semaphore = new SemaphoreSlim(_crawlerOptions.MaxConcurrency, _crawlerOptions.MaxConcurrency);
+        _semaphore = new SemaphoreSlim(_clientOptions.MaxConcurrency, _clientOptions.MaxConcurrency);
 
         // 配置重试策略
         _retryPolicy = Policy
@@ -63,8 +63,8 @@ public abstract class CrawlerClientBase : CommonClientBase
             .Or<HttpRequestException>()
             .Or<TaskCanceledException>()
             .WaitAndRetryAsync(
-                _crawlerOptions.MaxRetries,
-                retryAttempt => TimeSpan.FromMilliseconds(_crawlerOptions.RetryDelayMs * Math.Pow(2, retryAttempt - 1)),
+                _clientOptions.MaxRetries,
+                retryAttempt => TimeSpan.FromMilliseconds(_clientOptions.RetryDelayMs * Math.Pow(2, retryAttempt - 1)),
                 onRetry: (outcome, timespan, retryCount, context) =>
                 {
                     // 可以在这里记录重试日志
@@ -74,7 +74,7 @@ public abstract class CrawlerClientBase : CommonClientBase
     /// <summary>
     /// 创建带代理支持的 HttpClient。
     /// </summary>
-    private static HttpClient? CreateHttpClientWithProxy(CrawlerClientOptions options, HttpClient? existingClient)
+    private static HttpClient? CreateHttpClientWithProxy(ClientOptions options, HttpClient? existingClient)
     {
         if (existingClient != null)
             return existingClient;
@@ -93,22 +93,22 @@ public abstract class CrawlerClientBase : CommonClientBase
     }
 
     /// <summary>
-    /// 添加请求拦截器。
+    /// 添加拦截器。
     /// </summary>
-    public void AddInterceptor(IRequestInterceptor interceptor)
+    public void AddInterceptor(HttpInterceptor interceptor)
     {
         if (interceptor != null)
         {
-            _interceptors.Add(interceptor);
+            Interceptors.Add(interceptor);
         }
     }
 
     /// <summary>
-    /// 移除请求拦截器。
+    /// 移除拦截器。
     /// </summary>
-    public void RemoveInterceptor(IRequestInterceptor interceptor)
+    public void RemoveInterceptor(HttpInterceptor interceptor)
     {
-        _interceptors.Remove(interceptor);
+        Interceptors.Remove(interceptor);
     }
 
     /// <summary>
@@ -162,12 +162,12 @@ public abstract class CrawlerClientBase : CommonClientBase
             throw new ArgumentNullException(nameof(flurlRequest));
 
         // 请求去重检查
-        if (_crawlerOptions.EnableRequestDeduplication)
+        if (_clientOptions.EnableRequestDeduplication)
         {
             var requestKey = $"{flurlRequest.Verb}_{flurlRequest.Url}";
             if (_requestCache.TryGetValue(requestKey, out var cachedTime))
             {
-                if (DateTime.UtcNow - cachedTime < TimeSpan.FromSeconds(_crawlerOptions.DeduplicationCacheExpirySeconds))
+                if (DateTime.UtcNow - cachedTime < TimeSpan.FromSeconds(_clientOptions.DeduplicationCacheExpirySeconds))
                 {
                     throw new InvalidOperationException($"Duplicate request detected: {requestKey}");
                 }
@@ -175,25 +175,55 @@ public abstract class CrawlerClientBase : CommonClientBase
             _requestCache[requestKey] = DateTime.UtcNow;
         }
 
+        // 创建拦截器上下文
+        var context = new HttpInterceptorContext
+        {
+            FlurlRequest = flurlRequest
+        };
+        // 尝试读取请求体（为了日志等）
+        if (httpContent != null) 
+        {
+             try { context.RequestBody = await httpContent.ReadAsStringAsync(cancellationToken).ConfigureAwait(false); } catch { }
+        }
+
         // 并发控制
         await _semaphore.WaitAsync(cancellationToken);
         try
         {
             // 执行请求前拦截器
-            foreach (var interceptor in _interceptors)
+            context.Stopwatch.Start();
+            foreach (var interceptor in Interceptors)
             {
-                flurlRequest = await interceptor.OnRequestAsync(flurlRequest, cancellationToken);
+                await interceptor.BeforeCallAsync(context, cancellationToken).ConfigureAwait(false);
             }
 
             // 执行请求（带重试）
-            IFlurlResponse response = await _retryPolicy.ExecuteAsync(async () =>
+            IFlurlResponse response;
+            try
             {
-                if (httpContent != null)
+                 response = await _retryPolicy.ExecuteAsync(async () =>
                 {
-                    return await flurlRequest.SendAsync(flurlRequest.Verb, httpContent, cancellationToken: cancellationToken);
+                    if (httpContent != null)
+                    {
+                        return await flurlRequest.SendAsync(flurlRequest.Verb, httpContent, cancellationToken: cancellationToken);
+                    }
+                    return await flurlRequest.SendAsync(flurlRequest.Verb, null, cancellationToken: cancellationToken);
+                });
+                context.FlurlResponse = response;
+            }
+            catch (Exception ex)
+            {
+                context.Exception = ex;
+                context.Stopwatch.Stop();
+                // 异常后拦截器
+                foreach (var interceptor in Interceptors)
+                {
+                    await interceptor.AfterCallAsync(context, cancellationToken).ConfigureAwait(false);
                 }
-                return await flurlRequest.SendAsync(flurlRequest.Verb, null, cancellationToken: cancellationToken);
-            });
+                throw;
+            }
+            
+            context.Stopwatch.Stop();
 
             // 处理 Cookie（从响应中提取）
             if (_cookieManager != null && flurlRequest.Url != null)
@@ -207,9 +237,9 @@ public abstract class CrawlerClientBase : CommonClientBase
             }
 
             // 执行响应后拦截器
-            foreach (var interceptor in _interceptors)
+            foreach (var interceptor in Interceptors)
             {
-                response = await interceptor.OnResponseAsync(flurlRequest, response, cancellationToken);
+                await interceptor.AfterCallAsync(context, cancellationToken).ConfigureAwait(false);
             }
 
             return response;
@@ -260,4 +290,3 @@ public abstract class CrawlerClientBase : CommonClientBase
         base.Dispose(disposing);
     }
 }
-

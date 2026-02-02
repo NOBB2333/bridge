@@ -3,7 +3,7 @@ namespace UnityBridge.Crawler.Zhihu;
 /// <summary>
 /// 知乎客户端配置项。
 /// </summary>
-public class ZhihuClientOptions : CrawlerClientOptions
+public class ZhihuClientOptions : ClientOptions
 {
     /// <summary>
     /// 获取或设置 API 端点。

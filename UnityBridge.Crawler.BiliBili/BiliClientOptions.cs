@@ -3,7 +3,7 @@ namespace UnityBridge.Crawler.BiliBili;
 /// <summary>
 /// B站客户端配置项。
 /// </summary>
-public class BiliClientOptions : CrawlerClientOptions
+public class BiliClientOptions : ClientOptions
 {
     /// <summary>
     /// 获取或设置 API 端点。

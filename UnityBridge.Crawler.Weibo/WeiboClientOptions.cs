@@ -3,7 +3,7 @@ namespace UnityBridge.Crawler.Weibo;
 /// <summary>
 /// 微博客户端配置项。
 /// </summary>
-public class WeiboClientOptions : CrawlerClientOptions
+public class WeiboClientOptions : ClientOptions
 {
     /// <summary>
     /// 获取或设置 API 端点。

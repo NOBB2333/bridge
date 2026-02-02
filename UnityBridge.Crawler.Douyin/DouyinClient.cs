@@ -3,12 +3,12 @@ namespace UnityBridge.Crawler.Douyin;
 /// <summary>
 /// 抖音 API 客户端。
 /// </summary>
-public class DouyinClient : CrawlerClientBase, ICommonClient
+public class DouyinClient : CrawlerClientBase
 {
     /// <summary>
     /// 获取当前客户端使用的配置项。
     /// </summary>
-    public DouyinClientOptions ClientOptions { get; }
+    public new DouyinClientOptions ClientOptions { get; }
 
     private readonly ISignClient _signClient;
     private readonly AccountPoolManager? _accountPool;

@@ -3,7 +3,7 @@ namespace UnityBridge.Crawler.XiaoHongShu;
 /// <summary>
 /// 小红书 API 请求基类。
 /// </summary>
-public abstract class XhsRequest : ICommonRequest
+public abstract class XhsRequest : CommonRequestBase
 {
     /// <summary>
     /// 获取或设置自定义请求头。

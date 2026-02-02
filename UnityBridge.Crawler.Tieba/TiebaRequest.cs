@@ -3,7 +3,7 @@ namespace UnityBridge.Crawler.Tieba;
 /// <summary>
 /// 贴吧请求基类。
 /// </summary>
-public abstract class TiebaRequest : ICommonRequest
+public abstract class TiebaRequest : CommonRequestBase
 {
     /// <summary>
     /// 获取或设置自定义请求头。

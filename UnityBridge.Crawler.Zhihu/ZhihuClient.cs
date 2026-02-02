@@ -3,12 +3,12 @@ namespace UnityBridge.Crawler.Zhihu;
 /// <summary>
 /// 知乎 API 客户端。
 /// </summary>
-public class ZhihuClient : CrawlerClientBase, ICommonClient
+public class ZhihuClient : CrawlerClientBase
 {
     /// <summary>
     /// 获取当前客户端使用的配置项。
     /// </summary>
-    public ZhihuClientOptions ClientOptions { get; }
+    public new ZhihuClientOptions ClientOptions { get; }
 
     private readonly ISignClient _signClient;
     private readonly AccountPoolManager? _accountPool;

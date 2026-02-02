@@ -3,12 +3,14 @@ namespace UnityBridge.Crawler.BiliBili;
 /// <summary>
 /// B站 API 客户端。
 /// </summary>
-public class BiliClient : CrawlerClientBase, ICommonClient
+public class BiliClient : CrawlerClientBase
 {
     /// <summary>
     /// 获取当前客户端使用的配置项。
+    /// 这里为什么有一个new？ 因为BiliClientOptions继承自CrawlerClientOptions，
+    /// 里面有同名的参数 需要显示的重写这个 不写也可以 强烈建议写
     /// </summary>
-    public BiliClientOptions ClientOptions { get; }
+    public new BiliClientOptions ClientOptions { get; }
 
     private readonly ISignClient _signClient;
     private readonly AccountPoolManager? _accountPool;

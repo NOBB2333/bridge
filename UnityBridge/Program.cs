@@ -194,28 +194,28 @@ class Program
             return;
         }
 
-        var testFlows = new List<Func<CompanyApiClient, Task>>
-        {
-            client => SinoKnowledgeCommand.ListIndividualLibrariesAsync(client),
-            client => SinoKnowledgeCommand.ShowLibraryOverviewAsync(client)
-        };
-
-        Console.WriteLine("\n开始执行 WoWeb 流程测试流水线...");
-        for (var i = 0; i < testFlows.Count; i++)
-        {
-            var flow = testFlows[i];
-            var stepName = flow.Method.Name;
-            Console.WriteLine($"[{i + 1}/{testFlows.Count}] {stepName}");
-
-            try
-            {
-                await flow(woWebClient);
-            }
-            catch (Exception ex)
-            {
-                Console.Error.WriteLine($"步骤 \"{stepName}\" 失败: {ex.Message}");
-            }
-        }
+        // var testFlows = new List<Func<CompanyApiClient, Task>>
+        // {
+        //     client => SinoKnowledgeCommand.ListIndividualLibrariesAsync(client),
+        //     client => SinoKnowledgeCommand.ShowLibraryOverviewAsync(client)
+        // };
+        //
+        // Console.WriteLine("\n开始执行 WoWeb 流程测试流水线...");
+        // for (var i = 0; i < testFlows.Count; i++)
+        // {
+        //     var flow = testFlows[i];
+        //     var stepName = flow.Method.Name;
+        //     Console.WriteLine($"[{i + 1}/{testFlows.Count}] {stepName}");
+        //
+        //     try
+        //     {
+        //         await flow(woWebClient);
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         Console.Error.WriteLine($"步骤 \"{stepName}\" 失败: {ex.Message}");
+        //     }
+        // }
 
         Console.WriteLine("WoWeb 流程测试执行完毕。\n");
     }

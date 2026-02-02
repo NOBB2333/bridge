@@ -1,6 +1,6 @@
 using System.Diagnostics;
 
-namespace UnityBridge.Core;
+namespace UnityBridge.Core.Interceptors;
 
 /// <summary>
 /// HTTP 拦截器上下文，携带请求/响应的完整信息。

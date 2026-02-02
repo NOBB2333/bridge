@@ -1,9 +1,9 @@
-namespace UnityBridge.Core;
+namespace UnityBridge.Core.Models;
 
 /// <summary>
 /// SKIT.FlurlHttpClient 请求基类。
 /// </summary>
-public abstract class CommonRequestBase : ICommonRequest
+public abstract class CommonRequestBase
 {
     /// <inheritdoc/>
     [System.Text.Json.Serialization.JsonIgnore]

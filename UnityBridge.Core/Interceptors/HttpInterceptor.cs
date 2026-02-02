@@ -1,4 +1,4 @@
-namespace UnityBridge.Core;
+namespace UnityBridge.Core.Interceptors;
 
 /// <summary>
 /// HTTP 拦截器基类，用于在请求发送前后执行自定义逻辑。

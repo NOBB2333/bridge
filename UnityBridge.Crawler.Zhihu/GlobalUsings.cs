@@ -8,3 +8,5 @@ global using SqlSugar;
 global using UnityBridge.Core;
 global using UnityBridge.Crawler.Core.AccountPool;
 global using UnityBridge.Crawler.Core.SignService;
+global using UnityBridge.Core.Clients;
+global using UnityBridge.Core.Models;

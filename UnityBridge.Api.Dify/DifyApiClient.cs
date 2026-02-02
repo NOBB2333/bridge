@@ -6,7 +6,7 @@ namespace UnityBridge.Api.Dify;
 /// <summary>
 /// 一个 Dify API HTTP 客户端。
 /// </summary>
-public class DifyApiClient : CommonClientBase, ICommonClient
+public class DifyApiClient : CommonClientBase
 {
     /// <summary>
     /// 获取当前客户端使用的凭证。

@@ -5,7 +5,7 @@ namespace UnityBridge.Api.Sino;
 /// <summary>
 /// 表示 Company API 响应的基类。
 /// </summary>
-public abstract class CompanyApiResponse : CommonResponseBase, ICommonResponse
+public abstract class CompanyApiResponse : CommonResponseBase
 {
     /// <summary>
     /// 获取或设置错误码。

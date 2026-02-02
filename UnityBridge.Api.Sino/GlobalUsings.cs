@@ -9,3 +9,5 @@ global using System.Threading;
 global using System.Threading.Tasks;
 global using Flurl;
 global using Flurl.Http;
+global using UnityBridge.Core.Clients;
+global using UnityBridge.Core.Models;

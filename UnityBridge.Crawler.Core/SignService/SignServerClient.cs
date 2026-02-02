@@ -1,5 +1,9 @@
 namespace UnityBridge.Crawler.Core.SignService;
 
+using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
 /// <summary>
 /// 签名服务 HTTP 客户端，调用 MediaCrawlerPro-SignSrv。
 /// </summary>
@@ -96,7 +100,8 @@ public class SignServerClient : ISignClient, IDisposable
     private async Task<T?> PostJsonAsync<T>(string path, object payload, CancellationToken ct)
     {
         var json = JsonSerializer.Serialize(payload);
-        using var content = new StringContent(json, Encoding.UTF8, "application/json");
+        using var content = new StringContent(json);
+        content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json") { CharSet = "utf-8" };
 
         var response = await _httpClient.PostAsync($"{_baseUrl}{path}", content, ct);
         response.EnsureSuccessStatusCode();

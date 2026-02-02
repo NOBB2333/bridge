@@ -3,12 +3,12 @@ namespace UnityBridge.Crawler.XiaoHongShu;
 /// <summary>
 /// 小红书 API 客户端。
 /// </summary>
-public class XhsClient : CrawlerClientBase, ICommonClient
+public class XhsClient : CrawlerClientBase
 {
     /// <summary>
     /// 获取当前客户端使用的配置项。
     /// </summary>
-    public XhsClientOptions ClientOptions { get; }
+    public new XhsClientOptions ClientOptions { get; }
 
     private readonly ISignClient _signClient;
     private readonly AccountPoolManager? _accountPool;

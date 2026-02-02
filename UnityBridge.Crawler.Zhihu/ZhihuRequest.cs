@@ -3,7 +3,7 @@ namespace UnityBridge.Crawler.Zhihu;
 /// <summary>
 /// 知乎请求基类。
 /// </summary>
-public abstract class ZhihuRequest : ICommonRequest
+public abstract class ZhihuRequest : CommonRequestBase
 {
     /// <summary>
     /// 获取或设置自定义请求头。

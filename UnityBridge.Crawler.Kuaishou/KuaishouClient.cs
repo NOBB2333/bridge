@@ -3,12 +3,12 @@ namespace UnityBridge.Crawler.Kuaishou;
 /// <summary>
 /// 快手 API 客户端（GraphQL）。
 /// </summary>
-public class KuaishouClient : CrawlerClientBase, ICommonClient
+public class KuaishouClient : CrawlerClientBase
 {
     /// <summary>
     /// 获取当前客户端使用的配置项。
     /// </summary>
-    public KuaishouClientOptions ClientOptions { get; }
+    public new KuaishouClientOptions ClientOptions { get; }
 
     private readonly AccountPoolManager? _accountPool;
     private AccountInfo? _currentAccount;

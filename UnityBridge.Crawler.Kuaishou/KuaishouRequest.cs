@@ -3,7 +3,7 @@ namespace UnityBridge.Crawler.Kuaishou;
 /// <summary>
 /// 快手请求基类。
 /// </summary>
-public abstract class KuaishouRequest : ICommonRequest
+public abstract class KuaishouRequest : CommonRequestBase
 {
     /// <summary>
     /// 获取或设置自定义请求头。

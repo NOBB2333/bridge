@@ -5,7 +5,7 @@ namespace UnityBridge.Api.Dify;
 /// <summary>
 /// 一个用于构造 <see cref="DifyApiClient"/> 时使用的配置项。
 /// </summary>
-public class DifyApiClientOptions : CommonClientOptions
+public class DifyApiClientOptions : ClientOptions
 {
     /// <summary>
     /// 获取或设置 API 接口域名。

@@ -1,110 +1,121 @@
 # UnityBridge
 
-UnityBridge 是一个针对 Dify / 企业内部 AI 应用平台的 **命令行桥接工具**，用于在本地便捷地完成应用的导入导出、API Key 管理、工作流发布、编码检测等常见运维 / 开发工作，并内置试用期与离线授权机制。
+UnityBridge 是一个综合性的 .NET 解决方案，旨在连接企业级 AI 应用平台（如 Dify、Sino）与主流社交/内容平台（如 Bilibili、抖音、小红书等）。
+
+它不仅提供了针对 Dify/Sino 的 API 客户端 SDK，还内置了一套强大的、统一架构的爬虫框架，用于数据采集和内容分发。
 
 ## ✨ 功能特性
 
-| 功能 | 说明 |
-|------|------|
-| 📥 下载（导出）应用 | 从 Dify 控制台导出指定应用配置到本地文件 |
-| 📤 上传（导入）应用 | 将本地的应用 YAML 文件上传到平台 |
-| 🔑 管理 API Key | 生成、查看、清理应用的 API Key |
-| 📊 获取应用详情 | 批量获取应用详情并导出综合表 (CSV) |
-| 🚀 工作流发布管理 | 批量发布 Workflow/Chatflow 并创建工具 |
-| 📈 分析应用关系 | 分析 Chat 应用与工作流的依赖关系图 |
-| 📦 打包应用 | 打包 Chat 应用及其所需工作流 |
-| 🔍 检测编码 | 批量检测文件或目录的文本编码 |
-| 🔒 离线授权 | 内置 30 天试用期，支持机器码离线激活 |
+### 🔌 API 集成
+*   **Dify API**: 完整的 Dify 平台管理与交互能力（导入导出应用、Key 管理、工作流发布）。
+*   **Sino API**: 企业级 AI 知识库与 Copilot 服务对接。
+
+### 🕷️ 多平台爬虫 SDK
+内置统一架构的爬虫客户端，支持以下平台的数据采集与操作：
+*   📺 **Bilibili** (B站)
+*   🎵 **Douyin** (抖音)
+*   🎬 **Kuaishou** (快手)
+*   📕 **XiaoHongShu** (小红书)
+*   🧣 **Weibo** (微博)
+*   🧵 **Tieba** (百度贴吧)
+*   🧠 **Zhihu** (知乎)
+
+**爬虫核心能力：**
+*   **统一接口**: 所有爬虫继承自 `CrawlerClientBase`，使用一致的调用方式。
+*   **自动签名**: 内置 JS 逆向签名服务 (`SignService`)，自动处理各平台的 API 签名验证。
+*   **代理池支持**: 内置 `ProxyPoolManager`，支持动态切换代理。
+*   **Cookie 管理**: 自动化的 Cookie 提取、持久化与通过。
+
+### 🛠️ 运维与工具
+*   **CLI 工具**: 命令行管理工具，用于批量的应用迁移、备份和环境检测。
+*   **Web API**: 提供 HTTP 接口服务。
+*   **签名服务 (SignServer)**: 可独立部署的 API 签名计算服务（通过 HTTP 暴露），方便非 .NET 语言调用。
 
 ---
 
-## 🖥️ 环境要求
+## 📁 项目结构
 
-- **.NET 10 SDK**（或兼容的 Runtime）
-- 可访问目标 Dify 平台的网络环境
+```mermaid
+graph TD
+    Core[UnityBridge.Core]
+    CrawlerCore[UnityBridge.Crawler.Core] --> Core
+    Db[UnityBridge.Db] --> Core
+
+    %% 爬虫实现
+    Bili[Crawler.BiliBili] --> CrawlerCore
+    Douyin[Crawler.Douyin] --> CrawlerCore
+    Kuaishou[Crawler.Kuaishou] --> CrawlerCore
+    Tieba[Crawler.Tieba] --> CrawlerCore
+    Weibo[Crawler.Weibo] --> CrawlerCore
+    Xhs[Crawler.XiaoHongShu] --> CrawlerCore
+    Zhihu[Crawler.Zhihu] --> CrawlerCore
+    
+    %% API 实现
+    Dify[Api.Dify] --> Core
+    Sino[Api.Sino] --> Core
+
+    %% 聚合 SDK
+    Sdk[UnityBridge.Api.Sdk] --> Core & Dify & Sino & CrawlerCore
+    
+    %% 应用层
+    Main[UnityBridge (CLI)] --> Sdk & Tools
+    SignServer[Crawler.SignServer] --> CrawlerCore
+```
+
+| 项目 | 说明 |
+|------|------|
+| **UnityBridge.Core** | **核心底座**。定义了 `ClientOptions`, `CommonClientBase`, `HttpInterceptor` 等基础架构。 |
+| **UnityBridge.Crawler.Core** | **爬虫核心**。继承自 Core，增加了 `ProxyPool`, `CookieManager`, `SignService` (JS签名算法) 等爬虫专用功能。 |
+| **UnityBridge.Api.Sdk** | **全功能 SDK**。聚合了所有 API 和爬虫能力，推荐第三方开发引用此包。 |
+| **UnityBridge.Crawler.*** | 各平台的具体爬虫实现（如 `.BiliBili`, `.Douyin`）。 |
+| **UnityBridge.Api.*** | 各 AI 平台的 API 客户端实现（如 `.Dify`, `.Sino`）。 |
+| **UnityBridge** | 命令行主程序 (CLI)。 |
+| **UnityBridge.Crawler.SignServer** | 独立的签名计算 Web 服务（不含业务逻辑，仅暴露签名接口）。 |
+| **UnityBridge.Tools** | 通用工具集。 |
+| **UnityBridge.Db** | 数据库访问层。 |
 
 ---
 
 ## 🚀 快速开始
 
-### 本地运行
-
+### 1. 使用 CLI 工具管理 Dify
 ```bash
-# 克隆仓库
-git clone https://github.com/NOBB2333/bridge.git
-cd bridge
-
-# 运行程序
+# 运行主程序
 dotnet run --project UnityBridge/UnityBridge.csproj
 ```
+启动后可选择：应用导入导出、Key 管理、工作流发布等功能。
 
-### Docker 运行
+### 2. 在代码中使用 SDK
+引用 `UnityBridge.Api.Sdk` 项目或 DLL。
 
-```bash
-docker compose build
-docker compose run --rm unitybridge
+**初始化爬虫客户端：**
+```csharp
+var options = new BiliClientOptions 
+{ 
+    Cookies = "your_cookies_here",
+    EnableProxyPool = true
+};
+var client = new BiliClient(options);
+// var info = await client.GetVideoInfoAsync("BV1xx...");
 ```
 
----
-
-## 📋 菜单说明
-
-启动后会看到以下菜单：
-
-```
-请选择操作:
-1) 下载 (导出) 应用
-2) 上传 (导入) 应用
-3) 管理 API Key
-4) 获取App应用详情综合表
-5) 工作流发布管理
-6) 一次性测试 WoWeb 项目流程
-7) 分析 Chat 应用与工作流关系图
-8) 打包 Chat 应用及其所需工作流
-9) 检测文件/文件夹编码
-10) 查看试用期信息
-11) 测试本机授权 (显示机器码并生成测试激活 key)
+**使用 Dify API：**
+```csharp
+var difyClient = new DifyApiClient(new DifyApiClientOptions { ... });
+// await difyClient.ExportAppAsync("app_id");
 ```
 
 ---
 
 ## ⚙️ 配置说明
 
-连接地址、请求头（含 Token / Cookie 等）统一保存在 `UnityBridge/Configuration/*.json` 中：
+配置文件位于 `UnityBridge/Configuration/` 目录下：
 
-- `DifyMigration.json` - Dify 平台连接配置
-- `Endpoint.json` - API 端点配置
-
-使用前请根据自己的环境修改这些 JSON 文件。
+*   `DifyMigration.json`: Dify 平台的连接信息。
+*   `Endpoint.json`: 各 API 的端点地址。
 
 ---
 
-## 📁 项目结构
-
-```
-UnityBridge/
-├── UnityBridge/                    # 主程序
-│   ├── Configuration/              # 配置文件
-│   ├── Platforms.Dify/             # Dify 平台命令
-│   ├── Helpers/                    # 辅助类
-│   └── Program.cs                  # 入口点
-├── UnityBridge.Api.Dify/           # Dify API 客户端库
-├── UnityBridge.Core/               # 核心通用库
-└── UnityBridge.Shared/             # 共享工具类
-```
-
----
-
-## 🔒 试用期与授权
-
-- **首次运行**：自动初始化 30 天试用期
-- **每次启动**：显示剩余试用时间
-- **离线激活**：通过菜单查看机器码，由发行方生成激活 key
-
-> 机器码由硬件标识组合生成，可通过菜单 11 查看。
-
----
-
-## 📄 License
-
+## 🔒 授权与协议
+本项目包含内置的试用期与离线授权机制。
 MIT License

@@ -3,7 +3,7 @@ namespace UnityBridge.Crawler.BiliBili;
 /// <summary>
 /// B站 API 请求基类。
 /// </summary>
-public abstract class BiliRequest : ICommonRequest
+public abstract class BiliRequest : CommonRequestBase
 {
     /// <summary>
     /// 获取或设置自定义请求头。
