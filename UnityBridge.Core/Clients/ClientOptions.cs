@@ -54,7 +54,25 @@ public class ClientOptions
     /// <summary>
     /// 获取或设置请求去重缓存过期时间（秒）。
     /// </summary>
+    /// <summary>
+    /// 获取或设置请求去重缓存过期时间（秒）。
+    /// </summary>
     public int DeduplicationCacheExpirySeconds { get; set; } = 300;
+
+    /// <summary>
+    /// 获取或设置默认 User-Agent。
+    /// </summary>
+    public string UserAgent { get; set; } = string.Empty;
+
+    /// <summary>
+    /// 获取或设置默认 Referer。
+    /// </summary>
+    public string Referer { get; set; } = string.Empty;
+
+    /// <summary>
+    /// 获取或设置默认 Cookies 字符串。
+    /// </summary>
+    public string Cookies { get; set; } = string.Empty;
 }
 
 /// <summary>

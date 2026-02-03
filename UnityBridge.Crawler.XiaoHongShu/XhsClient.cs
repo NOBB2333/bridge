@@ -1,3 +1,5 @@
+using UnityBridge.Crawler.Core;
+
 namespace UnityBridge.Crawler.XiaoHongShu;
 
 /// <summary>
@@ -9,6 +11,9 @@ public class XhsClient : CrawlerClientBase
     /// 获取当前客户端使用的配置项。
     /// </summary>
     public new XhsClientOptions ClientOptions { get; }
+
+    protected override string PlatformName => "xhs";
+
 
     private readonly ISignClient _signClient;
     private readonly AccountPoolManager? _accountPool;
@@ -49,7 +54,7 @@ public class XhsClient : CrawlerClientBase
     /// <summary>
     /// 切换到下一个可用账号。
     /// </summary>
-    public async Task<bool> SwitchToNextAccountAsync(CancellationToken ct = default)
+    public override async Task<bool> SwitchToNextAccountAsync(CancellationToken ct = default)
     {
         if (_accountPool is null) return false;
 

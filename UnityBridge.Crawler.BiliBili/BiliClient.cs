@@ -1,3 +1,5 @@
+using UnityBridge.Crawler.Core;
+
 namespace UnityBridge.Crawler.BiliBili;
 
 /// <summary>
@@ -7,10 +9,10 @@ public class BiliClient : CrawlerClientBase
 {
     /// <summary>
     /// 获取当前客户端使用的配置项。
-    /// 这里为什么有一个new？ 因为BiliClientOptions继承自CrawlerClientOptions，
-    /// 里面有同名的参数 需要显示的重写这个 不写也可以 强烈建议写
     /// </summary>
     public new BiliClientOptions ClientOptions { get; }
+
+    protected override string PlatformName => "bilibili";
 
     private readonly ISignClient _signClient;
     private readonly AccountPoolManager? _accountPool;
@@ -48,7 +50,7 @@ public class BiliClient : CrawlerClientBase
     /// <summary>
     /// 切换到下一个可用账号。
     /// </summary>
-    public async Task<bool> SwitchToNextAccountAsync(CancellationToken ct = default)
+    public override async Task<bool> SwitchToNextAccountAsync(CancellationToken ct = default)
     {
         if (_accountPool is null) return false;
 

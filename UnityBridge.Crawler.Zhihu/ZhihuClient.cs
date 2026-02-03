@@ -1,3 +1,5 @@
+using UnityBridge.Crawler.Core;
+
 namespace UnityBridge.Crawler.Zhihu;
 
 /// <summary>
@@ -9,6 +11,8 @@ public class ZhihuClient : CrawlerClientBase
     /// 获取当前客户端使用的配置项。
     /// </summary>
     public new ZhihuClientOptions ClientOptions { get; }
+
+    protected override string PlatformName => "zhihu";
 
     private readonly ISignClient _signClient;
     private readonly AccountPoolManager? _accountPool;
@@ -46,7 +50,7 @@ public class ZhihuClient : CrawlerClientBase
     /// <summary>
     /// 切换到下一个可用账号。
     /// </summary>
-    public async Task<bool> SwitchToNextAccountAsync(CancellationToken ct = default)
+    public override async Task<bool> SwitchToNextAccountAsync(CancellationToken ct = default)
     {
         if (_accountPool is null) return false;
 

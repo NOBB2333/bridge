@@ -1,3 +1,5 @@
+using UnityBridge.Crawler.Core;
+
 namespace UnityBridge.Crawler.Tieba;
 
 /// <summary>
@@ -9,6 +11,8 @@ public class TiebaClient : CrawlerClientBase
     /// 获取当前客户端使用的配置项。
     /// </summary>
     public new TiebaClientOptions ClientOptions { get; }
+
+    protected override string PlatformName => "tieba";
 
     private readonly AccountPoolManager? _accountPool;
     private AccountInfo? _currentAccount;
@@ -44,7 +48,7 @@ public class TiebaClient : CrawlerClientBase
     /// <summary>
     /// 切换到下一个可用账号。
     /// </summary>
-    public async Task<bool> SwitchToNextAccountAsync(CancellationToken ct = default)
+    public override async Task<bool> SwitchToNextAccountAsync(CancellationToken ct = default)
     {
         if (_accountPool is null) return false;
 

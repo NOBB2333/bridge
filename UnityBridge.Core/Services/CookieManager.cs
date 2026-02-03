@@ -6,7 +6,7 @@ namespace UnityBridge.Core.Services;
 /// <summary>
 /// Cookie 管理器，按域名管理 Cookie（内存存储）。
 /// </summary>
-internal class CookieManager
+public class CookieManager
 {
     private readonly ConcurrentDictionary<string, CookieContainer> _cookieContainers = new();
 

@@ -1,12 +1,12 @@
 using System.Collections.Concurrent;
 using System.Net;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using Polly;
 using Polly.Retry;
 using UnityBridge.Core.Interceptors;
+using UnityBridge.Crawler.Core.AccountPool;
 
-namespace UnityBridge.Core.Clients;
+namespace UnityBridge.Crawler.Core;
 
 /// <summary>
 /// 爬虫客户端基类，提供代理池、Cookie管理、重试策略、并发控制等通用功能。
@@ -15,6 +15,7 @@ namespace UnityBridge.Core.Clients;
 public abstract class CrawlerClientBase : CommonClientBase
 {
     private readonly ClientOptions _clientOptions;
+    private readonly AccountPoolManager? _accountPool;
     private readonly ProxyPoolManager? _proxyPoolManager;
     private readonly CookieManager? _cookieManager;
     private readonly SemaphoreSlim _semaphore;
@@ -26,6 +27,17 @@ public abstract class CrawlerClientBase : CommonClientBase
     /// </summary>
     public ClientOptions ClientOptions => _clientOptions;
 
+
+    /// <summary>
+    /// 获取当前使用的账号信息。
+    /// </summary>
+    public AccountInfo? CurrentAccount { get; protected set; }
+
+    /// <summary>
+    /// 获取平台名称（由子类实现，用于 Cookie 隔离）。
+    /// </summary>
+    protected abstract string PlatformName { get; }
+
     /// <summary>
     /// 初始化爬虫客户端基类。
     /// </summary>
@@ -34,13 +46,15 @@ public abstract class CrawlerClientBase : CommonClientBase
     /// <param name="disposeClient">是否在释放时销毁 HttpClient。</param>
     /// <param name="jsonOptions">JSON 序列化选项。</param>
     protected CrawlerClientBase(
-        ClientOptions options,
+        ClientOptions options, 
+        AccountPoolManager? accountPool = null,
         HttpClient? httpClient = null,
-        bool disposeClient = true,
+        bool disposeClient = true, 
         JsonSerializerOptions? jsonOptions = null)
         : base(CreateHttpClientWithProxy(options, httpClient), disposeClient, jsonOptions)
     {
         _clientOptions = options ?? throw new ArgumentNullException(nameof(options));
+        _accountPool = accountPool;
 
         // 初始化代理池
         if (_clientOptions.EnableProxyPool && _clientOptions.ProxyPool.Count > 0)
@@ -149,8 +163,54 @@ public abstract class CrawlerClientBase : CommonClientBase
     /// <returns>修改后的请求对象。</returns>
     protected virtual IFlurlRequest OnCreateRequest(IFlurlRequest flurlRequest, object request, HttpMethod httpMethod, params object[] urlSegments)
     {
-        // 子类可以重写此方法添加平台特定的逻辑
+        // 1. 注入通用 Headers
+        if (!string.IsNullOrEmpty(ClientOptions.UserAgent))
+        {
+            flurlRequest.WithHeader("User-Agent", ClientOptions.UserAgent);
+        }
+        if (!string.IsNullOrEmpty(ClientOptions.Referer))
+        {
+            flurlRequest.WithHeader("Referer", ClientOptions.Referer);
+        }
+
+        // 2. 注入 Cookie (优先级：CurrentAccount > ClientOptions > CookieManager)
+        string cookieValue = string.Empty;
+        if (CurrentAccount != null && !string.IsNullOrEmpty(CurrentAccount.Cookies))
+        {
+            cookieValue = CurrentAccount.Cookies;
+        }
+        else if (!string.IsNullOrEmpty(ClientOptions.Cookies))
+        {
+            cookieValue = ClientOptions.Cookies;
+        }
+        else if (_cookieManager != null)
+        {
+            cookieValue = GetCookies(PlatformName);
+        }
+
+        if (!string.IsNullOrEmpty(cookieValue))
+        {
+            flurlRequest.WithHeader("Cookie", cookieValue);
+        }
+
         return flurlRequest;
+    }
+
+    /// <summary>
+    /// 切换到下一个可用账号。
+    /// </summary>
+    public virtual async Task<bool> SwitchToNextAccountAsync(CancellationToken ct = default)
+    {
+        if (_proxyPoolManager == null && _accountPool == null)
+        {
+             return false;
+        }
+        
+        // TODO: 集成真正的 AccountPoolManager。
+        // 目前这是一个简化实现，假设 AccountPoolManager 会被注入或在子类处理
+        // 为了保持兼容性，我们允许子类 override 此方法
+        
+        return await Task.FromResult(true);
     }
 
     /// <summary>
